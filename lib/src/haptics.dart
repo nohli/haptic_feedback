@@ -8,6 +8,7 @@ class Haptics {
   const Haptics();
 
   /// Checks if the device is capable of performing haptic feedback.
+  /// Haptic feedack is available on iPhones >= 7 and Android devices.
   static Future<bool> get canVibrate {
     return HapticFeedbackPlatform.instance.canVibrate();
   }

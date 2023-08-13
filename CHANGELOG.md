@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Change `canVibrate` implementation for supporting lower iOS versions.
+
 ## 0.0.7
 
 * Format native code.
