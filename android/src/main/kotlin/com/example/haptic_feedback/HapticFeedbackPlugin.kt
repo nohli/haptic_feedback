@@ -1,9 +1,9 @@
 package com.example.haptic_feedback
 
-import android.os.Build
-import android.os.Vibrator
-import android.os.VibrationEffect
 import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -61,19 +61,19 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun error() {
-    vibratePattern(longArrayOf( 75, 61, 79,57,75,57,97), intArrayOf(203,0, 200, 0,252,0,150))
+    vibratePattern(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150))
   }
 
   private fun light() {
-    vibratePattern(longArrayOf(79),intArrayOf(154) )
+    vibratePattern(longArrayOf(79), intArrayOf(154))
   }
 
   private fun medium() {
-    vibratePattern(longArrayOf(79),intArrayOf(203) )
+    vibratePattern(longArrayOf(79), intArrayOf(203))
   }
 
   private fun heavy() {
-    vibratePattern(longArrayOf(75),intArrayOf(252) )
+    vibratePattern(longArrayOf(75), intArrayOf(252))
   }
 
   private fun rigid() {
@@ -85,7 +85,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun selection() {
-     vibratePattern(longArrayOf(57), intArrayOf(150))
+    vibratePattern(longArrayOf(57), intArrayOf(150))
   }
 
   private fun vibratePattern(lengths: LongArray, amplitudes: IntArray) {
