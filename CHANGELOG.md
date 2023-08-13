@@ -1,3 +1,7 @@
+## 0.10.0
+
+* Format Swift code.
+
 ## 0.0.9
 
 * Call fallback methods on iOS < 13 for `.rigid` and `.soft` haptics.
