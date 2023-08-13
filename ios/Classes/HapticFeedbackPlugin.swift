@@ -25,9 +25,17 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
     case "heavy":
       impact(style: .heavy, result: result)
     case "rigid":
-      impact(style: .rigid, result: result)
+      if #available(iOS 13.0, *) {
+        impact(style: .rigid, result: result)
+      } else {
+        impact(style: .medium, result: result)
+      }
     case "soft":
-      impact(style: .soft, result: result)
+      if #available(iOS 13.0, *) {
+        impact(style: .soft, result: result)
+      } else {
+        impact(style: .light, result: result)
+      }
     case "selection":
       selection(result: result)
     default:
