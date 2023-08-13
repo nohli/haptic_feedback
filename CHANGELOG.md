@@ -1,6 +1,10 @@
 ## 0.0.8
 
-* Change `canVibrate` implementation for supporting lower iOS versions.
+* Call fallback methods on iOS < 13 for `.rigid` and `.soft` haptics.
+
+## 0.0.8
+
+* Refactor `canVibrate` implementation for supporting lower iOS versions.
 
 ## 0.0.7
 
