@@ -44,17 +44,17 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   }
 
   private func canVibrate(result: @escaping FlutterResult) {
-      if #available(iOS 13.0, *) {
-          let supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
-          result(supportsHaptics)
-          return
-      }
-      if let feedbackSupportLevel = UIDevice.current.value(forKey: "_feedbackSupportLevel") as? Int,
-         feedbackSupportLevel == 2 {
-          result(true)
-          return
-      }
-      result(false)
+    if #available(iOS 13.0, *) {
+      let supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
+      result(supportsHaptics)
+      return
+    }
+    if let feedbackSupportLevel = UIDevice.current.value(forKey: "_feedbackSupportLevel") as? Int,
+      feedbackSupportLevel == 2 {
+      result(true)
+      return
+    }
+    result(false)
   }
 
   private func notification(type: UINotificationFeedbackGenerator.FeedbackType, result: @escaping FlutterResult) {
