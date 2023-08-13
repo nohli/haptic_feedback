@@ -42,7 +42,9 @@ class _MyAppState extends State<MyApp> {
                       SnackBar(
                         content: can
                             ? Text('$type', textAlign: TextAlign.center)
-                            : const Text('''Device is not capable of haptic feedback.'''),
+                            : const Text(
+                                'Device is not capable of haptic feedback.',
+                              ),
                         duration: const Duration(seconds: 1),
                       ),
                     );

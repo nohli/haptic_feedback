@@ -1,4 +1,5 @@
-import 'package:plugin_platform_interface/plugin_platform_interface.dart' show PlatformInterface;
+import 'package:plugin_platform_interface/plugin_platform_interface.dart'
+    show PlatformInterface;
 
 import 'haptic_feedback_method_channel.dart';
 import 'haptics_type.dart';
@@ -27,11 +28,15 @@ abstract class HapticFeedbackPlatform extends PlatformInterface {
 
   /// Checks if the device is capable of performing haptic feedback.
   Future<bool> canVibrate() async {
-    throw UnsupportedError('''Use the implementation method of MethodChannelHapticFeedback.''');
+    throw UnsupportedError(
+      'Use the implementation method of MethodChannelHapticFeedback.',
+    );
   }
 
   /// Performs haptic feedback on the device.
   Future<void> vibrate(HapticsType type) {
-    throw UnsupportedError('''Use the implementation method of MethodChannelHapticFeedback.''');
+    throw UnsupportedError(
+      'Use the implementation method of MethodChannelHapticFeedback.',
+    );
   }
 }
