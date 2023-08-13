@@ -8,8 +8,6 @@ topics:
   - haptic
   - feedback
   - vibration
-  - ios
-  - android
   - plugin
 
 version: 0.0.1
