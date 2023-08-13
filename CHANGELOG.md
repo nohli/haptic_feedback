@@ -1,4 +1,4 @@
-## 0.0.8
+## 0.0.9
 
 * Call fallback methods on iOS < 13 for `.rigid` and `.soft` haptics.
 
