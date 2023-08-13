@@ -8,7 +8,7 @@ class Haptics {
   const Haptics();
 
   /// Checks if the device is capable of performing haptic feedback.
-  static Future<bool> canVibrate() {
+  static Future<bool> get canVibrate {
     return HapticFeedbackPlatform.instance.canVibrate();
   }
 

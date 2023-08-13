@@ -1,13 +1,17 @@
+## 0.0.6
+
+* Refactor `canVibrate` method into a getter for improved readability and usage.
+
 ## 0.0.5
 
 * Make methods static.
 
 ## 0.0.4
 
-* Add namespace to build.gradle.
-* Update Kotlin version of example.
-* Upgrade Gradle version of example.
-* Upgrade Android Gradle Plugin version of example.
+* Add `namespace` to build.gradle.
+* Update `Kotlin` version of example.
+* Upgrade `Gradle` version of example.
+* Upgrade `Android Gradle Plugin` version of example.
 
 ## 0.0.3
 

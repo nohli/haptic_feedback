@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
                   // ignore: invalid_use_of_visible_for_testing_member
                   subtitle: Text(type.description),
                   onTap: () async {
-                    final can = await Haptics.canVibrate();
+                    final can = await Haptics.canVibrate;
 
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
