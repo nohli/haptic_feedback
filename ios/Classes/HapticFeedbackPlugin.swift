@@ -1,6 +1,6 @@
+import CoreHaptics
 import Flutter
 import SwiftUI
-import CoreHaptics
 
 public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -42,17 +42,17 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   }
 
   private func notification(type: UINotificationFeedbackGenerator.FeedbackType, result: @escaping FlutterResult) {
-      UINotificationFeedbackGenerator().notificationOccurred(type)
-      result(true)
+    UINotificationFeedbackGenerator().notificationOccurred(type)
+    result(true)
   }
 
   private func impact(style: UIImpactFeedbackGenerator.FeedbackStyle, result: @escaping FlutterResult) {
-      UIImpactFeedbackGenerator(style: style).impactOccurred()
-      result(true)
+    UIImpactFeedbackGenerator(style: style).impactOccurred()
+    result(true)
   }
 
   private func selection(result: @escaping FlutterResult) {
-      UISelectionFeedbackGenerator().selectionChanged()
-      result(true)
+    UISelectionFeedbackGenerator().selectionChanged()
+    result(true)
   }
 }
