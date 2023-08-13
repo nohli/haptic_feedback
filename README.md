@@ -1,7 +1,8 @@
 # haptic_feedback
 
-A haptic feedback plugin for iOS and Android.
-The plugin is using [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), and analog haptics on Android.  
+A haptic feedback plugin for both iOS and Android.
+
+While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
 ## Getting Started
 
