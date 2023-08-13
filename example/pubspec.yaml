@@ -1,0 +1,19 @@
+name: haptic_feedback_example
+description: Demonstrates how to use the haptic_feedback plugin.
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  haptic_feedback:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter

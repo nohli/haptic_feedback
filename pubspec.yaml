@@ -1,0 +1,38 @@
+name: haptic_feedback
+description: A Flutter plugin for haptic feedback.
+repository: https://github.com/nohli/haptic_feedback
+issue_tracker: https://github.com/nohli/haptic_feedback/issues
+
+topics:
+  - haptics
+  - haptic
+  - feedback
+  - vibration
+  - ios
+  - android
+  - plugin
+
+version: 0.0.1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.haptic_feedback
+        pluginClass: HapticFeedbackPlugin
+      ios:
+        pluginClass: HapticFeedbackPlugin

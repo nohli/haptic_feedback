@@ -1,0 +1,88 @@
+name: Flutter checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_pub_dependencies:
+    name: Check dependencies
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - name: Disable analytics
+        run: flutter config --no-analytics
+      - name: Flutter pub get
+        run: flutter pub get
+
+  check_formatting:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - name: Disable analytics
+        run: flutter config --no-analytics
+      - name: Flutter pub get
+        run: flutter pub get
+      - name: Check Dart formatting
+        run: dart format --line-length 80 --set-exit-if-changed .
+
+  analyze:
+    name: Dart analyze
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - name: Disable analytics
+        run: flutter config --no-analytics
+      - name: Flutter pub get
+        run: flutter pub get
+      - name: Run Dart analyze
+        uses: invertase/github-action-dart-analyzer@v2.0.0
+
+  test:
+    name: Flutter test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - name: Disable analytics
+        run: flutter config --no-analytics
+      - name: Flutter pub get
+        run: flutter pub get
+      - name: Flutter test
+        run: flutter test
+
+  test_example:
+    name: Flutter test example
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+      - name: Disable analytics
+        run: flutter config --no-analytics
+      - name: Flutter pub get
+        run: flutter pub get
+      - name: Flutter test example
+        run: |
+          cd example
+          flutter test
