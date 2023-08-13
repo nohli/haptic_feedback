@@ -4,9 +4,9 @@ repository: https://github.com/nohli/haptic_feedback
 issue_tracker: https://github.com/nohli/haptic_feedback/issues
 
 topics:
-  - haptics
   - haptic
   - feedback
+  - haptics
   - vibration
   - plugin
 
