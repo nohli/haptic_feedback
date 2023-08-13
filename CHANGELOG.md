@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Format native code.
+
 ## 0.0.6
 
 * Refactor `canVibrate` method into a getter for improved readability and usage.
