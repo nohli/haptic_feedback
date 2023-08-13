@@ -13,8 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const _haptics = Haptics();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +32,7 @@ class _MyAppState extends State<MyApp> {
                   // ignore: invalid_use_of_visible_for_testing_member
                   subtitle: Text(type.description),
                   onTap: () async {
-                    final can = await _haptics.canVibrate();
+                    final can = await Haptics.canVibrate();
 
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -50,7 +48,7 @@ class _MyAppState extends State<MyApp> {
                     );
 
                     if (!can) return;
-                    await _haptics.vibrate(type);
+                    await Haptics.vibrate(type);
                   },
                 ),
             ],

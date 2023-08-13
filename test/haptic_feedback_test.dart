@@ -27,10 +27,9 @@ void main() {
   });
 
   test('canVibrate', () async {
-    const hapticFeedbackPlugin = Haptics();
     const fakePlatform = MockHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = fakePlatform;
 
-    expect(await hapticFeedbackPlugin.canVibrate(), true);
+    expect(await Haptics.canVibrate(), true);
   });
 }
