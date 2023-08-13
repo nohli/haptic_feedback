@@ -48,8 +48,8 @@ extension HapticsTypeDescription on HapticsType {
       HapticsType.error => 'Indicates that an error has occurred.',
       HapticsType.light =>
         'Indicates a collision between small or lightweight UI objects.',
-      HapticsType.medium =>
-        'Indicates a collision between medium-sized or medium-weight UI objects.',
+      HapticsType.medium => 'Indicates a collision between medium-sized'
+          'or medium-weight UI objects.',
       HapticsType.heavy =>
         'Indicates a collision between large or heavyweight UI objects.',
       HapticsType.rigid =>
