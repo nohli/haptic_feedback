@@ -1,8 +1,9 @@
 ## 0.0.4
 
 * Add namespace to build.gradle.
-* Update Kotlin version.
-* Update Android Gradle Plugin version.
+* Update Kotlin version of example.
+* Upgrade Gradle version of example.
+* Upgrade Android Gradle Plugin version of example.
 
 ## 0.0.3
 
