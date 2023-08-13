@@ -53,47 +53,47 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun success() {
-    vibratePattern(longArrayOf(0, 50, 10, 50), intArrayOf(0, 255, 0, 255))
+    vibratePattern(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255))
   }
 
   private fun warning() {
-    vibratePattern(longArrayOf(0, 30, 20, 30), intArrayOf(0, 255, 0, 255))
+    vibratePattern(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178))
   }
 
   private fun error() {
-    vibratePattern(longArrayOf(0, 100, 30, 100), intArrayOf(0, 255, 0, 255))
+    vibratePattern(longArrayOf( 75, 61, 79,57,75,57,97), intArrayOf(203,0, 200, 0,252,0,150))
   }
 
   private fun light() {
-    vibratePattern(longArrayOf(0, 10))
+    vibratePattern(longArrayOf(79),intArrayOf(154) )
   }
 
   private fun medium() {
-    vibratePattern(longArrayOf(0, 20))
+    vibratePattern(longArrayOf(79),intArrayOf(203) )
   }
 
   private fun heavy() {
-    vibratePattern(longArrayOf(0, 30))
+    vibratePattern(longArrayOf(75),intArrayOf(252) )
   }
 
   private fun rigid() {
-    vibratePattern(longArrayOf(0, 20, 10, 20, 10, 20), intArrayOf(0, 255, 0, 255, 0, 255))
+    vibratePattern(longArrayOf(48), intArrayOf(227))
   }
 
   private fun soft() {
-    vibratePattern(longArrayOf(0, 15, 10, 15), intArrayOf(0, 127, 0, 127))  // Reduced amplitude for soft
+    vibratePattern(longArrayOf(110), intArrayOf(178))
   }
 
   private fun selection() {
-     vibratePattern(longArrayOf(0, 10, 5, 10, 5, 10), intArrayOf(0, 255, 0, 255, 0, 255))
+     vibratePattern(longArrayOf(57), intArrayOf(150))
   }
 
-  private fun vibratePattern(pattern: LongArray, amplitudes: IntArray? = null) {
-    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && amplitudes != null) {
-      val effect = VibrationEffect.createWaveform(pattern, amplitudes, -1)
+  private fun vibratePattern(lengths: LongArray, amplitudes: IntArray) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      val effect = VibrationEffect.createWaveform(lengths, amplitudes, -1)
       vibrator.vibrate(effect)
     } else {
-      vibrator.vibrate(pattern, -1)
+      vibrator.vibrate(lengths, -1)
     }
   }
 }
