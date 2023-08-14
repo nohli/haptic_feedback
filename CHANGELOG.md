@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Improve docs.
+* Add private constructor to `Haptics`.
+
 ## 0.1.1
 
 * Improve docs.
