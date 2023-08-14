@@ -2,10 +2,9 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 
 import 'haptic_feedback_platform_interface.dart';
 
-///
+/// A class that exposes the haptic feedback functionality.
 class Haptics {
-  /// A class that exposes the haptic feedback functionality.
-  const Haptics();
+  const Haptics._();
 
   /// Checks if the device is capable of performing haptic feedback.
   ///
