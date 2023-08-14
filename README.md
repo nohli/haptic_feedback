@@ -20,10 +20,13 @@ final canVibrate = await Haptics.canVibrate;
 await Haptics.vibrate(HapticType.success);
 await Haptics.vibrate(HapticType.warning);
 await Haptics.vibrate(HapticType.error);
+
 await Haptics.vibrate(HapticType.light);
 await Haptics.vibrate(HapticType.medium);
 await Haptics.vibrate(HapticType.heavy);
+
 await Haptics.vibrate(HapticType.rigid);
 await Haptics.vibrate(HapticType.soft);
+
 await Haptics.vibrate(HapticType.selection);
 ```
