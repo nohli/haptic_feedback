@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Check API level before calling `hasAmplitudeControl()`.
+
 ## 0.2.2
 
 * Update version in `podspec`.
