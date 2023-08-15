@@ -26,74 +26,43 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    when (call.method) {
-      "canVibrate" -> {
-        result.success(canVibrate())
-        return
-      }
-      "success" -> success()
-      "warning" -> warning()
-      "error" -> error()
-      "light" -> light()
-      "medium" -> medium()
-      "heavy" -> heavy()
-      "rigid" -> rigid()
-      "soft" -> soft()
-      "selection" -> selection()
-      else -> {
+    if (call.method == "canVibrate") {
+      canVibrate(result)
+    } else {
+      val pattern = Pattern.values().find { it.name == call.method }
+      if (pattern != null) {
+        vibratePattern(pattern, result)
+      } else {
         result.notImplemented()
-        return
       }
     }
-    result.success(true)
   }
 
-  private fun canVibrate(): Boolean {
-    return vibrator.hasVibrator()
+  private fun canVibrate(result: Result) {
+    result.success(vibrator.hasVibrator())
   }
 
-  private fun success() {
-    vibratePattern(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255))
-  }
-
-  private fun warning() {
-    vibratePattern(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178))
-  }
-
-  private fun error() {
-    vibratePattern(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150))
-  }
-
-  private fun light() {
-    vibratePattern(longArrayOf(79), intArrayOf(154))
-  }
-
-  private fun medium() {
-    vibratePattern(longArrayOf(79), intArrayOf(203))
-  }
-
-  private fun heavy() {
-    vibratePattern(longArrayOf(75), intArrayOf(252))
-  }
-
-  private fun rigid() {
-    vibratePattern(longArrayOf(48), intArrayOf(227))
-  }
-
-  private fun soft() {
-    vibratePattern(longArrayOf(110), intArrayOf(178))
-  }
-
-  private fun selection() {
-    vibratePattern(longArrayOf(57), intArrayOf(150))
-  }
-
-  private fun vibratePattern(lengths: LongArray, amplitudes: IntArray) {
+  private fun vibratePattern(pattern: Pattern, result: Result) {
+    val lengths = pattern.lengths
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      val amplitudes = pattern.amplitudes
       val effect = VibrationEffect.createWaveform(lengths, amplitudes, -1)
       vibrator.vibrate(effect)
     } else {
       vibrator.vibrate(lengths, -1)
     }
+    result.success(true)
+  }
+
+  private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
+    success(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255)),
+    warning(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178)),
+    error(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150)),
+    light(longArrayOf(79), intArrayOf(154)),
+    medium(longArrayOf(79), intArrayOf(203)),
+    heavy(longArrayOf(75), intArrayOf(252)),
+    rigid(longArrayOf(48), intArrayOf(227)),
+    soft(longArrayOf(110), intArrayOf(178)),
+    selection(longArrayOf(57), intArrayOf(150))
   }
 }
