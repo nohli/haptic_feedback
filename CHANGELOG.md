@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Refactor Kotlin code.
+
 ## 0.2.0
 
 * Improve docs.
