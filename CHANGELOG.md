@@ -1,3 +1,7 @@
+## 0.2.5
+
+* Refactor example.
+
 ## 0.2.4
 
 * Small refactoring.
