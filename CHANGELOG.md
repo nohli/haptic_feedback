@@ -1,3 +1,7 @@
+## 0.2.4
+
+* Small refactoring.
+
 ## 0.2.3
 
 * Check API level before calling `hasAmplitudeControl()`.
