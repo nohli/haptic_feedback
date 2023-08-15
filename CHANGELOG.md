@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Update version in `podspec`.
+
 ## 0.2.1
 
 * Refactor Kotlin code.
