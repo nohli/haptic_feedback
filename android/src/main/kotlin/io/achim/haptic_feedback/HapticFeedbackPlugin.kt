@@ -1,4 +1,4 @@
-package com.example.haptic_feedback
+package io.achim.haptic_feedback
 
 import android.content.Context
 import android.os.Build

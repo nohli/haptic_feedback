@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Update package identifier.
+
 ## 0.2.5
 
 * Refactor example.
