@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Update podspec version.
+
 ## 0.3.0
 
 * Update package identifier.
