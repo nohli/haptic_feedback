@@ -1,7 +1,7 @@
 ## 0.3.2
 
 * Maintenance release.
-* Update gradle, kotlin, and mockito versions.
+* Update `gradle`, `kotlin`, and `mockito`.
 
 ## 0.3.1
 
