@@ -1,3 +1,8 @@
+## 0.3.2
+
+* Maintenance release.
+* Update gradle, kotline and mockito versions.
+
 ## 0.3.1
 
 * Update podspec version.
