@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - haptic_feedback (0.3.3):
+  - "haptic_feedback (0.3.3+1)":
     - Flutter
   - integration_test (0.0.1):
     - Flutter
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  haptic_feedback: 7bf7fb59535cdad734f41e29bdd10a14f3582dcf
+  haptic_feedback: 20066441ec392f8c88085afbfdb2f8f976733d1c
   integration_test: 13825b8a9334a850581300559b8839134b124670
 
 PODFILE CHECKSUM: 6b9eb94e9f98a329f2ef624b852a6e42d090af2b

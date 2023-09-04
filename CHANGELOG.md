@@ -1,3 +1,7 @@
+## 0.3.3+1
+
+* Fix typo in readme. Thanks @walid-ashik!
+
 ## 0.3.3
 
 * Update podspec version.
