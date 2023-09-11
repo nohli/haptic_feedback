@@ -59,16 +59,16 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
 
   private func notification(type: UINotificationFeedbackGenerator.FeedbackType, result: @escaping FlutterResult) {
     UINotificationFeedbackGenerator().notificationOccurred(type)
-    result(true)
+    result(nil)
   }
 
   private func impact(style: UIImpactFeedbackGenerator.FeedbackStyle, result: @escaping FlutterResult) {
     UIImpactFeedbackGenerator(style: style).impactOccurred()
-    result(true)
+    result(nil)
   }
 
   private func selection(result: @escaping FlutterResult) {
     UISelectionFeedbackGenerator().selectionChanged()
-    result(true)
+    result(nil)
   }
 }
