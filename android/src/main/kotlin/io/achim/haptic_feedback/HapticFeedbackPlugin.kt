@@ -43,13 +43,17 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun vibratePattern(pattern: Pattern, result: Result) {
-    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
-      val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, -1)
-      vibrator.vibrate(effect)
-    } else {
-      vibrator.vibrate(pattern.lengths, -1)
+    try {
+      if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
+        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, -1)
+        vibrator.vibrate(effect)
+      } else {
+        vibrator.vibrate(pattern.lengths, -1)
+      }
+      result.success(null)
+    } catch (e: Exception) {
+      result.error("VIBRATION_ERROR", "Failed to vibrate", e.localizedMessage)
     }
-    result.success(true)
   }
 
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
