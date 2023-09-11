@@ -1,3 +1,9 @@
+## 0.4.0
+
+* `canVibrate()` is now a method.
+* Catching of native errors on Android: You can call `vibrate()` without checking `canVibrate()` first.
+* Improve docs.
+
 ## 0.3.3+1
 
 * Fix typo in readme. Thanks @walid-ashik!
