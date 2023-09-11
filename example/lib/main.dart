@@ -42,7 +42,7 @@ class _HapticsListState extends State<_HapticsList> {
             subtitle: Text(type.description),
             onTap: () async {
               // Check if device is capable of haptic feedback
-              final can = await Haptics.canVibrate;
+              final can = await Haptics.canVibrate();
 
               // Show snackbar
               if (!mounted) return;
