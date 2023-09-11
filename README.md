@@ -15,7 +15,7 @@ flutter pub add haptic_feedback
 ### 2. Use the plugin
 
 ```dart
-final canVibrate = await Haptics.canVibrate;
+final canVibrate = await Haptics.canVibrate();
 
 await Haptics.vibrate(HapticsType.success);
 await Haptics.vibrate(HapticsType.warning);

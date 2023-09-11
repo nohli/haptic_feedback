@@ -14,7 +14,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('canVibrate test', (WidgetTester tester) async {
-    final canVibrate = await Haptics.canVibrate;
+    final canVibrate = await Haptics.canVibrate();
     // The result depends on the host platform running the test.
     expect(canVibrate, true);
   });

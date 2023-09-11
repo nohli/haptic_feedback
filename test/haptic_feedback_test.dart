@@ -30,6 +30,6 @@ void main() {
     const fakePlatform = MockHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = fakePlatform;
 
-    expect(await Haptics.canVibrate, true);
+    expect(await Haptics.canVibrate(), true);
   });
 }

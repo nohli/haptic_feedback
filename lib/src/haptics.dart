@@ -11,7 +11,7 @@ class Haptics {
   /// - On Android: Haptic feedback is generally available,
   /// but actual support can vary between devices and versions.
   /// - On iOS: Haptic feedback is available on iPhone 7 and later models.
-  static Future<bool> get canVibrate {
+  static Future<bool> canVibrate() {
     return HapticFeedbackPlatform.instance.canVibrate();
   }
 
