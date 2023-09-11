@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Update example.
+
 ## 0.4.0
 
 * `canVibrate()` is now a method.
