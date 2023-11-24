@@ -11,7 +11,12 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback_example/main.dart';
 
 void main() {
-  testWidgets('Verify Platform version', (WidgetTester tester) async {
+  testWidgets('Haptics types are displayed in example',
+      (WidgetTester tester) async {
+    // Set the size of the testing window.
+    tester.view.physicalSize = const Size(1080, 1920);
+    tester.view.devicePixelRatio = 1;
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
