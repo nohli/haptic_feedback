@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:haptic_feedback/haptic_feedback.dart';
 
 import 'haptic_feedback_platform_interface.dart';
@@ -12,11 +14,19 @@ class Haptics {
   /// but actual support can vary between devices and versions.
   /// - On iOS: Haptic feedback is available on iPhone 7 and later models.
   static Future<bool> canVibrate() {
-    return HapticFeedbackPlatform.instance.canVibrate();
+    if (Platform.isAndroid || Platform.isIOS) {
+      return HapticFeedbackPlatform.instance.canVibrate();
+    } else {
+      return Future.sync(() => false);
+    }
   }
 
   /// Performs haptic feedback of [HapticsType] on the device.
   static Future<void> vibrate(HapticsType type) {
-    return HapticFeedbackPlatform.instance.vibrate(type);
+    if (Platform.isAndroid || Platform.isIOS) {
+      return HapticFeedbackPlatform.instance.vibrate(type);
+    } else {
+      return Future.sync(() => {});
+    }
   }
 }
