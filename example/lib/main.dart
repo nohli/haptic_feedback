@@ -45,7 +45,7 @@ class _HapticsListState extends State<_HapticsList> {
               final can = await Haptics.canVibrate();
 
               // Show snackbar
-              if (!mounted) return;
+              if (!context.mounted) return;
               final snackbarMessage = can
                   ? '$type'
                   : 'This device is not capable of haptic feedback.';
