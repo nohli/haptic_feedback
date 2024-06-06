@@ -1,3 +1,8 @@
+## 0.5.0
+
+* Upgrade Android dependencies (Gradle, AGP, Java, Kotlin).
+* Widen `flutter_lints` constraints.
+
 ## 0.4.2
 
 * Update package description.
