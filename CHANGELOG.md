@@ -1,3 +1,7 @@
+## 0.5.1
+
+* Update podspec version.
+
 ## 0.5.0
 
 * Early return if platform is not supported (instead of an exception). Supported are iOS an Android. Thanks @rizerco!
