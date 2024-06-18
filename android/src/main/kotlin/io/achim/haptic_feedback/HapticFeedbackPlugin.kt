@@ -59,14 +59,14 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
     success(longArrayOf(92, 92, 92), intArrayOf(150, 0, 160)),
-    warning(longArrayOf(64, 100, 64), intArrayOf(192, 0, 151)),
+    warning(longArrayOf(64, 110, 64), intArrayOf(192, 0, 151)),
     error(longArrayOf(64, 48, 64, 48, 64, 48, 80), intArrayOf(173, 0, 173, 0, 214, 0, 132)),
-    light(longArrayOf(40), intArrayOf(110)),
-    medium(longArrayOf(50), intArrayOf(170)),
-    heavy(longArrayOf(60), intArrayOf(230)),
+    light(longArrayOf(40), intArrayOf(100)),
+    medium(longArrayOf(60), intArrayOf(175)),
+    heavy(longArrayOf(80), intArrayOf(255)),
     rigid(longArrayOf(25), intArrayOf(193)),
-    soft(longArrayOf(50), intArrayOf(90)),
-    selection(longArrayOf(50), intArrayOf(130));
+    soft(longArrayOf(50), intArrayOf(80)),
+    selection(longArrayOf(45), intArrayOf(85));
   }
 
 }
