@@ -58,32 +58,15 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
 
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
-    success(Helper.preComputeLengths(longArrayOf(80, 80, 80)), Helper.preComputeAmplitudes(intArrayOf(272, 0, 290))),
-    warning(Helper.preComputeLengths(longArrayOf(80, 125, 80)), Helper.preComputeAmplitudes(intArrayOf(350, 0, 275))),
-    error(Helper.preComputeLengths(longArrayOf(80, 60, 80, 60, 80, 60, 100)), Helper.preComputeAmplitudes(intArrayOf(315, 0, 315, 0, 390, 0, 240))),
-    light(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(235))),
-    medium(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(310))),
-    heavy(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(390))),
-    rigid(Helper.preComputeLengths(longArrayOf(50)), Helper.preComputeAmplitudes(intArrayOf(352))),
-    soft(Helper.preComputeLengths(longArrayOf(120)), Helper.preComputeAmplitudes(intArrayOf(275))),
-    selection(Helper.preComputeLengths(longArrayOf(60)), Helper.preComputeAmplitudes(intArrayOf(235)));
-
-  }
-
-  class Helper {
-    companion object {
-      private const val timeMultiplier = 0.8
-      private const val amplitudeMultiplier = 0.55
-
-      fun preComputeLengths(lengths: LongArray): LongArray {
-        return lengths.map { (it * timeMultiplier).toLong() }.toLongArray()
-      }
-
-      fun preComputeAmplitudes(amplitudes: IntArray): IntArray {
-        return amplitudes.map { (it * amplitudeMultiplier).toInt() }.toIntArray()
-      }
-
-    }
+    success(longArrayOf(64, 64, 64), intArrayOf(149, 0, 159)),
+    warning(longArrayOf(64, 100, 64), intArrayOf(192, 0, 151)),
+    error(longArrayOf(64, 48, 64, 48, 64, 48, 80), intArrayOf(173, 0, 173, 0, 214, 0, 132)),
+    light(longArrayOf(64), intArrayOf(129)),
+    medium(longArrayOf(64), intArrayOf(170)),
+    heavy(longArrayOf(64), intArrayOf(214)),
+    rigid(longArrayOf(40), intArrayOf(193)),
+    soft(longArrayOf(96), intArrayOf(151)),
+    selection(longArrayOf(48), intArrayOf(129));
   }
 
 }
