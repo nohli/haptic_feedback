@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -57,14 +56,14 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
-    success(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255)),
-    warning(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178)),
-    error(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150)),
-    light(longArrayOf(79), intArrayOf(154)),
-    medium(longArrayOf(79), intArrayOf(203)),
-    heavy(longArrayOf(75), intArrayOf(252)),
-    rigid(longArrayOf(48), intArrayOf(227)),
-    soft(longArrayOf(110), intArrayOf(178)),
-    selection(longArrayOf(57), intArrayOf(150))
+    success(longArrayOf(92, 92, 92), intArrayOf(150, 0, 160)),
+    warning(longArrayOf(64, 110, 64), intArrayOf(192, 0, 151)),
+    error(longArrayOf(64, 48, 64, 48, 64, 48, 80), intArrayOf(173, 0, 173, 0, 214, 0, 132)),
+    light(longArrayOf(40), intArrayOf(100)),
+    medium(longArrayOf(60), intArrayOf(175)),
+    heavy(longArrayOf(80), intArrayOf(255)),
+    rigid(longArrayOf(25), intArrayOf(193)),
+    soft(longArrayOf(50), intArrayOf(80)),
+    selection(longArrayOf(45), intArrayOf(85));
   }
 }
