@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -56,15 +55,35 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     }
   }
 
+
+
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
-    success(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255)),
-    warning(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178)),
-    error(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150)),
-    light(longArrayOf(79), intArrayOf(154)),
-    medium(longArrayOf(79), intArrayOf(203)),
-    heavy(longArrayOf(75), intArrayOf(252)),
-    rigid(longArrayOf(48), intArrayOf(227)),
-    soft(longArrayOf(110), intArrayOf(178)),
-    selection(longArrayOf(57), intArrayOf(150))
+    success(Helper.preComputeLengths(longArrayOf(80, 80, 80)), Helper.preComputeAmplitudes(intArrayOf(272, 0, 290))),
+    warning(Helper.preComputeLengths(longArrayOf(80, 125, 80)), Helper.preComputeAmplitudes(intArrayOf(350, 0, 275))),
+    error(Helper.preComputeLengths(longArrayOf(80, 60, 80, 60, 80, 60, 100)), Helper.preComputeAmplitudes(intArrayOf(315, 0, 315, 0, 390, 0, 240))),
+    light(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(235))),
+    medium(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(310))),
+    heavy(Helper.preComputeLengths(longArrayOf(80)), Helper.preComputeAmplitudes(intArrayOf(390))),
+    rigid(Helper.preComputeLengths(longArrayOf(50)), Helper.preComputeAmplitudes(intArrayOf(352))),
+    soft(Helper.preComputeLengths(longArrayOf(120)), Helper.preComputeAmplitudes(intArrayOf(275))),
+    selection(Helper.preComputeLengths(longArrayOf(60)), Helper.preComputeAmplitudes(intArrayOf(235)));
+
   }
+
+  class Helper {
+    companion object {
+      private const val timeMultiplier = 0.8
+      private const val amplitudeMultiplier = 0.55
+
+      fun preComputeLengths(lengths: LongArray): LongArray {
+        return lengths.map { (it * timeMultiplier).toLong() }.toLongArray()
+      }
+
+      fun preComputeAmplitudes(amplitudes: IntArray): IntArray {
+        return amplitudes.map { (it * amplitudeMultiplier).toInt() }.toIntArray()
+      }
+
+    }
+  }
+
 }
