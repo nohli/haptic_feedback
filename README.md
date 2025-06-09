@@ -1,6 +1,6 @@
 # haptic_feedback
 
-A haptic feedback plugin for both iOS and Android.
+A haptic feedback plugin for both iOS and Android with support for CocoaPods and Swift Package Manager.
 
 While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
