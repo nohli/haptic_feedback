@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "haptic_feedback",
     platforms: [
-        .iOS("12.0")
+        .iOS("13.0")
     ],
     products: [
         .library(name: "haptic-feedback", targets: ["haptic_feedback"])
