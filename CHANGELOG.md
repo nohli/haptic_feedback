@@ -1,3 +1,19 @@
+## 1.0.0
+
+* **BREAKING CHANGES:**
+  * Remove CocoaPods support for iOS - now exclusively uses Swift Package Manager (SPM).
+  * Increase minimum iOS version requirement from 12.0 to 13.0.
+* Update example app to use SPM-only configuration.
+* Clean up iOS project configuration files to remove CocoaPods references.
+* Fix example Android build issues
+
+## 0.5.2
+
+* Add Swift Package Manager (SPM) support for iOS integration alongside existing CocoaPods support.
+* Update minimum iOS version requirement to 12.0 for SPM compatibility.
+* Add comprehensive iOS integration documentation with setup instructions for both CocoaPods and SPM.
+* Maintain backward compatibility - existing CocoaPods projects continue to work without changes.
+
 ## 0.5.1+1
 
 * Add an article link about using the plugin to the readme. Thanks @kamranbekirovyz!
