@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Breaking: Flutter SDK constraint is now >=3.10.0 (Dart ^3.0.0). Apps on older Flutter versions can’t upgrade.
+
 ## 0.5.1+2
 
 * Update article link.
