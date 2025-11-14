@@ -1,3 +1,7 @@
+## 0.5.1+2
+
+* Update article link.
+
 ## 0.5.1+1
 
 * Add an article link about using the plugin to the readme. Thanks @kamranbekirovyz!
