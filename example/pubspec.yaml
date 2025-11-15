@@ -3,7 +3,7 @@ name: haptic_feedback_example
 description: Demonstrates how to use the haptic_feedback plugin.
 
 environment:
-  sdk: ^3.0.0
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
