@@ -31,7 +31,18 @@ await Haptics.vibrate(HapticsType.rigid);
 await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
+
+// On Android 13+ you can control how the system routes the vibration.
+await Haptics.vibrate(
+  HapticsType.success,
+  usage: HapticsUsage.media,
+);
 ```
+
+Passing a `HapticsUsage` helps prevent Android OEM skins from muting your
+vibrations when only “touch feedback” is disabled. For example, use
+`HapticsUsage.media` for breathing or meditation timers, and fall back to the
+default (`HapticsUsage.unknown`) for taps.
 
 ## Automatic Permissions Inclusion
 

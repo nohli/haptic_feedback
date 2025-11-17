@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'haptic_feedback_platform_interface.dart';
 import 'haptics_type.dart';
+import 'haptics_usage.dart';
 
 /// An implementation of [HapticFeedbackPlatform] that uses method channels.
 class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
@@ -16,7 +17,9 @@ class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
   }
 
   @override
-  Future<void> vibrate(HapticsType type) async {
-    return await methodChannel.invokeMethod(type.name);
+  Future<void> vibrate(HapticsType type, {HapticsUsage? usage}) async {
+    final arguments =
+        usage == null ? null : <String, dynamic>{'usage': usage.name};
+    return await methodChannel.invokeMethod(type.name, arguments);
   }
 }

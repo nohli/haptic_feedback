@@ -22,11 +22,18 @@ class Haptics {
 
   /// Performs haptic feedback of [HapticsType] on the device.
   /// Performs nothing if the platform is not supported.
-  static Future<void> vibrate(HapticsType type) async {
+  ///
+  /// Provide [usage] to influence how Android routes the vibration when running
+  /// on API level 33 or later (for example, `HapticsUsage.media` for breathing
+  /// exercises). The value is ignored on older Android versions and on iOS.
+  static Future<void> vibrate(
+    HapticsType type, {
+    HapticsUsage? usage,
+  }) async {
     if (!isPlatformSupported) {
       return;
     }
 
-    return HapticFeedbackPlatform.instance.vibrate(type);
+    return HapticFeedbackPlatform.instance.vibrate(type, usage: usage);
   }
 }
