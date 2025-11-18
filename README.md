@@ -33,6 +33,51 @@ await Haptics.vibrate(HapticsType.soft);
 await Haptics.vibrate(HapticsType.selection);
 ```
 
+## Testing
+
+When testing widgets that use haptic feedback, keep in mind that `defaultTargetPlatform` returns `TargetPlatform.android` in test environments regardless of the host platform. This means `Haptics.canVibrate()` may return `true` in tests even when running on non-mobile platforms.
+
+To test widgets that use haptic feedback, you can:
+
+1. **Mock the platform interface** in your tests:
+
+```dart
+import 'package:haptic_feedback/src/haptic_feedback_platform_interface.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class MockHapticFeedbackPlatform extends Mock
+    with MockPlatformInterfaceMixin
+    implements HapticFeedbackPlatform {}
+
+void main() {
+  testWidgets('my widget test', (tester) async {
+    final mockPlatform = MockHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = mockPlatform;
+    
+    when(() => mockPlatform.canVibrate()).thenAnswer((_) async => true);
+    when(() => mockPlatform.vibrate(any())).thenAnswer((_) async {});
+    
+    // Your test code here
+  });
+}
+```
+
+2. **Use `debugDefaultTargetPlatformOverride`** to test platform-specific behavior:
+
+```dart
+import 'package:flutter/foundation.dart';
+
+void main() {
+  testWidgets('test on iOS', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    
+    // Your test code here
+    
+    debugDefaultTargetPlatformOverride = null; // Clean up
+  });
+}
+```
+
 ## Automatic Permissions Inclusion
 
 ### Android VIBRATE Permission
