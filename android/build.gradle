@@ -29,7 +29,7 @@ android {
         namespace = "io.achim.haptic_feedback"
     }
 
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
     }
 
     dependencies {
