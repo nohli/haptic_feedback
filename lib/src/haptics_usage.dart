@@ -9,35 +9,34 @@
 /// (`USAGE_UNKNOWN`), which may be muted on some OEM builds when touch haptics
 /// are disabled.
 enum HapticsUsage {
-  /// Usage value to use for alarm vibrations.
+  /// Alarm vibrations.
   alarm,
 
-  /// Usage value to use for vibrations which mean a request to enter/end a
-  /// communication with the user, such as a voice prompt.
+  /// Vibrations which mean a request to enter/end a communication with the
+  /// user, such as a voice prompt.
   communicationRequest,
 
-  /// Usage value to use for vibrations which provide a feedback for hardware
-  /// component interaction, such as a fingerprint sensor.
+  /// Vibrations which provide a feedback for hardware component interaction,
+  /// such as a fingerprint sensor.
   hardwareFeedback,
 
-  /// Usage value to use for media vibrations, such as music, movie,
-  /// soundtrack, animations, games, or any interactive media that isn't for
-  /// touch feedback specifically.
+  /// Media vibrations, such as music, movie, soundtrack, animations, games, or
+  /// any interactive media that isn't for touch feedback specifically.
   media,
 
-  /// Usage value to use for notification vibrations.
+  /// Notification vibrations.
   notification,
 
-  /// Usage value to use for vibrations which emulate physical hardware
-  /// reactions, such as edge squeeze.
+  /// Vibrations which emulate physical hardware reactions, such as edge
+  /// squeeze.
   physicalEmulation,
 
-  /// Usage value to use for ringtone vibrations.
+  /// Ringtone vibrations.
   ringtone,
 
-  /// Usage value to use for touch vibrations.
+  /// Touch vibrations.
   touch,
 
-  /// Usage value to use when usage is unknown.
+  /// Usage is unknown.
   unknown,
 }
