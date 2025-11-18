@@ -39,7 +39,23 @@ When testing widgets that use haptic feedback, keep in mind that `defaultTargetP
 
 To test widgets that use haptic feedback, you can:
 
-1. **Mock the platform interface** in your tests:
+1. **Use `debugDefaultTargetPlatformOverride`** to test platform-specific behavior:
+
+```dart
+import 'package:flutter/foundation.dart';
+
+void main() {
+  testWidgets('test on iOS', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    
+    // Your test code here
+    
+    debugDefaultTargetPlatformOverride = null; // Clean up
+  });
+}
+```
+
+2. **Mock the platform interface** in your tests:
 
 ```dart
 import 'package:haptic_feedback/src/haptic_feedback_platform_interface.dart';
@@ -58,22 +74,6 @@ void main() {
     when(() => mockPlatform.vibrate(any())).thenAnswer((_) async {});
     
     // Your test code here
-  });
-}
-```
-
-2. **Use `debugDefaultTargetPlatformOverride`** to test platform-specific behavior:
-
-```dart
-import 'package:flutter/foundation.dart';
-
-void main() {
-  testWidgets('test on iOS', (tester) async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    
-    // Your test code here
-    
-    debugDefaultTargetPlatformOverride = null; // Clean up
   });
 }
 ```
