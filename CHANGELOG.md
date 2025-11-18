@@ -1,8 +1,6 @@
 ## 0.6.1
 
-* Add optional `HapticsUsage` parameter so Android 13+ devices respect the desired vibration category.
-* Pass the usage hint through the method channel and Android plugin (with test coverage).
-* Document the new API in the README.
+* Add optional `usage` parameter to control vibration category on Android 13+ devices. This allows you to specify how the haptic feedback should be categorized (e.g., for notifications, alarms, touch feedback, etc.), which helps the system handle vibrations more appropriately.
 
 ## 0.6.0
 
