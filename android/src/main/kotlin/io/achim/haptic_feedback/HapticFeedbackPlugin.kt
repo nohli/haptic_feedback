@@ -83,10 +83,12 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
   internal enum class Usage {
     alarm,
+    communicationRequest,
+    hardwareFeedback,
     media,
     notification,
+    physicalEmulation,
     ringtone,
-    sonification,
     touch,
     unknown;
 
@@ -101,10 +103,12 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     fun toVibrationAttributes(): VibrationAttributes {
       val usageConstant = when (this) {
         alarm -> VibrationAttributes.USAGE_ALARM
+        communicationRequest -> VibrationAttributes.USAGE_COMMUNICATION_REQUEST
+        hardwareFeedback -> VibrationAttributes.USAGE_HARDWARE_FEEDBACK
         media -> VibrationAttributes.USAGE_MEDIA
         notification -> VibrationAttributes.USAGE_NOTIFICATION
+        physicalEmulation -> VibrationAttributes.USAGE_PHYSICAL_EMULATION
         ringtone -> VibrationAttributes.USAGE_RINGTONE
-        sonification -> VibrationAttributes.USAGE_COMMUNICATION_REQUEST
         touch -> VibrationAttributes.USAGE_TOUCH
         unknown -> VibrationAttributes.USAGE_UNKNOWN
       }
