@@ -32,17 +32,67 @@ await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
 
-// On Android 13+ you can control how the system routes the vibration.
+// On Android 13+ , you can hint how the system should treat this vibration
+// (alarm, communicationRequest, hardwareFeedback, media, notification, physicalEmulation, ringtone, touch, unknown)
 await Haptics.vibrate(
   HapticsType.success,
   usage: HapticsUsage.media,
 );
 ```
 
-Passing a `HapticsUsage` helps prevent Android OEM skins from muting your
-vibrations when only “touch feedback” is disabled. For example, use
-`HapticsUsage.media` for breathing or meditation timers, and fall back to the
-default (`HapticsUsage.unknown`) for taps.
+The optional `usage` parameter is a hint for the system.
+It can influence how the vibration is routed and which volume / haptics
+settings control it (for example, notification vs touch feedback).
+
+Use a concrete value whenever the vibration clearly matches one of the
+defined categories (for example `HapticsUsage.notification` for reminders
+or status updates), and keep the default `HapticsUsage.unknown` for simple
+taps and other lightweight UI feedback.
+
+## Testing
+
+When testing widgets that use haptic feedback, keep in mind that `defaultTargetPlatform` returns `TargetPlatform.android` in test environments regardless of the host platform. This means `Haptics.canVibrate()` may return `true` in tests even when running on non-mobile platforms.
+
+To test widgets that use haptic feedback, you can:
+
+1. **Use `debugDefaultTargetPlatformOverride`** to test platform-specific behavior:
+
+```dart
+import 'package:flutter/foundation.dart';
+
+void main() {
+  testWidgets('test on iOS', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    
+    // Your test code here
+    
+    debugDefaultTargetPlatformOverride = null; // Clean up
+  });
+}
+```
+
+2. **Mock the platform interface** in your tests:
+
+```dart
+import 'package:haptic_feedback/src/haptic_feedback_platform_interface.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class MockHapticFeedbackPlatform extends Mock
+    with MockPlatformInterfaceMixin
+    implements HapticFeedbackPlatform {}
+
+void main() {
+  testWidgets('my widget test', (tester) async {
+    final mockPlatform = MockHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = mockPlatform;
+    
+    when(() => mockPlatform.canVibrate()).thenAnswer((_) async => true);
+    when(() => mockPlatform.vibrate(any())).thenAnswer((_) async {});
+    
+    // Your test code here
+  });
+}
+```
 
 ## Automatic Permissions Inclusion
 
