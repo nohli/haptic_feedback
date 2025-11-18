@@ -9,30 +9,34 @@
 /// (`USAGE_UNKNOWN`), which may be muted on some OEM builds when touch haptics
 /// are disabled.
 enum HapticsUsage {
-  /// Vibrations that should follow the alarm volume/vibration toggle.
+  /// Alarm vibrations.
   alarm,
 
-  /// Vibrations for accessibility events, such as with a screen reader.
+  /// Vibrations which mean a request to enter/end a communication with the
+  /// user, such as a voice prompt.
   communicationRequest,
 
-  /// Vibrations for hardware feedback, such as virtual keyboard key presses.
+  /// Vibrations which provide a feedback for hardware component interaction,
+  /// such as a fingerprint sensor.
   hardwareFeedback,
 
-  /// Vibrations meant to accompany media playback (for example, breathing cues).
+  /// Media vibrations, such as music, movie, soundtrack, animations, games, or
+  /// any interactive media that isn't for touch feedback specifically.
   media,
 
-  /// Vibrations that inform the user about notifications.
+  /// Notification vibrations.
   notification,
 
-  /// Vibrations for emulating physical objects or interactions.
+  /// Vibrations which emulate physical hardware reactions, such as edge
+  /// squeeze.
   physicalEmulation,
 
-  /// Vibrations meant to mimic a ringtone.
+  /// Ringtone vibrations.
   ringtone,
 
-  /// Vibrations tied to touch interactions (taps, drags, etc.).
+  /// Touch vibrations.
   touch,
 
-  /// Use Android's default vibration routing.
+  /// Usage is unknown.
   unknown,
 }
