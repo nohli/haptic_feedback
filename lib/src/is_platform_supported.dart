@@ -1,12 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io' show Platform;
 
-const _supportedPlatforms = {
-  TargetPlatform.iOS,
-  TargetPlatform.android,
-};
+import 'package:flutter/foundation.dart';
 
 /// Returns `true` if the app is running on a supported platform.
 /// Supported platforms are iOS and Android.
 bool get isPlatformSupported {
-  return !kIsWeb && _supportedPlatforms.contains(defaultTargetPlatform);
+  return !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 }
