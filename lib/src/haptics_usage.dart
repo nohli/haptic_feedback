@@ -12,19 +12,24 @@ enum HapticsUsage {
   /// Usage value to use for alarm vibrations.
   alarm,
 
-  /// Usage value to use for vibrations related to incoming calls.
+  /// Usage value to use for vibrations which mean a request to enter/end a
+  /// communication with the user, such as a voice prompt.
   communicationRequest,
 
-  /// Usage value to use for vibrations which emulate hardware feedback.
+  /// Usage value to use for vibrations which provide a feedback for hardware
+  /// component interaction, such as a fingerprint sensor.
   hardwareFeedback,
 
-  /// Usage value to use for media vibrations, such as music or movie vibrations.
+  /// Usage value to use for media vibrations, such as music, movie,
+  /// soundtrack, animations, games, or any interactive media that isn't for
+  /// touch feedback specifically.
   media,
 
   /// Usage value to use for notification vibrations.
   notification,
 
-  /// Usage value to use for vibrations which emulate physical effects.
+  /// Usage value to use for vibrations which emulate physical hardware
+  /// reactions, such as edge squeeze.
   physicalEmulation,
 
   /// Usage value to use for ringtone vibrations.
@@ -33,6 +38,6 @@ enum HapticsUsage {
   /// Usage value to use for touch vibrations.
   touch,
 
-  /// Usage value to use when the vibration usage is unknown.
+  /// Usage value to use when usage is unknown.
   unknown,
 }
