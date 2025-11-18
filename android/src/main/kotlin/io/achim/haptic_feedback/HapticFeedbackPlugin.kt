@@ -104,7 +104,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
         media -> VibrationAttributes.USAGE_MEDIA
         notification -> VibrationAttributes.USAGE_NOTIFICATION
         ringtone -> VibrationAttributes.USAGE_RINGTONE
-        sonification -> VibrationAttributes.USAGE_ASSISTANCE_SONIFICATION
+        sonification -> VibrationAttributes.USAGE_COMMUNICATION_REQUEST
         touch -> VibrationAttributes.USAGE_TOUCH
         unknown -> VibrationAttributes.USAGE_UNKNOWN
       }
