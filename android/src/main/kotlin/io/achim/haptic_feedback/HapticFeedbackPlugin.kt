@@ -43,12 +43,17 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun vibratePattern(pattern: Pattern, result: Result) {
+    val shouldNotRepeat = -1
+
     try {
       if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
-        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, -1)
+        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, shouldNotRepeat)
         vibrator.vibrate(effect)
       } else {
-        vibrator.vibrate(pattern.lengths, -1)
+        // https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)
+        val zeroDelay = longArrayOf(0)
+        val lengthsWithZeroDelay = zeroDelay + pattern.lengths
+        vibrator.vibrate(lengthsWithZeroDelay, shouldNotRepeat)
       }
       result.success(null)
     } catch (e: Exception) {
@@ -65,6 +70,6 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     heavy(longArrayOf(75), intArrayOf(252)),
     rigid(longArrayOf(48), intArrayOf(227)),
     soft(longArrayOf(110), intArrayOf(178)),
-    selection(longArrayOf(57), intArrayOf(150))
+    selection(longArrayOf(57), intArrayOf(150));
   }
 }
