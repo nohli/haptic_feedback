@@ -70,6 +70,6 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     heavy(longArrayOf(75), intArrayOf(252)),
     rigid(longArrayOf(48), intArrayOf(227)),
     soft(longArrayOf(110), intArrayOf(178)),
-    selection(longArrayOf(57), intArrayOf(150));
+    selection(longArrayOf(57), intArrayOf(150))
   }
 }
