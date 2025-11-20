@@ -51,9 +51,9 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
         vibrator.vibrate(effect)
       } else {
         // https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)
-        val zeroDelay = longArrayOf(0)
-        val lengthsWithZeroDelay = zeroDelay + pattern.lengths
-        vibrator.vibrate(lengthsWithZeroDelay, shouldNotRepeat)
+        val leadingDelay = longArrayOf(0)
+        val legacyPattern = leadingDelay + pattern.lengths
+        vibrator.vibrate(legacyPattern, shouldNotRepeat)
       }
       result.success(null)
     } catch (e: Exception) {
