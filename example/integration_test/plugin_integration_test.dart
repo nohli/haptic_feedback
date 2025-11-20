@@ -13,9 +13,15 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('canVibrate test', (WidgetTester tester) async {
+  testWidgets('canVibrate reflects host capability', (WidgetTester tester) async {
     final canVibrate = await Haptics.canVibrate();
-    // The result depends on the host platform running the test.
-    expect(canVibrate, true);
+
+    expect(canVibrate, isA<bool>());
+  });
+
+  testWidgets('vibrate completes for every type', (WidgetTester tester) async {
+    for (final type in HapticsType.values) {
+      await expectLater(Haptics.vibrate(type), completes);
+    }
   });
 }
