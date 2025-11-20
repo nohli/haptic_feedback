@@ -13,7 +13,8 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('canVibrate reflects host capability', (WidgetTester tester) async {
+  testWidgets('canVibrate reflects host capability',
+      (WidgetTester tester) async {
     final canVibrate = await Haptics.canVibrate();
 
     expect(canVibrate, isA<bool>());
