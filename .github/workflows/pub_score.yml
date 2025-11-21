@@ -27,6 +27,7 @@ jobs:
           MISSING_POINTS=$(( $TOTAL_MAX - $TOTAL ))
           if (( MISSING_POINTS > 0 ))
           then
-            echo '${{ steps.workflow.outputs.json_output }}'
+            echo Score can be improved!
+            echo Run pana to find out how.
             exit 1
           fi
