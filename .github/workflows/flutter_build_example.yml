@@ -15,17 +15,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
       - name: Disable analytics
         run: flutter config --no-analytics
+
       - name: Flutter pub get
         run: flutter pub get
+
       - name: Flutter build appbundle
         run: |
           cd example
@@ -38,17 +46,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
       - name: Disable analytics
         run: flutter config --no-analytics
+
       - name: Flutter pub get
         run: flutter pub get
+
       - name: Pod install
         run: |
           cd example
           cd ios
           pod install
+
       - name: Flutter build iOS
         run: |
           cd example

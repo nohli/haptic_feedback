@@ -2,6 +2,10 @@ name: haptic_feedback_example
 
 description: Demonstrates how to use the haptic_feedback plugin.
 
+version: 1.0.0+1
+
+publish_to: none
+
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
