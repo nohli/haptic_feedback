@@ -1,3 +1,7 @@
+## 0.6.2
+
+* Fix legacy Android vibration on SDK 24/25 (Android 7.0/7.1): without a leading 0ms delay the first pulse became a pause and the pattern lost a buzz; prepending 0 keeps the intended multi-pulse sequence.
+
 ## 0.6.1
 
 * Add optional `usage` parameter to control vibration category on Android 13+ devices. This allows you to specify how the haptic feedback should be categorized (e.g., for notifications, alarms, touch feedback, etc.), which helps the system handle vibrations more appropriately.

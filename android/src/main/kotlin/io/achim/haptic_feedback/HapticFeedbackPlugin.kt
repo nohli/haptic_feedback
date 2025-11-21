@@ -7,7 +7,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
-import androidx.annotation.VisibleForTesting
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -26,11 +25,6 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
-  }
-
-  @VisibleForTesting
-  internal fun setVibratorForTesting(testVibrator: Vibrator) {
-    vibrator = testVibrator
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -52,16 +46,22 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun vibratePattern(pattern: Pattern, usage: Usage?, result: Result) {
-    try {
+      val shouldNotRepeat = -1
+
+
+      try {
       if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
-        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, -1)
+        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, shouldNotRepeat)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && usage != null) {
           vibrator.vibrate(effect, usage.toVibrationAttributes())
         } else {
           vibrator.vibrate(effect)
         }
       } else {
-        vibrator.vibrate(pattern.lengths, -1)
+        // https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)
+        val leadingDelay = longArrayOf(0)
+        val legacyPattern = leadingDelay + pattern.lengths
+        vibrator.vibrate(legacyPattern, shouldNotRepeat)
       }
       result.success(null)
     } catch (e: Exception) {

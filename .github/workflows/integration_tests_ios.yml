@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   integration_test_ios:
-    name: Integration test on iOS ${{ matrix.os-version }} - ${{ matrix.model }}
+    name: iOS ${{ matrix.os-version }} - ${{ matrix.model }}
     runs-on: macos-latest
     timeout-minutes: 20
     strategy:
