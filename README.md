@@ -32,7 +32,7 @@ await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
 
-// On Android 13+ , you can hint how the system should treat this vibration
+// On Android 13+, you can hint how the system should treat this vibration
 // (alarm, communicationRequest, hardwareFeedback, media, notification, physicalEmulation, ringtone, touch, unknown)
 await Haptics.vibrate(
   HapticsType.success,
