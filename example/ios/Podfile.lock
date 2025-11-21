@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - haptic_feedback (0.4.2):
+  - haptic_feedback (0.5.1):
     - Flutter
   - integration_test (0.0.1):
     - Flutter
@@ -19,10 +19,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
 
 SPEC CHECKSUMS:
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  haptic_feedback: ccbfbef39de4757f4bdf0ef03e7dfb3ffb4363d3
-  integration_test: ce0a3ffa1de96d1a89ca0ac26fca7ea18a749ef4
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  haptic_feedback: fd1d8509833f58f164fc12122c0357fa9b2750e0
+  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
 
-PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
+PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
