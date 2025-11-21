@@ -1,3 +1,7 @@
+## 0.6.1
+
+* Add optional `usage` parameter to control vibration category on Android 13+ devices. This allows you to specify how the haptic feedback should be categorized (e.g., for notifications, alarms, touch feedback, etc.), which helps the system handle vibrations more appropriately.
+
 ## 0.6.0
 
 * Breaking: Flutter SDK constraint is now >=3.10.0 (Dart 3-only). Apps on older Flutter versions can’t upgrade.
