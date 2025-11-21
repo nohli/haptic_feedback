@@ -31,7 +31,23 @@ await Haptics.vibrate(HapticsType.rigid);
 await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
+
+// On Android 13+, you can hint how the system should treat this vibration
+// (alarm, communicationRequest, hardwareFeedback, media, notification, physicalEmulation, ringtone, touch, unknown)
+await Haptics.vibrate(
+  HapticsType.success,
+  usage: HapticsUsage.media,
+);
 ```
+
+The optional `usage` parameter is a hint for the system.
+It can influence how the vibration is routed and which volume / haptics
+settings control it (for example, notification vs touch feedback).
+
+Use a concrete value whenever the vibration clearly matches one of the
+defined categories (for example `HapticsUsage.notification` for reminders
+or status updates), and keep the default `HapticsUsage.unknown` for simple
+taps and other lightweight UI feedback.
 
 ## Testing
 

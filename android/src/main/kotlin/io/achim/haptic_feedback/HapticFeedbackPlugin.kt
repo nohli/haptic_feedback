@@ -2,9 +2,12 @@ package io.achim.haptic_feedback
 
 import android.content.Context
 import android.os.Build
+import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -25,13 +28,19 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
+  @VisibleForTesting
+  internal fun setVibratorForTesting(testVibrator: Vibrator) {
+    vibrator = testVibrator
+  }
+
   override fun onMethodCall(call: MethodCall, result: Result) {
     if (call.method == "canVibrate") {
       canVibrate(result)
     } else {
       val pattern = Pattern.values().find { it.name == call.method }
       if (pattern != null) {
-        vibratePattern(pattern, result)
+        val usage = Usage.fromArguments(call.arguments)
+        vibratePattern(pattern, usage, result)
       } else {
         result.notImplemented()
       }
@@ -42,11 +51,15 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     result.success(vibrator.hasVibrator())
   }
 
-  private fun vibratePattern(pattern: Pattern, result: Result) {
+  private fun vibratePattern(pattern: Pattern, usage: Usage?, result: Result) {
     try {
       if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
         val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, -1)
-        vibrator.vibrate(effect)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && usage != null) {
+          vibrator.vibrate(effect, usage.toVibrationAttributes())
+        } else {
+          vibrator.vibrate(effect)
+        }
       } else {
         vibrator.vibrate(pattern.lengths, -1)
       }
@@ -66,5 +79,40 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     rigid(longArrayOf(48), intArrayOf(227)),
     soft(longArrayOf(110), intArrayOf(178)),
     selection(longArrayOf(57), intArrayOf(150))
+  }
+
+  internal enum class Usage {
+    alarm,
+    communicationRequest,
+    hardwareFeedback,
+    media,
+    notification,
+    physicalEmulation,
+    ringtone,
+    touch,
+    unknown;
+
+    companion object {
+      fun fromArguments(arguments: Any?): Usage? {
+        val usageValue = (arguments as? Map<*, *>)?.get("usage") as? String ?: return null
+        return entries.firstOrNull { it.name.equals(usageValue, ignoreCase = true) }
+      }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun toVibrationAttributes(): VibrationAttributes {
+      val usageConstant = when (this) {
+        alarm -> VibrationAttributes.USAGE_ALARM
+        communicationRequest -> VibrationAttributes.USAGE_COMMUNICATION_REQUEST
+        hardwareFeedback -> VibrationAttributes.USAGE_HARDWARE_FEEDBACK
+        media -> VibrationAttributes.USAGE_MEDIA
+        notification -> VibrationAttributes.USAGE_NOTIFICATION
+        physicalEmulation -> VibrationAttributes.USAGE_PHYSICAL_EMULATION
+        ringtone -> VibrationAttributes.USAGE_RINGTONE
+        touch -> VibrationAttributes.USAGE_TOUCH
+        unknown -> VibrationAttributes.USAGE_UNKNOWN
+      }
+      return VibrationAttributes.Builder().setUsage(usageConstant).build()
+    }
   }
 }
