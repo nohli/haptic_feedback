@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback_example/haptics_type_description.dart';
+import 'package:open_settings_plus/core/open_settings_plus.dart';
 
 void main() => runApp(const MyApp());
 
@@ -32,10 +34,37 @@ class _HapticsList extends StatefulWidget {
 }
 
 class _HapticsListState extends State<_HapticsList> {
+  HapticsUsage? _selectedUsage;
+
   @override
   Widget build(BuildContext context) {
+    final isAndroid =
+        !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
     return ListView(
       children: [
+        if (isAndroid)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Text('Type:'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownMenu(
+                    onSelected: (hapticsUsage) => _selectedUsage = hapticsUsage,
+                    dropdownMenuEntries: HapticsUsage.values.map((type) {
+                      return DropdownMenuEntry(value: type, label: type.name);
+                    }).toList(),
+                  ),
+                ),
+                TextButton(
+                  onPressed: OpenSettingsPlusAndroid().sound,
+                  child: Text('Open Settings'),
+                ),
+              ],
+            ),
+          ),
         for (final type in HapticsType.values)
           ListTile(
             title: Text(type.name),
@@ -59,7 +88,7 @@ class _HapticsListState extends State<_HapticsList> {
 
               // Vibrate only if device is capable of haptic feedback
               if (!can) return;
-              await Haptics.vibrate(type);
+              await Haptics.vibrate(type, usage: _selectedUsage);
             },
           ),
       ],
