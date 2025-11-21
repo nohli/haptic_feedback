@@ -7,7 +7,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
-import androidx.annotation.VisibleForTesting
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -26,11 +25,6 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
-  }
-
-  @VisibleForTesting
-  internal fun setVibratorForTesting(testVibrator: Vibrator) {
-    vibrator = testVibrator
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
