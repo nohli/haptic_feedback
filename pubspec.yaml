@@ -1,6 +1,6 @@
 name: haptic_feedback
 
-description: A Flutter plugin for haptic feedback. While it utilizes standard iOS haptics, it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
+#description: A Flutter plugin for haptic feedback. While it utilizes standard iOS haptics, it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 repository: https://github.com/nohli/haptic_feedback
 issue_tracker: https://github.com/nohli/haptic_feedback/issues
 
