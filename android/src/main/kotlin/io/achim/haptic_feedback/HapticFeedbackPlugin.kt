@@ -58,7 +58,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   @RequiresApi(Build.VERSION_CODES.R)
   private fun supportsPrimitives(pattern: Pattern): Boolean {
     val requiredPrimitives = pattern.getPrimitives()
-    return requiredPrimitives.all { vibrator.areAllPrimitivesSupported(it) }
+    return vibrator.areAllPrimitivesSupported(*requiredPrimitives)
   }
 
   private fun vibratePattern(pattern: Pattern, usage: Usage?, result: Result) {
