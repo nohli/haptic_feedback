@@ -79,7 +79,8 @@ void main() {
     expect(recordingPlatform.lastUseAndroidHapticConstants, false);
   });
 
-  test('vibrate forwards useAndroidHapticConstants to the platform implementation',
+  test(
+      'vibrate forwards useAndroidHapticConstants to the platform implementation',
       () async {
     final recordingPlatform = RecordingHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = recordingPlatform;
