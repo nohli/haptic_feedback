@@ -132,8 +132,13 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f)
       }
       Pattern.soft -> {
-        // Gentle spin - soft/cushioned feel
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.4f)
+        // Gentle spin (API 31+) or low intensity tick (API 30) - soft/cushioned feel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.4f)
+        } else {
+          // Use PRIMITIVE_TICK with lower intensity as fallback for API 30
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.2f)
+        }
       }
       Pattern.selection -> {
         // Light tick - UI selection feedback
@@ -174,7 +179,12 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
         medium -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         heavy -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_THUD)
         rigid -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
-        soft -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_SPIN)
+        soft -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          intArrayOf(VibrationEffect.Composition.PRIMITIVE_SPIN)
+        } else {
+          // Use PRIMITIVE_TICK as fallback for API 30
+          intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
+        }
         selection -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
       }
     }
