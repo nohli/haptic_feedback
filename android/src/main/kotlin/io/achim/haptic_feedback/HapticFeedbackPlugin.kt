@@ -1,21 +1,27 @@
 package io.achim.haptic_feedback
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.view.HapticFeedbackConstants
+import android.view.View
 import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.annotation.RequiresApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
+class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var channel: MethodChannel
   private lateinit var vibrator: Vibrator
+  private var activity: Activity? = null
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "haptic_feedback")
@@ -33,14 +39,33 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
+  // ActivityAware implementation
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    activity = binding.activity
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    activity = null
+  }
+
+  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    activity = binding.activity
+  }
+
+  override fun onDetachedFromActivity() {
+    activity = null
+  }
+
   override fun onMethodCall(call: MethodCall, result: Result) {
     if (call.method == "canVibrate") {
       canVibrate(result)
     } else {
       val pattern = Pattern.values().find { it.name == call.method }
       if (pattern != null) {
-        val usage = Usage.fromArguments(call.arguments)
-        vibratePattern(pattern, usage, result)
+        val args = call.arguments as? Map<*, *>
+        val usage = Usage.fromArguments(args)
+        val useNativeHaptics = (args?.get("useNativeHaptics") as? Boolean) ?: true
+        vibratePattern(pattern, usage, useNativeHaptics, result)
       } else {
         result.notImplemented()
       }
@@ -61,15 +86,48 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     return vibrator.areAllPrimitivesSupported(*requiredPrimitives)
   }
 
-  private fun vibratePattern(pattern: Pattern, usage: Usage?, result: Result) {
+  /**
+   * Gets the HapticFeedbackConstants value for a pattern, if available.
+   * Returns null if no mapping exists or API level is insufficient.
+   */
+  private fun getHapticFeedbackConstant(pattern: Pattern): Int? {
+    return when (pattern) {
+      Pattern.success -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.CONFIRM else null
+      Pattern.error -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.REJECT else null
+      Pattern.light -> HapticFeedbackConstants.VIRTUAL_KEY
+      Pattern.medium -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) HapticFeedbackConstants.KEYBOARD_TAP else null
+      Pattern.heavy -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) HapticFeedbackConstants.CONTEXT_CLICK else null
+      Pattern.selection -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else null
+      // warning, rigid, soft don't have direct mappings
+      else -> null
+    }
+  }
+
+  /**
+   * Tries to perform haptic feedback using the system's native HapticFeedbackConstants.
+   * Returns true if successful, false if fallback is needed.
+   */
+  private fun tryNativeHapticFeedback(pattern: Pattern): Boolean {
+    val view = activity?.window?.decorView ?: return false
+    val constant = getHapticFeedbackConstant(pattern) ?: return false
+    return view.performHapticFeedback(constant, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING)
+  }
+
+  private fun vibratePattern(pattern: Pattern, usage: Usage?, useNativeHaptics: Boolean, result: Result) {
     val shouldNotRepeat = -1
 
     try {
-      // Try to use haptic primitives on API 30+ for better haptic feedback
+      // Strategy 1: Use native HapticFeedbackConstants when available and requested
+      if (useNativeHaptics && tryNativeHapticFeedback(pattern)) {
+        result.success(null)
+        return
+      }
+
+      // Strategy 2: Use haptic primitives on API 30+ for better haptic feedback
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && supportsPrimitives(pattern)) {
         vibrateWithPrimitives(pattern, usage)
       } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
-        // Fall back to waveform with amplitude control
+        // Strategy 3: Fall back to waveform with amplitude control
         val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, shouldNotRepeat)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && usage != null) {
           vibrator.vibrate(effect, usage.toVibrationAttributes())
@@ -77,7 +135,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
           vibrator.vibrate(effect)
         }
       } else {
-        // Legacy fallback for older devices
+        // Strategy 4: Legacy fallback for older devices
         // https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)
         val leadingDelay = longArrayOf(0)
         val legacyPattern = leadingDelay + pattern.lengths
@@ -230,8 +288,8 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     unknown;
 
     companion object {
-      fun fromArguments(arguments: Any?): Usage? {
-        val usageValue = (arguments as? Map<*, *>)?.get("usage") as? String ?: return null
+      fun fromArguments(arguments: Map<*, *>?): Usage? {
+        val usageValue = arguments?.get("usage") as? String ?: return null
         return entries.firstOrNull { it.name.equals(usageValue, ignoreCase = true) }
       }
     }
