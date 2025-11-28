@@ -100,7 +100,7 @@ When native constants aren't available or `useAndroidHapticConstants: false` (de
 |-----------|----------------------|------------------------------------------|
 | success   | CLICK × 2            | Two clicks with increasing intensity     |
 | warning   | CLICK × 2            | Two clicks with decreasing intensity     |
-| error     | CLICK + THUD + CLICK | Four-pulse pattern with accented pulse   |
+| error     | CLICK × 4            | Four clicks with an accented third pulse |
 | light     | TICK                 | Subtle, light feedback                   |
 | medium    | CLICK                | Moderate feedback                        |
 | heavy     | THUD                 | Strong, deep feedback                    |

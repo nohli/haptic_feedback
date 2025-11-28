@@ -177,7 +177,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       }
       Pattern.error -> {
         // Four quick pulses - error/failure indication with accented third pulse
-        // Using CLICK for sharp feedback, with THUD for the strongest pulse to emphasize error
+        // Using CLICK for sharp feedback; third pulse is strongest to emphasize error
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f)
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f, 45)
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f, 43)
