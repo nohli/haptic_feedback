@@ -50,7 +50,7 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 |           |   2   | CLICK     |      0.7 |                        91 |
 | error     |   1   | CLICK     |      0.8 |                         0 |
 |           |   2   | CLICK     |      0.8 |                        45 |
-|           |   3   | THUD      |      1.0 |                        43 |
+|           |   3   | CLICK     |      1.0 |                        43 |
 |           |   4   | CLICK     |      0.6 |                        41 |
 | light     |   1   | TICK      |      0.6 |                         0 |
 | medium    |   1   | CLICK     |      0.8 |                         0 |
