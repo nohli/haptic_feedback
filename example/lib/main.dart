@@ -105,8 +105,11 @@ class _HapticsListState extends State<_HapticsList> {
 
               // Vibrate only if device is capable of haptic feedback
               if (!can) return;
-              await Haptics.vibrate(type,
-                  usage: _selectedUsage, useNativeHaptics: _useNativeHaptics);
+              await Haptics.vibrate(
+                type,
+                usage: _selectedUsage,
+                useNativeHaptics: _useNativeHaptics,
+              );
             },
           ),
       ],
