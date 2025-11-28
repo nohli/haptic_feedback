@@ -30,8 +30,8 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 | success   | [`HapticFeedbackConstants.CONFIRM`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONFIRM)             | ≥ 30      |
 | warning   |                                                                                                                                       |           |
 | error     | [`HapticFeedbackConstants.REJECT`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#REJECT)               | ≥ 30      |
-| light     | [`HapticFeedbackConstants.VIRTUAL_KEY`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#VIRTUAL_KEY)     | ≥ 1       |
-| medium    | [`HapticFeedbackConstants.KEYBOARD_TAP`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_TAP)   | ≥ 27      |
+| light     | [`HapticFeedbackConstants.VIRTUAL_KEY`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#VIRTUAL_KEY)     | ≥ 5       |
+| medium    | [`HapticFeedbackConstants.KEYBOARD_TAP`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_TAP)   | ≥ 8       |
 | heavy     | [`HapticFeedbackConstants.CONTEXT_CLICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONTEXT_CLICK) | ≥ 23      |
 | rigid     |                                                                                                                                       |           |
 | soft      |                                                                                                                                       |           |
@@ -56,10 +56,10 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 | medium    |   1   | CLICK     |      0.8 |                         0 |
 | heavy     |   1   | THUD      |      1.0 |                         0 |
 | rigid     |   1   | CLICK     |      0.9 |                         0 |
-| soft      |   1   | SPIN*     |      0.4 |                         0 |
+| soft      |   1   | SPIN*     |      0.7 |                         0 |
 | selection |   1   | TICK      |      0.6 |                         0 |
 
-\* On API < 31, `SPIN` is replaced by `TICK` at 0.5 strength. SPIN uses lower strength (0.4) than iOS intensity (0.7) because SPIN has inherent oscillation that feels more energetic.
+\* On API < 31, `SPIN` is replaced by `TICK` at the same strength.
 
 ### Derived Android waveform patterns
 

@@ -84,8 +84,8 @@ When `useNativeHaptics: true` (default), the plugin uses Android's system-level 
 |-----------|--------------------------|-----------|
 | success   | `CONFIRM`                | ≥ 30      |
 | error     | `REJECT`                 | ≥ 30      |
-| light     | `VIRTUAL_KEY`            | ≥ 1       |
-| medium    | `KEYBOARD_TAP`           | ≥ 27      |
+| light     | `VIRTUAL_KEY`            | ≥ 5       |
+| medium    | `KEYBOARD_TAP`           | ≥ 8       |
 | heavy     | `CONTEXT_CLICK`          | ≥ 23      |
 | selection | `CLOCK_TICK`             | ≥ 21      |
 

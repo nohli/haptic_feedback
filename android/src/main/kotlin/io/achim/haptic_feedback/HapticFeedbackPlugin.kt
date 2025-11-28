@@ -94,8 +94,8 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     return when (pattern) {
       Pattern.success -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.CONFIRM else null
       Pattern.error -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.REJECT else null
-      Pattern.light -> HapticFeedbackConstants.VIRTUAL_KEY  // Available since API 1
-      Pattern.medium -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) HapticFeedbackConstants.KEYBOARD_TAP else null  // API 27
+      Pattern.light -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) HapticFeedbackConstants.VIRTUAL_KEY else null  // API 5
+      Pattern.medium -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) HapticFeedbackConstants.KEYBOARD_TAP else null  // API 8 (deprecated in favor of KEYBOARD_PRESS in API 27, but available since 8)
       Pattern.heavy -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) HapticFeedbackConstants.CONTEXT_CLICK else null
       Pattern.selection -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else null
       // warning, rigid, soft don't have direct mappings
@@ -205,13 +205,11 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       }
       Pattern.soft -> {
         // Gentle, longer single pulse - soft/cushioned feel
-        // Using SPIN (API 31+) at low intensity for gentle, rolling feedback
-        // Lower strength (0.4f) than iOS intensity (0.7) because SPIN has inherent oscillation
+        // Using SPIN (API 31+) for its longer, softer character; fallback to TICK at same intensity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.4f)
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.7f)
         } else {
-          // Fallback to TICK at moderate intensity for subtle, cushioned feel
-          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.5f)
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.7f)
         }
       }
       Pattern.selection -> {
