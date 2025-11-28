@@ -180,7 +180,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         // Using CLICK for sharp feedback, with THUD for the strongest pulse to emphasize error
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f)
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f, 45)
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_THUD, 1.0f, 43)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f, 43)
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.6f, 41)
       }
       Pattern.light -> {
@@ -261,7 +261,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       return when (this) {
         success -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         warning -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
-        error -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK, VibrationEffect.Composition.PRIMITIVE_THUD)
+        error -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         light -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
         medium -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         heavy -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_THUD)
