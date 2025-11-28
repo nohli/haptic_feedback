@@ -35,7 +35,7 @@ class _HapticsList extends StatefulWidget {
 
 class _HapticsListState extends State<_HapticsList> {
   HapticsUsage? _selectedUsage;
-  bool _useNativeHaptics = true;
+  bool _useAndroidHapticConstants = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,41 +45,36 @@ class _HapticsListState extends State<_HapticsList> {
     return ListView(
       children: [
         if (isAndroid) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Usage type'),
-                const SizedBox(width: 12),
-                DropdownMenu(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('Usage type'),
+              const SizedBox(width: 8),
+              Flexible(
+                child: DropdownMenu(
                   onSelected: (hapticsUsage) => _selectedUsage = hapticsUsage,
                   dropdownMenuEntries: HapticsUsage.values.map((type) {
                     return DropdownMenuEntry(value: type, label: type.name);
                   }).toList(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: OpenSettingsPlusAndroid().sound,
-                  child: Text('Open system settings'),
-                ),
-                const SizedBox(width: 24),
-                const Text('Use native enums'),
-                const SizedBox(width: 8),
-                Switch.adaptive(
-                  value: _useNativeHaptics,
-                  onChanged: (value) =>
-                      setState(() => _useNativeHaptics = value),
-                )
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: OpenSettingsPlusAndroid().sound,
+                child: Text('Open settings'),
+              ),
+              const SizedBox(width: 8),
+              const Text('Use haptic constants'),
+              Switch.adaptive(
+                value: _useAndroidHapticConstants,
+                onChanged: (value) =>
+                    setState(() => _useAndroidHapticConstants = value),
+              )
+            ],
           ),
         ],
         for (final type in HapticsType.values)
@@ -108,7 +103,7 @@ class _HapticsListState extends State<_HapticsList> {
               await Haptics.vibrate(
                 type,
                 usage: _selectedUsage,
-                useNativeHaptics: _useNativeHaptics,
+                useAndroidHapticConstants: _useAndroidHapticConstants,
               );
             },
           ),
