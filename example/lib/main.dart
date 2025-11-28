@@ -45,7 +45,8 @@ class _HapticsListState extends State<_HapticsList> {
       children: [
         if (isAndroid)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16) +
+                const EdgeInsets.only(bottom: 8),
             child: Row(
               children: [
                 Text('Type:'),
@@ -78,7 +79,7 @@ class _HapticsListState extends State<_HapticsList> {
               final snackbarMessage = can
                   ? '$type'
                   : 'This device is not capable of haptic feedback.';
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(snackbarMessage, textAlign: TextAlign.center),
