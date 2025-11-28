@@ -48,7 +48,7 @@ Amplitudes are in the Android range 0–255, derived from the normalized intensi
 - 0.6 → 153
 - 0.7 → 178
 - 0.8 → 204
-- 0.9 → 230
+- 0.9 → 229
 - 1.0 → 255
 
 Pauses are inferred from the iOS start times (`pause = nextStart - (currentStart + currentDuration)`).
@@ -58,7 +58,7 @@ Pauses are inferred from the iOS start times (`pause = nextStart - (currentStart
 | success   |    1    | vib    |            55 |               178 |                 0.70 |
 |           |    2    | pause  |            55 |                 0 |                 0.00 |
 |           |    3    | vib    |            53 |               255 |                 1.00 |
-| warning   |    1    | vib    |            55 |               230 |                 0.90 |
+| warning   |    1    | vib    |            55 |               229 |                 0.90 |
 |           |    2    | pause  |            91 |                 0 |                 0.00 |
 |           |    3    | vib    |            55 |               178 |                 0.70 |
 | error     |    1    | vib    |            51 |               204 |                 0.80 |
@@ -71,6 +71,6 @@ Pauses are inferred from the iOS start times (`pause = nextStart - (currentStart
 | light     |    1    | vib    |            55 |               153 |                 0.60 |
 | medium    |    1    | vib    |            51 |               204 |                 0.80 |
 | heavy     |    1    | vib    |            55 |               255 |                 1.00 |
-| rigid     |    1    | vib    |            34 |               230 |                 0.90 |
+| rigid     |    1    | vib    |            34 |               229 |                 0.90 |
 | soft      |    1    | vib    |            82 |               178 |                 0.70 |
 | selection |    1    | vib    |            41 |               153 |                 0.60 |
