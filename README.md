@@ -49,6 +49,37 @@ defined categories (for example `HapticsUsage.notification` for reminders
 or status updates), and keep the default `HapticsUsage.unknown` for simple
 taps and other lightweight UI feedback.
 
+## Platform Implementation
+
+### iOS
+
+Uses Apple's native haptic feedback APIs:
+- `UINotificationFeedbackGenerator` for success, warning, and error
+- `UIImpactFeedbackGenerator` for light, medium, heavy, rigid, and soft
+- `UISelectionFeedbackGenerator` for selection
+
+### Android
+
+On Android 11+ (API 30+), the plugin uses native haptic primitives (`VibrationEffect.Composition`) for high-quality, distinct feedback on devices with advanced haptic hardware (e.g., Samsung with HD vibrations):
+
+| Type      | Primitive(s)         | Description                              |
+|-----------|----------------------|------------------------------------------|
+| success   | CLICK × 2            | Two clicks with increasing intensity     |
+| warning   | CLICK × 2            | Two clicks with decreasing intensity     |
+| error     | CLICK + THUD + CLICK | Four-pulse pattern with accented pulse   |
+| light     | TICK                 | Subtle, light feedback                   |
+| medium    | CLICK                | Moderate feedback                        |
+| heavy     | THUD                 | Strong, deep feedback                    |
+| rigid     | CLICK                | Sharp, crisp feedback                    |
+| soft      | SPIN*                | Gentle, longer feedback                  |
+| selection | TICK                 | Subtle selection feedback                |
+
+\* `SPIN` requires API 31+; falls back to `TICK` on API 30.
+
+For devices without primitive support (API 26-29), the plugin uses waveform vibrations with amplitude control. On API < 26, basic timing-only patterns are used.
+
+For detailed timing specifications and implementation rationale, see [HAPTIC_PATTERNS.md](HAPTIC_PATTERNS.md).
+
 ## Testing
 
 When testing widgets that use haptic feedback, keep in mind that `defaultTargetPlatform` returns `TargetPlatform.android` in test environments regardless of the host platform. This means `Haptics.canVibrate()` may return `true` in tests even when running on non-mobile platforms.

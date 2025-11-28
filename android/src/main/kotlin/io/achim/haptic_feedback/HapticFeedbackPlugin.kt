@@ -94,7 +94,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
    * Vibrates using haptic primitives (API 30+) for more distinct and higher-quality haptic feedback.
    * This is especially beneficial for devices with advanced haptic hardware like Samsung with HD vibrations.
    *
-   * Primitive selection rationale (matching Apple's HIG patterns from docs/patterns.md):
+   * Primitive selection rationale (matching Apple's HIG patterns from HAPTIC_PATTERNS.md):
    * - PRIMITIVE_TICK: Short, subtle feedback (~30-50ms feel). Used for light/selection (low intensity single pulses).
    * - PRIMITIVE_CLICK: Sharp, distinct feedback (~50ms feel). Used for success/warning (multi-pulse confirmations) and medium/rigid (moderate-strong single pulses).
    * - PRIMITIVE_THUD: Deep, heavy feedback (~50-80ms feel). Used for heavy (max intensity) and error (accented pulse in multi-pulse pattern).
@@ -170,7 +170,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   /**
-   * Waveform patterns matching Apple's iOS haptic timings from docs/patterns.md.
+   * Waveform patterns matching Apple's iOS haptic timings from HAPTIC_PATTERNS.md.
    * Format: lengths = [duration1, pause1, duration2, pause2, ...], amplitudes = [intensity1, 0, intensity2, 0, ...]
    * Intensity values are normalized (0.0-1.0) * 255.
    */
