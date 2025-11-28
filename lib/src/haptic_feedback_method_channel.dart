@@ -20,10 +20,10 @@ class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
   Future<void> vibrate(
     HapticsType type, {
     HapticsUsage? usage,
-    bool useNativeHaptics = true,
+    bool useAndroidHapticConstants = false,
   }) async {
     final arguments = <String, dynamic>{
-      'useNativeHaptics': useNativeHaptics,
+      'useAndroidHapticConstants': useAndroidHapticConstants,
     };
     if (usage != null) {
       arguments['usage'] = usage.name;

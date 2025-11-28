@@ -40,20 +40,24 @@ void main() {
 
     expect(lastMethodCall?.method, 'success');
     expect(lastMethodCall?.arguments,
-        {'usage': 'media', 'useNativeHaptics': true});
+        {'usage': 'media', 'useAndroidHapticConstants': false});
   });
 
-  test('vibrate includes useNativeHaptics in arguments', () async {
+  test('vibrate includes useAndroidHapticConstants in arguments',
+      () async {
     await platform.vibrate(HapticsType.light);
 
     expect(lastMethodCall?.method, 'light');
-    expect(lastMethodCall?.arguments, {'useNativeHaptics': true});
+    expect(lastMethodCall?.arguments,
+        {'useAndroidHapticConstants': false});
   });
 
-  test('vibrate forwards useNativeHaptics false', () async {
-    await platform.vibrate(HapticsType.heavy, useNativeHaptics: false);
+  test('vibrate forwards useAndroidHapticConstants false', () async {
+    await platform.vibrate(HapticsType.heavy,
+        useAndroidHapticConstants: false);
 
     expect(lastMethodCall?.method, 'heavy');
-    expect(lastMethodCall?.arguments, {'useNativeHaptics': false});
+    expect(lastMethodCall?.arguments,
+        {'useAndroidHapticConstants': false});
   });
 }

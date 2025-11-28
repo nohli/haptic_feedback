@@ -64,8 +64,8 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       if (pattern != null) {
         val args = call.arguments as? Map<*, *>
         val usage = Usage.fromArguments(args)
-        val useNativeHaptics = (args?.get("useNativeHaptics") as? Boolean) ?: true
-        vibratePattern(pattern, usage, useNativeHaptics, result)
+        val useAndroidHapticConstants = (args?.get("useAndroidHapticConstants") as? Boolean) ?: false
+        vibratePattern(pattern, usage, useAndroidHapticConstants, result)
       } else {
         result.notImplemented()
       }
@@ -113,12 +113,12 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     return view.performHapticFeedback(constant, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING)
   }
 
-  private fun vibratePattern(pattern: Pattern, usage: Usage?, useNativeHaptics: Boolean, result: Result) {
+  private fun vibratePattern(pattern: Pattern, usage: Usage?, useAndroidHapticConstants: Boolean, result: Result) {
     val shouldNotRepeat = -1
 
     try {
       // Strategy 1: Use native HapticFeedbackConstants when available and requested
-      if (useNativeHaptics && tryNativeHapticFeedback(pattern)) {
+      if (useAndroidHapticConstants && tryNativeHapticFeedback(pattern)) {
         result.success(null)
         return
       }
@@ -307,6 +307,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         touch -> VibrationAttributes.USAGE_TOUCH
         unknown -> VibrationAttributes.USAGE_UNKNOWN
       }
+
       return VibrationAttributes.Builder().setUsage(usageConstant).build()
     }
   }

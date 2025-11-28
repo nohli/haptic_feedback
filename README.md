@@ -36,12 +36,13 @@ await Haptics.vibrate(HapticsType.selection);
 ### Android-specific options
 
 ```dart
-// Use native Android haptic constants (default: true)
+// Use native Android haptic constants (default: false)
 // When true, uses HapticFeedbackConstants like CONFIRM, REJECT, etc.
-// When false, uses custom vibration primitives
+// When false, uses custom vibration primitives that are more aligned
+// with iOS haptics
 await Haptics.vibrate(
   HapticsType.success,
-  useNativeHaptics: true,  // default
+  useAndroidHapticConstants: false,  // default
 );
 
 // On Android 13+, you can hint how the system should treat this vibration
@@ -52,7 +53,7 @@ await Haptics.vibrate(
 );
 ```
 
-The `useNativeHaptics` parameter (default: `true`) controls whether Android uses the system's native `HapticFeedbackConstants` (like `CONFIRM`, `REJECT`, `VIRTUAL_KEY`) when available. Set to `false` to always use custom vibration primitives instead.
+The `useAndroidHapticConstants` parameter (default: `false`) controls whether Android uses the system's native `HapticFeedbackConstants` (like `CONFIRM`, `REJECT`, `VIRTUAL_KEY`) when available. Set to `false` to use custom vibration primitives instead, which keep the feel closer to the iOS patterns.
 
 The optional `usage` parameter is a hint for the system.
 It can influence how the vibration is routed and which volume / haptics
@@ -76,9 +77,9 @@ Uses Apple's native haptic feedback APIs:
 
 The plugin uses a multi-strategy approach for the best possible haptic experience:
 
-#### Strategy 1: Native HapticFeedbackConstants (default)
+#### Strategy 1: Native HapticFeedbackConstants (when enabled)
 
-When `useNativeHaptics: true` (default), the plugin uses Android's system-level haptic constants via `View.performHapticFeedback()`:
+When `useAndroidHapticConstants: true`, the plugin uses Android's system-level haptic constants via `View.performHapticFeedback()`:
 
 | Type      | Android Constant         | API Level |
 |-----------|--------------------------|-----------|
@@ -93,7 +94,7 @@ Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall
 
 #### Strategy 2: Haptic Primitives (API 30+)
 
-When native constants aren't available or `useNativeHaptics: false`, the plugin uses `VibrationEffect.Composition`:
+When native constants aren't available or `useAndroidHapticConstants: false` (default), the plugin uses `VibrationEffect.Composition`, which is tuned to resemble the iOS patterns:
 
 | Type      | Primitive(s)         | Description                              |
 |-----------|----------------------|------------------------------------------|

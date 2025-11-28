@@ -38,7 +38,7 @@ abstract class HapticFeedbackPlatform extends PlatformInterface {
   Future<void> vibrate(
     HapticsType type, {
     HapticsUsage? usage,
-    bool useNativeHaptics = true,
+    bool useAndroidHapticConstants = false,
   }) {
     throw UnsupportedError(
       'Use the implementation method of MethodChannelHapticFeedback.',

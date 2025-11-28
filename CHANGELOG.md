@@ -4,7 +4,7 @@
   - Native `HapticFeedbackConstants` (CONFIRM, REJECT, etc.) when available for best system integration
   - Haptic primitives (`VibrationEffect.Composition`) for custom patterns
   - Waveform fallback for older devices
-* Add `useNativeHaptics` parameter (default: `true`) to control whether Android uses system-level haptic constants or custom primitives.
+* Add `useAndroidHapticConstants` parameter (default: `false`) to control whether Android uses system-level haptic constants or custom primitives.
 * Use `VibratorManager` on Android 12+ for better vibrator access.
 
 ## 0.6.2
