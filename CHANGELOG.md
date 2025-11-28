@@ -1,3 +1,8 @@
+## 0.6.3
+
+* Improve haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses native haptic primitives (`VibrationEffect.Composition`) for more distinct and higher-quality feedback when supported, with automatic fallback to waveform patterns on older devices.
+* Use `VibratorManager` on Android 12+ for better vibrator access.
+
 ## 0.6.2
 
 * Fix legacy Android vibration on SDK 24/25 (Android 7.0/7.1): without a leading 0ms delay the first pulse became a pause and the pattern lost a buzz; prepending 0 keeps the intended multi-pulse sequence.
