@@ -53,6 +53,16 @@ await Haptics.vibrate(
 );
 ```
 
+If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException` (the plugin already swallows native errors internally):
+
+```dart
+try {
+  await Haptics.vibrate(HapticsType.success);
+} on PlatformException catch (e) {
+  // Handle or log as needed
+}
+```
+
 The `useAndroidHapticConstants` parameter (default: `false`) controls whether Android uses the system's native `HapticFeedbackConstants` (like `CONFIRM`, `REJECT`, `VIRTUAL_KEY`) when available. Set to `false` to use custom vibration primitives instead, which keep the feel closer to the iOS patterns.
 
 The optional `usage` parameter is a hint for the system.
