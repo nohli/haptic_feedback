@@ -93,6 +93,12 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
   /**
    * Vibrates using haptic primitives (API 30+) for more distinct and higher-quality haptic feedback.
    * This is especially beneficial for devices with advanced haptic hardware like Samsung with HD vibrations.
+   *
+   * Primitive selection rationale (matching Apple's HIG patterns from docs/patterns.md):
+   * - PRIMITIVE_TICK: Short, subtle feedback (~30-50ms feel). Used for light/selection (low intensity single pulses).
+   * - PRIMITIVE_CLICK: Sharp, distinct feedback (~50ms feel). Used for success/warning (multi-pulse confirmations) and medium/rigid (moderate-strong single pulses).
+   * - PRIMITIVE_THUD: Deep, heavy feedback (~50-80ms feel). Used for heavy (max intensity) and error (accented pulse in multi-pulse pattern).
+   * - PRIMITIVE_SPIN (API 31+): Longer, softer feedback (~80ms feel). Used for soft (longer duration, moderate intensity).
    */
   @RequiresApi(Build.VERSION_CODES.R)
   private fun vibrateWithPrimitives(pattern: Pattern, usage: Usage?) {
@@ -100,49 +106,58 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
 
     when (pattern) {
       Pattern.success -> {
-        // Two ticks with increasing intensity - positive confirmation
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.5f)
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 1.0f, 50)
+        // Two pulses with increasing intensity - positive confirmation (55ms pause between)
+        // Using CLICK for distinct "confirmation" feel matching iOS notification feedback
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.7f)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f, 55)
       }
       Pattern.warning -> {
-        // A thud followed by a click - attention-getting
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_THUD, 0.7f)
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.5f, 100)
+        // Two pulses with decreasing intensity - attention-getting (91ms pause between)
+        // Using CLICK for noticeable but not alarming feedback
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.9f)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.7f, 91)
       }
       Pattern.error -> {
-        // Multiple quick clicks - error/failure indication
+        // Four quick pulses - error/failure indication with accented third pulse
+        // Using CLICK for sharp feedback, with THUD for the strongest pulse to emphasize error
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f)
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f, 80)
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.6f, 80)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f, 45)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_THUD, 1.0f, 43)
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.6f, 41)
       }
       Pattern.light -> {
-        // Light tick - subtle feedback
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.3f)
+        // Light single pulse - subtle feedback
+        // Using TICK for its light, unobtrusive character
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.6f)
       }
       Pattern.medium -> {
-        // Medium click - moderate feedback
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.6f)
+        // Medium single pulse - moderate feedback
+        // Using CLICK for noticeable but not heavy feedback
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.8f)
       }
       Pattern.heavy -> {
-        // Heavy thud - strong feedback
+        // Heavy single pulse - strong feedback
+        // Using THUD for maximum impact and deep feel
         composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_THUD, 1.0f)
       }
       Pattern.rigid -> {
-        // Sharp click - hard/rigid feel
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 1.0f)
+        // Sharp, crisp single pulse - hard/rigid feel
+        // Using CLICK at high intensity for sharp, defined feedback
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, 0.9f)
       }
       Pattern.soft -> {
-        // Gentle spin (API 31+) or low intensity tick (API 30) - soft/cushioned feel
+        // Gentle, longer single pulse - soft/cushioned feel
+        // Using SPIN (API 31+) for its longer, softer character; fallback to low-intensity TICK
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.4f)
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_SPIN, 0.7f)
         } else {
-          // Use PRIMITIVE_TICK with lower intensity as fallback for API 30
-          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.2f)
+          composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.7f)
         }
       }
       Pattern.selection -> {
-        // Light tick - UI selection feedback
-        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.2f)
+        // Light single pulse - UI selection feedback
+        // Using TICK at low intensity for subtle selection confirmation
+        composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.6f)
       }
     }
 
@@ -154,16 +169,30 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     }
   }
 
+  /**
+   * Waveform patterns matching Apple's iOS haptic timings from docs/patterns.md.
+   * Format: lengths = [duration1, pause1, duration2, pause2, ...], amplitudes = [intensity1, 0, intensity2, 0, ...]
+   * Intensity values are normalized (0.0-1.0) * 255.
+   */
   private enum class Pattern(val lengths: LongArray, val amplitudes: IntArray) {
-    success(longArrayOf(75, 75, 75), intArrayOf(178, 0, 255)),
-    warning(longArrayOf(79, 119, 75), intArrayOf(227, 0, 178)),
-    error(longArrayOf(75, 61, 79, 57, 75, 57, 97), intArrayOf(203, 0, 200, 0, 252, 0, 150)),
-    light(longArrayOf(79), intArrayOf(154)),
-    medium(longArrayOf(79), intArrayOf(203)),
-    heavy(longArrayOf(75), intArrayOf(252)),
-    rigid(longArrayOf(48), intArrayOf(227)),
-    soft(longArrayOf(110), intArrayOf(178)),
-    selection(longArrayOf(57), intArrayOf(150));
+    // success: 55ms @ 0.7, 55ms pause, 53ms @ 1.0
+    success(longArrayOf(55, 55, 53), intArrayOf(178, 0, 255)),
+    // warning: 55ms @ 0.9, 91ms pause, 55ms @ 0.7
+    warning(longArrayOf(55, 91, 55), intArrayOf(229, 0, 178)),
+    // error: 51ms @ 0.8, 45ms pause, 55ms @ 0.8, 43ms pause, 55ms @ 1.0, 41ms pause, 68ms @ 0.6
+    error(longArrayOf(51, 45, 55, 43, 55, 41, 68), intArrayOf(204, 0, 204, 0, 255, 0, 153)),
+    // light: 55ms @ 0.6
+    light(longArrayOf(55), intArrayOf(153)),
+    // medium: 51ms @ 0.8
+    medium(longArrayOf(51), intArrayOf(204)),
+    // heavy: 55ms @ 1.0
+    heavy(longArrayOf(55), intArrayOf(255)),
+    // rigid: 34ms @ 0.9
+    rigid(longArrayOf(34), intArrayOf(229)),
+    // soft: 82ms @ 0.7
+    soft(longArrayOf(82), intArrayOf(178)),
+    // selection: 41ms @ 0.6
+    selection(longArrayOf(41), intArrayOf(153));
 
     /**
      * Returns the haptic primitives required for this pattern.
@@ -172,9 +201,9 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
     @RequiresApi(Build.VERSION_CODES.R)
     fun getPrimitives(): IntArray {
       return when (this) {
-        success -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
-        warning -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_THUD, VibrationEffect.Composition.PRIMITIVE_CLICK)
-        error -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
+        success -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
+        warning -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
+        error -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK, VibrationEffect.Composition.PRIMITIVE_THUD)
         light -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
         medium -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         heavy -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_THUD)
@@ -182,7 +211,6 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler {
         soft -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
           intArrayOf(VibrationEffect.Composition.PRIMITIVE_SPIN)
         } else {
-          // Use PRIMITIVE_TICK as fallback for API 30
           intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
         }
         selection -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
