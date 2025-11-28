@@ -9,15 +9,15 @@ These numbers aren’t official Apple timings; they’re practical approximation
 | iOS Enum  | Pulse | Start (ms) | Duration (ms) | Intensity |
 |-----------|:-----:|-----------:|--------------:|----------:|
 | success   |   1   |          0 |            55 |       0.7 |
-|           |   2   |        112 |            53 |       1.0 |
+|           |   2   |        110 |            53 |       1.0 |
 | warning   |   1   |          0 |            55 |       0.9 |
 |           |   2   |        146 |            55 |       0.7 |
-| error     |   1   |          0 |            45 |       0.8 |
+| error     |   1   |          0 |            51 |       0.8 |
 |           |   2   |         96 |            55 |       0.8 |
 |           |   3   |        194 |            55 |       1.0 |
-|           |   4   |        292 |            69 |       0.6 |
+|           |   4   |        290 |            68 |       0.6 |
 | light     |   1   |          0 |            55 |       0.6 |
-| medium    |   1   |          0 |            45 |       0.8 |
+| medium    |   1   |          0 |            51 |       0.8 |
 | heavy     |   1   |          0 |            55 |       1.0 |
 | rigid     |   1   |          0 |            34 |       0.9 |
 | soft      |   1   |          0 |            82 |       0.7 |
