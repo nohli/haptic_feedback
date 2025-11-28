@@ -79,7 +79,8 @@ void main() {
     expect(recordingPlatform.lastUseNativeHaptics, true);
   });
 
-  test('vibrate forwards useNativeHaptics to the platform implementation', () async {
+  test('vibrate forwards useNativeHaptics to the platform implementation',
+      () async {
     final recordingPlatform = RecordingHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = recordingPlatform;
 

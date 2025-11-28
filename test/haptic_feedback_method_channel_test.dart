@@ -39,7 +39,8 @@ void main() {
     );
 
     expect(lastMethodCall?.method, 'success');
-    expect(lastMethodCall?.arguments, {'usage': 'media', 'useNativeHaptics': true});
+    expect(lastMethodCall?.arguments,
+        {'usage': 'media', 'useNativeHaptics': true});
   });
 
   test('vibrate includes useNativeHaptics in arguments', () async {
