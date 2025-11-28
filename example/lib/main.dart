@@ -45,13 +45,12 @@ class _HapticsListState extends State<_HapticsList> {
     return ListView(
       children: [
         if (isAndroid) ...[
-          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Type:'),
+                Text('Usage type'),
                 const SizedBox(width: 12),
                 DropdownMenu(
                   onSelected: (hapticsUsage) => _selectedUsage = hapticsUsage,
@@ -62,23 +61,26 @@ class _HapticsListState extends State<_HapticsList> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: OpenSettingsPlusAndroid().sound,
-                child: Text('Open Settings'),
-              ),
-              const SizedBox(width: 24),
-              const Text('Use native enums'),
-              const SizedBox(width: 8),
-              Switch.adaptive(
-                value: _useNativeHaptics,
-                onChanged: (value) => setState(() => _useNativeHaptics = value),
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: OpenSettingsPlusAndroid().sound,
+                  child: Text('Open system settings'),
+                ),
+                const SizedBox(width: 24),
+                const Text('Use native enums'),
+                const SizedBox(width: 8),
+                Switch.adaptive(
+                  value: _useNativeHaptics,
+                  onChanged: (value) =>
+                      setState(() => _useNativeHaptics = value),
+                )
+              ],
+            ),
           ),
-          const SizedBox(height: 8),
         ],
         for (final type in HapticsType.values)
           ListTile(
