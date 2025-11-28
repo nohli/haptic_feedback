@@ -1,8 +1,7 @@
-## 0.6.3
+## 0.7.0
 
-* Improve haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses native haptic primitives (`VibrationEffect.Composition`) for more distinct and higher-quality feedback when supported, with automatic fallback to waveform patterns on older devices.
+* **Breaking**: Fundamentally improved haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses native haptic primitives (`VibrationEffect.Composition`) for more distinct and higher-quality feedback when supported, with automatic fallback to waveform patterns on older devices. This changes the haptic feel on Android.
 * Use `VibratorManager` on Android 12+ for better vibrator access.
-* Updated waveform patterns and primitive intensities to match Apple's iOS haptic timings (see `docs/patterns.md`).
 
 ## 0.6.2
 
