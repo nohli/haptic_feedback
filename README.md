@@ -210,6 +210,9 @@ void main() {
 }
 ```
 
+You can find these examples as runnable tests in `example/test` on [GitHub](
+https://github.com/nohli/haptic_feedback/tree/main/example/test).
+
 ## Automatic Permissions Inclusion
 
 ### Android VIBRATE Permission
