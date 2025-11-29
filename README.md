@@ -130,7 +130,7 @@ For detailed timing specifications and implementation rationale, see [HAPTIC_PAT
 
 ## Testing
 
-When testing widgets that use haptic feedback, keep in mind that `defaultTargetPlatform` returns `TargetPlatform.android` in test environments regardless of the host platform. This means `Haptics.canVibrate()` may return `true` in tests even when running on non-mobile platforms.
+When testing widgets that use haptic feedback, `defaultTargetPlatform` is `TargetPlatform.android` by default, but the default platform implementation still calls the method channel and will throw `MissingPluginException` unless you register a mock. If you swap in a mock platform that returns `true`, `Haptics.canVibrate()` will return `true` even on a non-mobile host unless you override the target platform.
 
 To test widgets that use haptic feedback, you can:
 
