@@ -98,7 +98,7 @@ When `useAndroidHapticConstants: true`, the plugin uses Android's system-level h
 | heavy     | `CONTEXT_CLICK`                                | ≥ 23      |
 | selection | `CLOCK_TICK`                                   | ≥ 21      |
 
-Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms.
+Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms/legacy.
 
 #### Strategy 2: Haptic Primitives (API 30+)
 
@@ -130,7 +130,7 @@ For detailed timing specifications and implementation rationale, see [HAPTIC_PAT
 
 ## Testing
 
-When testing widgets that use haptic feedback, keep in mind that `defaultTargetPlatform` returns `TargetPlatform.android` in test environments regardless of the host platform. This means `Haptics.canVibrate()` may return `true` in tests even when running on non-mobile platforms.
+When testing widgets that use haptic feedback, `defaultTargetPlatform` is `TargetPlatform.android` by default, but the default platform implementation still calls the method channel and will throw `MissingPluginException` unless you register a mock. If you swap in a mock platform that returns `true`, `Haptics.canVibrate()` will return `true` even on a non-mobile host unless you override the target platform.
 
 To test widgets that use haptic feedback, you can:
 
@@ -142,10 +142,9 @@ import 'package:flutter/foundation.dart';
 void main() {
   testWidgets('test on iOS', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
     // Your test code here
-    
-    debugDefaultTargetPlatformOverride = null; // Clean up
   });
 }
 ```
@@ -172,6 +171,47 @@ void main() {
   });
 }
 ```
+
+3. **Mock the method channel** to avoid `MissingPluginException` while using the real platform class:
+
+```dart
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:haptic_feedback/src/haptic_feedback_method_channel.dart';
+import 'package:haptic_feedback/src/haptics_type.dart';
+
+void main() {
+  const channel = MethodChannelHapticFeedback.methodChannel;
+  TestDefaultBinaryMessengerBinding.ensureInitialized();
+
+  setUp(() {
+    final binding = TestDefaultBinaryMessengerBinding.instance;
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      channel,
+      (MethodCall call) async {
+        if (call.method == 'canVibrate') return true;
+        return null; // success for vibrate calls
+      },
+    );
+  });
+
+  tearDown(() {
+    final binding = TestDefaultBinaryMessengerBinding.instance;
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
+  });
+
+  test('canVibrate works with mocked channel', () async {
+    expect(await MethodChannelHapticFeedback().canVibrate(), isTrue);
+  });
+
+  test('vibrate forwards to mocked channel', () async {
+    await MethodChannelHapticFeedback().vibrate(HapticsType.success);
+  });
+}
+```
+
+You can find these examples as runnable tests in `example/test` on [GitHub](
+https://github.com/nohli/haptic_feedback/tree/main/example/test).
 
 ## Automatic Permissions Inclusion
 
