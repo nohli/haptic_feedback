@@ -16,11 +16,7 @@ let package = Package(
     targets: [
         .target(
             name: "haptic_feedback",
-            dependencies: [],
-            resources: [
-                // If your plugin requires a privacy manifest, uncomment the following line.
-                // .process("PrivacyInfo.xcprivacy"),
-            ]
+            dependencies: []
         )
     ]
 )
