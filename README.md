@@ -54,7 +54,7 @@ Flutter can consume this plugin via Swift Package Manager (SPM) or CocoaPods. SP
      config:
        enable-swift-package-manager: true
    ```
-   After switching to SPM, do a one-time clean to avoid stale headers: `flutter clean` and remove Xcode DerivedData for this app (e.g., `rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*`), then rebuild.
+   If you hit Xcode build issues after switching, do a one-time clean: `flutter clean` and remove Xcode DerivedData for this app (e.g., `rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*`), then rebuild.
 
 2) To stick with CocoaPods (or if you hit SPM issues): disable SPM with `flutter config --no-enable-swift-package-manager` or by adding to `pubspec.yaml`:
    ```yaml
