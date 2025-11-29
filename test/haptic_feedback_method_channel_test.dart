@@ -43,7 +43,7 @@ void main() {
         {'usage': 'media', 'useAndroidHapticConstants': false});
   });
 
-  test('vibrate includes useAndroidHapticConstants in arguments', () async {
+  test('vibrate includes default useAndroidHapticConstants flag', () async {
     await platform.vibrate(HapticsType.light);
 
     expect(lastMethodCall?.method, 'light');

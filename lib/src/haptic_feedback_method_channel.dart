@@ -24,10 +24,9 @@ class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
   }) async {
     final arguments = <String, dynamic>{
       'useAndroidHapticConstants': useAndroidHapticConstants,
+      if (usage != null) 'usage': usage.name,
     };
-    if (usage != null) {
-      arguments['usage'] = usage.name;
-    }
+
     return await methodChannel.invokeMethod(type.name, arguments);
   }
 }
