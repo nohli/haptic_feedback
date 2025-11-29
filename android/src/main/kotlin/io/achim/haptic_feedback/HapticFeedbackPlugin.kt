@@ -271,11 +271,7 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         medium -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
         heavy -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_THUD)
         rigid -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_CLICK)
-        soft -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-          intArrayOf(VibrationEffect.Composition.PRIMITIVE_SPIN)
-        } else {
-          intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
-        }
+        soft -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_SPIN)
         selection -> intArrayOf(VibrationEffect.Composition.PRIMITIVE_TICK)
       }
     }

@@ -63,7 +63,6 @@ try {
 }
 ```
 
-The `useAndroidHapticConstants` parameter (default: `false`) controls whether Android uses the system's native `HapticFeedbackConstants` (like `CONFIRM`, `REJECT`, `VIRTUAL_KEY`) when available. Set to `false` to use custom vibration primitives instead, which keep the feel closer to the iOS patterns.
 
 The optional `usage` parameter is a hint for the system.
 It can influence how the vibration is routed and which volume / haptics
