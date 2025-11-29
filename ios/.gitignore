@@ -4,6 +4,7 @@
 .svn/
 
 .DS_Store
+.build/
 *.swp
 profile
 
