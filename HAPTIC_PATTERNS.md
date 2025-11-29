@@ -28,19 +28,19 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 | iOS Enum  | Android mapping                                                                                                                                                                                                                                                    | API level |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | success   | [`HapticFeedbackConstants.CONFIRM`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONFIRM)                                                                                                                                          | ≥ 30      |
-| warning   |                                                                                                                                                                                                                                                                    |           |
+| warning   | No native mapping; handled by plugin patterns                                                                                                                                                                                                                      | —         |
 | error     | [`HapticFeedbackConstants.REJECT`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#REJECT)                                                                                                                                            | ≥ 30      |
 | light     | [`HapticFeedbackConstants.VIRTUAL_KEY`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#VIRTUAL_KEY)                                                                                                                                  | ≥ 5       |
 | medium    | [`HapticFeedbackConstants.KEYBOARD_PRESS`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_PRESS) (≥ 27) / [`KEYBOARD_TAP`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_TAP) (≥ 8) | ≥ 8       |
 | heavy     | [`HapticFeedbackConstants.CONTEXT_CLICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONTEXT_CLICK)                                                                                                                              | ≥ 23      |
-| rigid     |                                                                                                                                                                                                                                                                    |           |
-| soft      |                                                                                                                                                                                                                                                                    |           |
+| rigid     | No native mapping; handled by plugin patterns                                                                                                                                                                                                                      | —         |
+| soft      | No native mapping; handled by plugin patterns                                                                                                                                                                                                                      | —         |
 | selection | [`HapticFeedbackConstants.CLOCK_TICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CLOCK_TICK)                                                                                                                                    | ≥ 21      |
 
 
-### Derived Android primitives patterns
+### Derived Android primitives patterns (API ≥ 30)
 
-[`Primitives`](https://developer.android.com/reference/android/os/VibrationEffect.Composition#summary) (API ≥ 30, `SPIN` requires API ≥ 31).
+[`Primitives`](https://developer.android.com/reference/android/os/VibrationEffect.Composition#summary).
 
 | iOS Enum  | Pulse | Primitive | Strength | Delay after previous (ms) |
 |-----------|:-----:|-----------|---------:|--------------------------:|
@@ -61,9 +61,10 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 
 \* On API < 31, `SPIN` is replaced by `TICK` at the same strength.
 
-### Derived Android waveform patterns
+### Derived Android waveform patterns (API ≥ 26)
 
-Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)) (API ≥ 26).  
+Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)).
+
 Amplitudes (0–255) from normalized intensities:
 
 - 0.6 → 153
@@ -99,6 +100,5 @@ Amplitudes (0–255) from normalized intensities:
 Below API 26, the plugin uses the old  
 [`Vibrator.vibrate(long[], int)`](https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)) API:
 
-- It takes the **`lengths`** array for the pattern
-- **Timings / rhythm** are preserved (same number of pulses and pauses),
-- **Strength / intensity** is **not** – everything is just “full motor on” whenever it’s vibrating.
+- It feeds the pattern's timing values (buzz + pause durations) into that API, so the **timing / rhythm** stays the same (same number of pulses and pauses).
+- The API ignores amplitude info, so **strength / intensity** is not preserved — every pulse runs the motor at full power.
