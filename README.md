@@ -172,6 +172,44 @@ void main() {
 }
 ```
 
+3. **Mock the method channel** to avoid `MissingPluginException` while using the real platform class:
+
+```dart
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:haptic_feedback/src/haptic_feedback_method_channel.dart';
+import 'package:haptic_feedback/src/haptics_type.dart';
+
+void main() {
+  const channel = MethodChannelHapticFeedback.methodChannel;
+  TestDefaultBinaryMessengerBinding.ensureInitialized();
+
+  setUp(() {
+    final binding = TestDefaultBinaryMessengerBinding.instance;
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      channel,
+      (MethodCall call) async {
+        if (call.method == 'canVibrate') return true;
+        return null; // success for vibrate calls
+      },
+    );
+  });
+
+  tearDown(() {
+    final binding = TestDefaultBinaryMessengerBinding.instance;
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
+  });
+
+  test('canVibrate works with mocked channel', () async {
+    expect(await MethodChannelHapticFeedback().canVibrate(), isTrue);
+  });
+
+  test('vibrate forwards to mocked channel', () async {
+    await MethodChannelHapticFeedback().vibrate(HapticsType.success);
+  });
+}
+```
+
 ## Automatic Permissions Inclusion
 
 ### Android VIBRATE Permission
