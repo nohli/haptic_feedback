@@ -25,17 +25,17 @@ Approximation of Apple’s built-in haptics (from [Playing haptics](https://deve
 
 System enums via [`View.performHapticFeedback`](https://developer.android.com/reference/android/view/View#performHapticFeedback(int)) and [`HapticFeedbackConstants`](https://developer.android.com/reference/android/view/HapticFeedbackConstants).
 
-| iOS Enum  | Android mapping                                                                                                                       | API level |
-|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| success   | [`HapticFeedbackConstants.CONFIRM`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONFIRM)             | ≥ 30      |
-| warning   |                                                                                                                                       |           |
-| error     | [`HapticFeedbackConstants.REJECT`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#REJECT)               | ≥ 30      |
-| light     | [`HapticFeedbackConstants.VIRTUAL_KEY`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#VIRTUAL_KEY)     | ≥ 5       |
-| medium    | [`HapticFeedbackConstants.KEYBOARD_TAP`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_TAP)   | ≥ 8       |
-| heavy     | [`HapticFeedbackConstants.CONTEXT_CLICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONTEXT_CLICK) | ≥ 23      |
-| rigid     |                                                                                                                                       |           |
-| soft      |                                                                                                                                       |           |
-| selection | [`HapticFeedbackConstants.CLOCK_TICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CLOCK_TICK)       | ≥ 21      |
+| iOS Enum  | Android mapping                                                                                                                                                                                                                                                    | API level |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| success   | [`HapticFeedbackConstants.CONFIRM`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONFIRM)                                                                                                                                          | ≥ 30      |
+| warning   |                                                                                                                                                                                                                                                                    |           |
+| error     | [`HapticFeedbackConstants.REJECT`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#REJECT)                                                                                                                                            | ≥ 30      |
+| light     | [`HapticFeedbackConstants.VIRTUAL_KEY`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#VIRTUAL_KEY)                                                                                                                                  | ≥ 5       |
+| medium    | [`HapticFeedbackConstants.KEYBOARD_PRESS`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_PRESS) (≥ 27) / [`KEYBOARD_TAP`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#KEYBOARD_TAP) (≥ 8) | ≥ 8       |
+| heavy     | [`HapticFeedbackConstants.CONTEXT_CLICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CONTEXT_CLICK)                                                                                                                              | ≥ 23      |
+| rigid     |                                                                                                                                                                                                                                                                    |           |
+| soft      |                                                                                                                                                                                                                                                                    |           |
+| selection | [`HapticFeedbackConstants.CLOCK_TICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CLOCK_TICK)                                                                                                                                    | ≥ 21      |
 
 
 ### Derived Android primitives patterns

@@ -95,7 +95,11 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       Pattern.success -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.CONFIRM else null
       Pattern.error -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) HapticFeedbackConstants.REJECT else null
       Pattern.light -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) HapticFeedbackConstants.VIRTUAL_KEY else null  // API 5
-      Pattern.medium -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) HapticFeedbackConstants.KEYBOARD_TAP else null  // API 8 (deprecated in favor of KEYBOARD_PRESS in API 27, but available since 8)
+      Pattern.medium -> when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> HapticFeedbackConstants.KEYBOARD_PRESS  // API 27+
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO -> HapticFeedbackConstants.KEYBOARD_TAP   // API 8-26
+        else -> null
+      }
       Pattern.heavy -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) HapticFeedbackConstants.CONTEXT_CLICK else null
       Pattern.selection -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else null
       // warning, rigid, soft don't have direct mappings

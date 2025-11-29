@@ -91,14 +91,14 @@ The plugin uses a multi-strategy approach for the best possible haptic experienc
 
 When `useAndroidHapticConstants: true`, the plugin uses Android's system-level haptic constants via `View.performHapticFeedback()`:
 
-| Type      | Android Constant         | API Level |
-|-----------|--------------------------|-----------|
-| success   | `CONFIRM`                | ≥ 30      |
-| error     | `REJECT`                 | ≥ 30      |
-| light     | `VIRTUAL_KEY`            | ≥ 5       |
-| medium    | `KEYBOARD_TAP`           | ≥ 8       |
-| heavy     | `CONTEXT_CLICK`          | ≥ 23      |
-| selection | `CLOCK_TICK`             | ≥ 21      |
+| Type      | Android Constant                               | API Level |
+|-----------|------------------------------------------------|-----------|
+| success   | `CONFIRM`                                      | ≥ 30      |
+| error     | `REJECT`                                       | ≥ 30      |
+| light     | `VIRTUAL_KEY`                                  | ≥ 5       |
+| medium    | `KEYBOARD_PRESS` (≥ 27) / `KEYBOARD_TAP` (≥ 8) | ≥ 8       |
+| heavy     | `CONTEXT_CLICK`                                | ≥ 23      |
+| selection | `CLOCK_TICK`                                   | ≥ 21      |
 
 Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms.
 
