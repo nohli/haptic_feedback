@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "haptic_feedback",
     platforms: [
-        .iOS(.v12)
+        .iOS("12.0")
     ],
     products: [
         .library(name: "haptic_feedback", targets: ["haptic_feedback"])
@@ -16,7 +16,10 @@ let package = Package(
         .target(
             name: "haptic_feedback",
             dependencies: [],
-            path: "Classes"
+            resources: [
+                // If your plugin requires a privacy manifest, uncomment the following line.
+                // .process("PrivacyInfo.xcprivacy"),
+            ]
         )
     ]
 )
