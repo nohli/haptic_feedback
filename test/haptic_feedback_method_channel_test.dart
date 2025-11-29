@@ -56,4 +56,11 @@ void main() {
     expect(lastMethodCall?.method, 'heavy');
     expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': false});
   });
+
+  test('vibrate forwards useAndroidHapticConstants true', () async {
+    await platform.vibrate(HapticsType.heavy, useAndroidHapticConstants: true);
+
+    expect(lastMethodCall?.method, 'heavy');
+    expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': true});
+  });
 }
