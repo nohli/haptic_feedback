@@ -63,7 +63,8 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 
 ### Derived Android waveform patterns (API ≥ 26)
 
-Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)).  
+Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)).
+
 Amplitudes (0–255) from normalized intensities:
 
 - 0.6 → 153
@@ -99,6 +100,5 @@ Amplitudes (0–255) from normalized intensities:
 Below API 26, the plugin uses the old  
 [`Vibrator.vibrate(long[], int)`](https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)) API:
 
-- It takes the **`lengths`** array for the pattern
-- **Timings / rhythm** are preserved (same number of pulses and pauses),
-- **Strength / intensity** is **not** – everything is just “full motor on” whenever it’s vibrating.
+- It feeds the pattern's timing values (buzz + pause durations) into that API, so the **timing / rhythm** stays the same (same number of pulses and pauses).
+- The API ignores amplitude info, so **strength / intensity** is not preserved — every pulse runs the motor at full power.
