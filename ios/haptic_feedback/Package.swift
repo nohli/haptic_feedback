@@ -9,7 +9,8 @@ let package = Package(
         .iOS("11.0")
     ],
     products: [
-        .library(name: "haptic_feedback", type: .dynamic, targets: ["haptic_feedback"])
+        // Match Flutter's generated SwiftPM expectation (`haptic-feedback`).
+        .library(name: "haptic-feedback", type: .dynamic, targets: ["haptic_feedback"])
     ],
     dependencies: [],
     targets: [
