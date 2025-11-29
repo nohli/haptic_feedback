@@ -53,7 +53,7 @@ await Haptics.vibrate(
 );
 ```
 
-If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException` (the plugin already swallows native errors internally):
+If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
 
 ```dart
 try {
