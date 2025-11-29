@@ -4,6 +4,8 @@
 .svn/
 
 .DS_Store
+.build/
+.swiftpm/
 *.swp
 profile
 
