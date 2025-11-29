@@ -1,3 +1,7 @@
+## 0.6.4+1
+
+* Update readme.
+
 ## 0.6.4
 
 * Add Swift Package Manager (SPM) support for iOS.
