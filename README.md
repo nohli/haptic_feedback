@@ -98,7 +98,7 @@ When `useAndroidHapticConstants: true`, the plugin uses Android's system-level h
 | heavy     | `CONTEXT_CLICK`                                | ≥ 23      |
 | selection | `CLOCK_TICK`                                   | ≥ 21      |
 
-Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms.
+Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms/legacy.
 
 #### Strategy 2: Haptic Primitives (API 30+)
 
