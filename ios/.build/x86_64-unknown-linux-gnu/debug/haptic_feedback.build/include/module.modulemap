@@ -1,0 +1,3 @@
+module haptic_feedback {
+    header "/home/runner/work/haptic_feedback/haptic_feedback/ios/.build/x86_64-unknown-linux-gnu/debug/haptic_feedback.build/include/haptic_feedback-Swift.h"
+}
