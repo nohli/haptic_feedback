@@ -38,9 +38,9 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 | selection | [`HapticFeedbackConstants.CLOCK_TICK`](https://developer.android.com/reference/android/view/HapticFeedbackConstants#CLOCK_TICK)                                                                                                                                    | ≥ 21      |
 
 
-### Derived Android primitives patterns
+### Derived Android primitives patterns (API ≥ 30)
 
-[`Primitives`](https://developer.android.com/reference/android/os/VibrationEffect.Composition#summary) (API ≥ 30, `SPIN` requires API ≥ 31).
+[`Primitives`](https://developer.android.com/reference/android/os/VibrationEffect.Composition#summary).
 
 | iOS Enum  | Pulse | Primitive | Strength | Delay after previous (ms) |
 |-----------|:-----:|-----------|---------:|--------------------------:|
@@ -61,9 +61,9 @@ System enums via [`View.performHapticFeedback`](https://developer.android.com/re
 
 \* On API < 31, `SPIN` is replaced by `TICK` at the same strength.
 
-### Derived Android waveform patterns
+### Derived Android waveform patterns (API ≥ 26)
 
-Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)) (API ≥ 26).  
+Waveforms via [`VibrationEffect.createWaveform(long[], int[], int)`](https://developer.android.com/reference/android/os/VibrationEffect#createWaveform(long[],%20int[],%20int)).  
 Amplitudes (0–255) from normalized intensities:
 
 - 0.6 → 153
