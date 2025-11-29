@@ -158,8 +158,8 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
    *
    * Primitive selection rationale (matching Apple's HIG patterns from HAPTIC_PATTERNS.md):
    * - PRIMITIVE_TICK: Short, subtle feedback (~30-50ms feel). Used for light/selection (low intensity single pulses).
-   * - PRIMITIVE_CLICK: Sharp, distinct feedback (~50ms feel). Used for success/warning (multi-pulse confirmations) and medium/rigid (moderate-strong single pulses).
-   * - PRIMITIVE_THUD: Deep, heavy feedback (~50-80ms feel). Used for heavy (max intensity) and error (accented pulse in multi-pulse pattern).
+   * - PRIMITIVE_CLICK: Sharp, distinct feedback (~50ms feel). Used for success/warning/error (multi-pulse confirmations) and medium/rigid (moderate-strong single pulses).
+   * - PRIMITIVE_THUD: Deep, heavy feedback (~50-80ms feel). Used for heavy (max intensity).
    * - PRIMITIVE_SPIN (API 31+): Longer, softer feedback (~80ms feel). Used for soft (longer duration, moderate intensity).
    */
   @RequiresApi(Build.VERSION_CODES.R)
