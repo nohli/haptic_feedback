@@ -1,6 +1,6 @@
-## 0.7.0
+## 0.6.3
 
-* **Breaking**: Fundamentally improved haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses a multi-strategy approach:
+* **Behavior change**: Fundamentally improved haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses a multi-strategy approach:
   - Native `HapticFeedbackConstants` (CONFIRM, REJECT, etc.) when available for best system integration
   - Haptic primitives (`VibrationEffect.Composition`) for custom patterns
   - Waveform fallback for older devices
