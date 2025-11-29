@@ -1,14 +1,18 @@
+## 0.6.3+2
+
+* Update readme and changelog.
+
 ## 0.6.3+1
 
 * Update readme.
 
 ## 0.6.3
 
-* **Behavior change**: Fundamentally improved haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses a multi-strategy approach:
-  - Native `HapticFeedbackConstants` (CONFIRM, REJECT, etc.) when available for best system integration
-  - Haptic primitives (`VibrationEffect.Composition`) for custom patterns
-  - Waveform fallback for older devices
-* Add `useAndroidHapticConstants` parameter (default: `false`) to control whether Android uses system-level haptic constants or custom primitives.
+* **Behavior change**: Android haptics improve on API 30+ devices—especially those with advanced/HD hardware—using a layered strategy with explicit fallbacks:
+  - Default: haptic primitives via `VibrationEffect.Composition` on API 30+ (Android 11+) tuned to the iOS patterns.
+  - Fallback: waveform vibration on API 26-29.
+  - Fallback: legacy timing-only vibration on API < 26.
+* Add `useAndroidHapticConstants` parameter (default: `false`) to opt into Android's system-level haptic constants (CONFIRM, REJECT, etc.) on supported SDK levels; otherwise the layered primitives/waveform/legacy path is used.
 * Use `VibratorManager` on Android 12+ for better vibrator access.
 
 ## 0.6.2

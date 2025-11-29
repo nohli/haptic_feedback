@@ -83,7 +83,7 @@ Uses Apple's native haptic feedback APIs:
 
 ### Android
 
-The plugin uses a multi-strategy approach for the best possible haptic experience:
+On Android, the plugin defaults to high-fidelity haptic primitives on API 30+ (great on devices with advanced/HD hardware); falls back to waveforms on API 26-29 and legacy timing-only vibration on older SDKs; and can opt into system `HapticFeedbackConstants` via `useAndroidHapticConstants` on supported SDKs. The plugin uses a multi-strategy approach for the best possible haptic experience:
 
 #### Strategy 1: Native HapticFeedbackConstants (when enabled)
 
