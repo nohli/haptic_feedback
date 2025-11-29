@@ -142,10 +142,9 @@ import 'package:flutter/foundation.dart';
 void main() {
   testWidgets('test on iOS', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
     // Your test code here
-    
-    debugDefaultTargetPlatformOverride = null; // Clean up
   });
 }
 ```
