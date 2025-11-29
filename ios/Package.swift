@@ -9,7 +9,7 @@ let package = Package(
         .iOS(.v12)
     ],
     products: [
-        .library(name: "haptic-feedback", targets: ["haptic_feedback"])
+        .library(name: "haptic_feedback", targets: ["haptic_feedback"])
     ],
     dependencies: [],
     targets: [
