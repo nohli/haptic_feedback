@@ -33,6 +33,16 @@ await Haptics.vibrate(HapticsType.soft);
 await Haptics.vibrate(HapticsType.selection);
 ```
 
+If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
+
+```dart
+try {
+  await Haptics.vibrate(HapticsType.success);
+} on PlatformException catch (e) {
+  // Handle or log as needed
+}
+```
+
 ### Android-specific options
 
 ```dart
@@ -52,17 +62,6 @@ await Haptics.vibrate(
   usage: HapticsUsage.media,
 );
 ```
-
-If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
-
-```dart
-try {
-  await Haptics.vibrate(HapticsType.success);
-} on PlatformException catch (e) {
-  // Handle or log as needed
-}
-```
-
 
 The optional `usage` parameter is a hint for the system.
 It can influence how the vibration is routed and which volume / haptics

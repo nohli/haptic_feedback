@@ -1,3 +1,7 @@
+## 0.6.3+1
+
+* Update readme.
+
 ## 0.6.3
 
 * **Behavior change**: Fundamentally improved haptic feedback on Android 11+ devices with advanced haptic hardware (e.g., Samsung with HD vibrations). Uses a multi-strategy approach:
