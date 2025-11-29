@@ -31,6 +31,19 @@ await Haptics.vibrate(HapticsType.rigid);
 await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
+```
+
+### Android-specific options
+
+```dart
+// Use native Android haptic constants (default: false)
+// When true, uses HapticFeedbackConstants like CONFIRM, REJECT, etc.
+// When false, uses custom vibration primitives that are more aligned
+// with iOS haptics
+await Haptics.vibrate(
+  HapticsType.success,
+  useAndroidHapticConstants: false,  // default
+);
 
 // On Android 13+, you can hint how the system should treat this vibration
 // (alarm, communicationRequest, hardwareFeedback, media, notification, physicalEmulation, ringtone, touch, unknown)
@@ -40,6 +53,17 @@ await Haptics.vibrate(
 );
 ```
 
+If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
+
+```dart
+try {
+  await Haptics.vibrate(HapticsType.success);
+} on PlatformException catch (e) {
+  // Handle or log as needed
+}
+```
+
+
 The optional `usage` parameter is a hint for the system.
 It can influence how the vibration is routed and which volume / haptics
 settings control it (for example, notification vs touch feedback).
@@ -48,6 +72,62 @@ Use a concrete value whenever the vibration clearly matches one of the
 defined categories (for example `HapticsUsage.notification` for reminders
 or status updates), and keep the default `HapticsUsage.unknown` for simple
 taps and other lightweight UI feedback.
+
+## Platform Implementation
+
+### iOS
+
+Uses Apple's native haptic feedback APIs:
+- `UINotificationFeedbackGenerator` for success, warning, and error
+- `UIImpactFeedbackGenerator` for light, medium, heavy, rigid, and soft
+- `UISelectionFeedbackGenerator` for selection
+
+### Android
+
+The plugin uses a multi-strategy approach for the best possible haptic experience:
+
+#### Strategy 1: Native HapticFeedbackConstants (when enabled)
+
+When `useAndroidHapticConstants: true`, the plugin uses Android's system-level haptic constants via `View.performHapticFeedback()`:
+
+| Type      | Android Constant                               | API Level |
+|-----------|------------------------------------------------|-----------|
+| success   | `CONFIRM`                                      | ≥ 30      |
+| error     | `REJECT`                                       | ≥ 30      |
+| light     | `VIRTUAL_KEY`                                  | ≥ 5       |
+| medium    | `KEYBOARD_PRESS` (≥ 27) / `KEYBOARD_TAP` (≥ 8) | ≥ 8       |
+| heavy     | `CONTEXT_CLICK`                                | ≥ 23      |
+| selection | `CLOCK_TICK`                                   | ≥ 21      |
+
+Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms.
+
+#### Strategy 2: Haptic Primitives (API 30+)
+
+When native constants aren't available or `useAndroidHapticConstants: false` (default), the plugin uses `VibrationEffect.Composition`, which is tuned to resemble the iOS patterns:
+
+| Type      | Primitive(s)         | Description                              |
+|-----------|----------------------|------------------------------------------|
+| success   | CLICK × 2            | Two clicks with increasing intensity     |
+| warning   | CLICK × 2            | Two clicks with decreasing intensity     |
+| error     | CLICK × 4            | Four clicks with an accented third pulse |
+| light     | TICK                 | Subtle, light feedback                   |
+| medium    | CLICK                | Moderate feedback                        |
+| heavy     | THUD                 | Strong, deep feedback                    |
+| rigid     | CLICK                | Sharp, crisp feedback                    |
+| soft      | SPIN*                | Gentle, longer feedback                  |
+| selection | TICK                 | Subtle selection feedback                |
+
+\* `SPIN` requires API 31+; falls back to `TICK` on API 30.
+
+#### Strategy 3: Waveform Vibrations (API 26-29)
+
+For devices without primitive support, the plugin uses `VibrationEffect.createWaveform()` with amplitude control.
+
+#### Strategy 4: Legacy Vibration (API < 26)
+
+Basic timing-only patterns for older devices.
+
+For detailed timing specifications and implementation rationale, see [HAPTIC_PATTERNS.md](https://github.com/nohli/haptic_feedback/blob/main/HAPTIC_PATTERNS.md).
 
 ## Testing
 

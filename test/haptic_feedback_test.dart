@@ -17,7 +17,11 @@ class MockHapticFeedbackPlatform
   }
 
   @override
-  Future<void> vibrate(HapticsType type, {HapticsUsage? usage}) async {}
+  Future<void> vibrate(
+    HapticsType type, {
+    HapticsUsage? usage,
+    bool useAndroidHapticConstants = false,
+  }) async {}
 }
 
 class RecordingHapticFeedbackPlatform
@@ -25,6 +29,7 @@ class RecordingHapticFeedbackPlatform
     implements HapticFeedbackPlatform {
   HapticsType? lastType;
   HapticsUsage? lastUsage;
+  bool? lastUseAndroidHapticConstants;
 
   @override
   Future<bool> canVibrate() async {
@@ -32,9 +37,14 @@ class RecordingHapticFeedbackPlatform
   }
 
   @override
-  Future<void> vibrate(HapticsType type, {HapticsUsage? usage}) async {
+  Future<void> vibrate(
+    HapticsType type, {
+    HapticsUsage? usage,
+    bool useAndroidHapticConstants = false,
+  }) async {
     lastType = type;
     lastUsage = usage;
+    lastUseAndroidHapticConstants = useAndroidHapticConstants;
   }
 }
 
@@ -66,5 +76,21 @@ void main() {
 
     expect(recordingPlatform.lastType, HapticsType.warning);
     expect(recordingPlatform.lastUsage, HapticsUsage.media);
+    expect(recordingPlatform.lastUseAndroidHapticConstants, false);
+  });
+
+  test(
+      'vibrate forwards useAndroidHapticConstants to the platform implementation',
+      () async {
+    final recordingPlatform = RecordingHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = recordingPlatform;
+
+    await Haptics.vibrate(
+      HapticsType.success,
+      useAndroidHapticConstants: false,
+    );
+
+    expect(recordingPlatform.lastType, HapticsType.success);
+    expect(recordingPlatform.lastUseAndroidHapticConstants, false);
   });
 }

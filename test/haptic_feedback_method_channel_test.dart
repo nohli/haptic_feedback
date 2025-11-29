@@ -39,13 +39,28 @@ void main() {
     );
 
     expect(lastMethodCall?.method, 'success');
-    expect(lastMethodCall?.arguments, {'usage': 'media'});
+    expect(lastMethodCall?.arguments,
+        {'usage': 'media', 'useAndroidHapticConstants': false});
   });
 
-  test('vibrate omits arguments when usage is null', () async {
+  test('vibrate includes default useAndroidHapticConstants flag', () async {
     await platform.vibrate(HapticsType.light);
 
     expect(lastMethodCall?.method, 'light');
-    expect(lastMethodCall?.arguments, isNull);
+    expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': false});
+  });
+
+  test('vibrate forwards useAndroidHapticConstants false', () async {
+    await platform.vibrate(HapticsType.heavy, useAndroidHapticConstants: false);
+
+    expect(lastMethodCall?.method, 'heavy');
+    expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': false});
+  });
+
+  test('vibrate forwards useAndroidHapticConstants true', () async {
+    await platform.vibrate(HapticsType.heavy, useAndroidHapticConstants: true);
+
+    expect(lastMethodCall?.method, 'heavy');
+    expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': true});
   });
 }
