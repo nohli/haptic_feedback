@@ -1,3 +1,7 @@
+## 0.6.4+2
+
+* Update readme.
+
 ## 0.6.4+1
 
 * Update readme.

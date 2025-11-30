@@ -43,30 +43,7 @@ try {
 }
 ```
 
-
-### iOS: SwiftPM vs CocoaPods
-
-Flutter can consume this plugin via Swift Package Manager (SPM) or CocoaPods. SPM support in Flutter is still experimental:
-
-1) To enable SPM (Flutter 3.24+): `flutter config --enable-swift-package-manager` or add to `pubspec.yaml`:
-   ```yaml
-   flutter:
-     config:
-       enable-swift-package-manager: true
-   ```
-   If you hit Xcode build issues after switching, do a one-time clean: `flutter clean` and remove Xcode DerivedData for this app (e.g., `rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*`), then rebuild.
-
-2) To stick with CocoaPods (or if you hit SPM issues): disable SPM with `flutter config --no-enable-swift-package-manager` or by adding to `pubspec.yaml`:
-   ```yaml
-   flutter:
-     config:
-       enable-swift-package-manager: false
-   ```
-
-The plugin still supports CocoaPods; SPM is available for native iOS apps and newer Flutter toolchains.
-
-
-### Android-specific options
+## Android-specific options
 
 ```dart
 // Use native Android haptic constants (default: false)
@@ -94,6 +71,28 @@ Use a concrete value whenever the vibration clearly matches one of the
 defined categories (for example `HapticsUsage.notification` for reminders
 or status updates), and keep the default `HapticsUsage.unknown` for simple
 taps and other lightweight UI feedback.
+
+## iOS: SwiftPM vs CocoaPods
+
+Flutter can consume this plugin via Swift Package Manager (SPM) or CocoaPods. SPM support in Flutter is still experimental:
+
+1) To enable SPM (Flutter 3.24+): `flutter config --enable-swift-package-manager` or add to `pubspec.yaml`:
+   ```yaml
+   flutter:
+     config:
+       enable-swift-package-manager: true
+   ```
+   If you hit Xcode build issues after switching, do a one-time clean: `flutter clean` and remove Xcode DerivedData for this app (e.g., `rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*`), then rebuild.
+
+2) To stick with CocoaPods (or if you hit SPM issues): disable SPM with `flutter config --no-enable-swift-package-manager` or by adding to `pubspec.yaml`:
+   ```yaml
+   flutter:
+     config:
+       enable-swift-package-manager: false
+   ```
+
+The plugin still supports CocoaPods; SPM is available for native iOS apps and newer Flutter toolchains.
+
 
 ## Platform Implementation
 
