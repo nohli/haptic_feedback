@@ -97,8 +97,7 @@ Amplitudes (0–255) from normalized intensities:
 
 ### Legacy Android behavior (API < 26)
 
-Below API 26, the plugin uses the old  
-[`Vibrator.vibrate(long[], int)`](https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)) API:
+Below API 26, the plugin uses the old [`Vibrator.vibrate(long[], int)`](https://developer.android.com/reference/android/os/Vibrator#vibrate(long[],%20int)) API:
 
 - It feeds the pattern's timing values (buzz + pause durations) into that API, so the **timing / rhythm** stays the same (same number of pulses and pauses).
 - The API ignores amplitude info, so **strength / intensity** is not preserved — every pulse runs the motor at full power.
