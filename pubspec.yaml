@@ -9,9 +9,9 @@ topics:
   - feedback
   - haptics
   - vibration
-  - plugin
+  - vibrate
 
-version: 0.6.4+2
+version: 0.6.4+3
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
