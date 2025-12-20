@@ -11,7 +11,7 @@ topics:
   - vibration
   - vibrate
 
-version: 0.6.4+5
+version: 0.6.4+3
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
