@@ -1,3 +1,7 @@
+## 0.6.4+5
+
+* Update pub.dev tags.
+
 ## 0.6.4+2
 
 * Update readme.
