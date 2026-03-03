@@ -44,7 +44,7 @@ jobs:
 
       - name: Boot iOS simulator
         id: boot_simulator
-        uses: futureware-tech/simulator-action@v4
+        uses: futureware-tech/simulator-action@v5
         with:
           os_version: ${{ matrix.os-version }}
           model: ${{ matrix.model }}
