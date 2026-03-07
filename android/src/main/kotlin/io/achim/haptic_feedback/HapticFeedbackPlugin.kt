@@ -58,17 +58,19 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "canVibrate") {
-      canVibrate(result)
-    } else {
-      val pattern = Pattern.values().find { it.name == call.method }
-      if (pattern != null) {
-        val args = call.arguments as? Map<*, *>
-        val usage = Usage.fromArguments(args)
-        val useAndroidHapticConstants = (args?.get("useAndroidHapticConstants") as? Boolean) ?: false
-        vibratePattern(pattern, usage, useAndroidHapticConstants, result)
-      } else {
-        result.notImplemented()
+    when (call.method) {
+      "canVibrate" -> canVibrate(result)
+      "prepare" -> result.success(null)
+      else -> {
+        val pattern = Pattern.values().find { it.name == call.method }
+        if (pattern != null) {
+          val args = call.arguments as? Map<*, *>
+          val usage = Usage.fromArguments(args)
+          val useAndroidHapticConstants = (args?.get("useAndroidHapticConstants") as? Boolean) ?: false
+          vibratePattern(pattern, usage, useAndroidHapticConstants, result)
+        } else {
+          result.notImplemented()
+        }
       }
     }
   }

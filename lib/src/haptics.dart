@@ -46,4 +46,22 @@ class Haptics {
       useAndroidHapticConstants: useAndroidHapticConstants,
     );
   }
+
+  /// Prepares the haptic engine for a haptic event of [type], reducing the
+  /// latency of the first haptic in a session on iOS.
+  ///
+  /// On iOS, this calls `prepare()` on the underlying `UIFeedbackGenerator`,
+  /// warming up the Taptic Engine ahead of the actual feedback event. The
+  /// engine stays warm for a few seconds. Call this method when you know
+  /// a haptic event is imminent (e.g., when a screen loads or a gesture
+  /// begins).
+  ///
+  /// This method is a no-op on Android and unsupported platforms.
+  static Future<void> prepare(HapticsType type) async {
+    if (!isPlatformSupported) {
+      return;
+    }
+
+    return HapticFeedbackPlatform.instance.prepare(type);
+  }
 }
