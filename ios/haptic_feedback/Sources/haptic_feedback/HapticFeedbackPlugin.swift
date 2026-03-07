@@ -1,21 +1,25 @@
 import CoreHaptics
 import Flutter
+import UIKit
 
 public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   private let notificationGenerator = UINotificationFeedbackGenerator()
   private let lightImpactGenerator = UIImpactFeedbackGenerator(style: .light)
   private let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
   private let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
-  private var rigidImpactGenerator: UIImpactFeedbackGenerator?
-  private var softImpactGenerator: UIImpactFeedbackGenerator?
+  private let rigidImpactGenerator: UIImpactFeedbackGenerator
+  private let softImpactGenerator: UIImpactFeedbackGenerator
   private let selectionGenerator = UISelectionFeedbackGenerator()
 
   override init() {
-    super.init()
     if #available(iOS 13.0, *) {
       rigidImpactGenerator = UIImpactFeedbackGenerator(style: .rigid)
       softImpactGenerator = UIImpactFeedbackGenerator(style: .soft)
+    } else {
+      rigidImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
+      softImpactGenerator = UIImpactFeedbackGenerator(style: .light)
     }
+    super.init()
   }
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -49,10 +53,10 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
       heavyImpactGenerator.impactOccurred()
       result(nil)
     case "rigid":
-      (rigidImpactGenerator ?? mediumImpactGenerator).impactOccurred()
+      rigidImpactGenerator.impactOccurred()
       result(nil)
     case "soft":
-      (softImpactGenerator ?? lightImpactGenerator).impactOccurred()
+      softImpactGenerator.impactOccurred()
       result(nil)
     case "selection":
       selectionGenerator.selectionChanged()
@@ -87,9 +91,9 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
     case "heavy":
       heavyImpactGenerator.prepare()
     case "rigid":
-      (rigidImpactGenerator ?? mediumImpactGenerator).prepare()
+      rigidImpactGenerator.prepare()
     case "soft":
-      (softImpactGenerator ?? lightImpactGenerator).prepare()
+      softImpactGenerator.prepare()
     case "selection":
       selectionGenerator.prepare()
     default:
