@@ -2,6 +2,22 @@ import CoreHaptics
 import Flutter
 
 public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
+  private let notificationGenerator = UINotificationFeedbackGenerator()
+  private let lightImpactGenerator = UIImpactFeedbackGenerator(style: .light)
+  private let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
+  private let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+  private var rigidImpactGenerator: UIImpactFeedbackGenerator?
+  private var softImpactGenerator: UIImpactFeedbackGenerator?
+  private let selectionGenerator = UISelectionFeedbackGenerator()
+
+  override init() {
+    super.init()
+    if #available(iOS 13.0, *) {
+      rigidImpactGenerator = UIImpactFeedbackGenerator(style: .rigid)
+      softImpactGenerator = UIImpactFeedbackGenerator(style: .soft)
+    }
+  }
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "haptic_feedback", binaryMessenger: registrar.messenger())
     let instance = HapticFeedbackPlugin()
@@ -12,32 +28,35 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
     switch call.method {
     case "canVibrate":
       canVibrate(result: result)
+    case "prepare":
+      prepare(type: call.arguments as? String, result: result)
     case "success":
-      notification(type: .success, result: result)
+      notificationGenerator.notificationOccurred(.success)
+      result(nil)
     case "warning":
-      notification(type: .warning, result: result)
+      notificationGenerator.notificationOccurred(.warning)
+      result(nil)
     case "error":
-      notification(type: .error, result: result)
+      notificationGenerator.notificationOccurred(.error)
+      result(nil)
     case "light":
-      impact(style: .light, result: result)
+      lightImpactGenerator.impactOccurred()
+      result(nil)
     case "medium":
-      impact(style: .medium, result: result)
+      mediumImpactGenerator.impactOccurred()
+      result(nil)
     case "heavy":
-      impact(style: .heavy, result: result)
+      heavyImpactGenerator.impactOccurred()
+      result(nil)
     case "rigid":
-      if #available(iOS 13.0, *) {
-        impact(style: .rigid, result: result)
-      } else {
-        impact(style: .medium, result: result)
-      }
+      (rigidImpactGenerator ?? mediumImpactGenerator).impactOccurred()
+      result(nil)
     case "soft":
-      if #available(iOS 13.0, *) {
-        impact(style: .soft, result: result)
-      } else {
-        impact(style: .light, result: result)
-      }
+      (softImpactGenerator ?? lightImpactGenerator).impactOccurred()
+      result(nil)
     case "selection":
-      selection(result: result)
+      selectionGenerator.selectionChanged()
+      result(nil)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -57,18 +76,25 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
     result(false)
   }
 
-  private func notification(type: UINotificationFeedbackGenerator.FeedbackType, result: @escaping FlutterResult) {
-    UINotificationFeedbackGenerator().notificationOccurred(type)
-    result(nil)
-  }
-
-  private func impact(style: UIImpactFeedbackGenerator.FeedbackStyle, result: @escaping FlutterResult) {
-    UIImpactFeedbackGenerator(style: style).impactOccurred()
-    result(nil)
-  }
-
-  private func selection(result: @escaping FlutterResult) {
-    UISelectionFeedbackGenerator().selectionChanged()
+  private func prepare(type: String?, result: @escaping FlutterResult) {
+    switch type {
+    case "success", "warning", "error":
+      notificationGenerator.prepare()
+    case "light":
+      lightImpactGenerator.prepare()
+    case "medium":
+      mediumImpactGenerator.prepare()
+    case "heavy":
+      heavyImpactGenerator.prepare()
+    case "rigid":
+      (rigidImpactGenerator ?? mediumImpactGenerator).prepare()
+    case "soft":
+      (softImpactGenerator ?? lightImpactGenerator).prepare()
+    case "selection":
+      selectionGenerator.prepare()
+    default:
+      break
+    }
     result(nil)
   }
 }

@@ -63,4 +63,20 @@ void main() {
     expect(lastMethodCall?.method, 'heavy');
     expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': true});
   });
+
+  test('prepare invokes prepare method with type name', () async {
+    await platform.prepare(HapticsType.light);
+
+    expect(lastMethodCall?.method, 'prepare');
+    expect(lastMethodCall?.arguments, 'light');
+  });
+
+  test('prepare forwards each haptics type correctly', () async {
+    for (final type in HapticsType.values) {
+      await platform.prepare(type);
+
+      expect(lastMethodCall?.method, 'prepare');
+      expect(lastMethodCall?.arguments, type.name);
+    }
+  });
 }

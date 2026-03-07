@@ -29,4 +29,9 @@ class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
 
     return await methodChannel.invokeMethod(type.name, arguments);
   }
+
+  @override
+  Future<void> prepare(HapticsType type) async {
+    return await methodChannel.invokeMethod('prepare', type.name);
+  }
 }
