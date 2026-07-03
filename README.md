@@ -4,7 +4,7 @@ A haptic feedback plugin for both iOS and Android.
 
 While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
-For a guide on when to use each haptic type, see [Guide to missing haptic types](https://flutterpro.tips/tips/haptic-feedback) by Kamran.
+For a guide on when to use each haptic type, see [Missing haptic types, and which to use when](https://flutterpro.design/details/haptic-feedback) by Kamran.
 
 ## Getting Started
 
