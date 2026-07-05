@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         # https://github.com/futureware-tech/simulator-action/wiki/Devices-macos-latest
-        os-version: ['26.0']
+        os-version: ['26.2']
         model: ['iPhone 16']
 
     steps:
