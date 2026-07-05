@@ -48,7 +48,7 @@ jobs:
           IOS_MODEL: ${{ matrix.model }}
           IOS_VERSION: ${{ matrix.os-version }}
         run: |
-          UDID="$(python3 - <<'PY'
+          mapfile -t SIMULATOR_INFO < <(python3 - <<'PY'
           import json
           import os
           import subprocess
@@ -113,9 +113,15 @@ jobs:
               )
 
           print(devices[0]["udid"])
+          print(devices[0].get("state", ""))
           PY
-          )"
-          xcrun simctl shutdown "$UDID" || true
+          )
+          UDID="${SIMULATOR_INFO[0]}"
+          STATE="${SIMULATOR_INFO[1]}"
+          echo "Selected simulator: $IOS_MODEL (iOS $IOS_VERSION) [$UDID] state=${STATE:-unknown}"
+          if [ "${STATE:-}" != 'Shutdown' ] && [ -n "${STATE:-}" ]; then
+            xcrun simctl shutdown "$UDID"
+          fi
           xcrun simctl erase "$UDID"
           xcrun simctl boot "$UDID"
           xcrun simctl bootstatus "$UDID" -b
