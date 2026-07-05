@@ -44,94 +44,12 @@ jobs:
 
       - name: Boot iOS simulator
         id: boot_simulator
-        env:
-          IOS_MODEL: ${{ matrix.model }}
-          IOS_VERSION: ${{ matrix.os-version }}
-        run: |
-          mapfile -t SIMULATOR_INFO < <(python3 - <<'PY'
-          import json
-          import os
-          import subprocess
-          import sys
-
-          model = os.environ["IOS_MODEL"]
-          version = os.environ["IOS_VERSION"]
-          simulators = json.loads(
-              subprocess.check_output(
-                  ["xcrun", "simctl", "list", "--json"],
-                  text=True,
-              )
-          )
-
-          runtime = next(
-              (
-                  runtime
-                  for runtime in simulators.get("runtimes", [])
-                  if runtime.get("isAvailable")
-                  and runtime.get("platform") == "iOS"
-                  and runtime.get("version") == version
-              ),
-              None,
-          )
-
-          if runtime is None:
-              available_versions = sorted(
-                  {
-                      runtime.get("version")
-                      for runtime in simulators.get("runtimes", [])
-                      if runtime.get("isAvailable")
-                      and runtime.get("platform") == "iOS"
-                      and runtime.get("version")
-                  }
-              )
-              raise SystemExit(
-                  "No available iOS runtime found for version "
-                  f"{version}. Available iOS runtimes: "
-                  f"{', '.join(available_versions) or 'none'}"
-              )
-
-          devices = [
-              device
-              for device in simulators.get("devices", {}).get(runtime["identifier"], [])
-              if device.get("isAvailable") and device.get("name") == model
-          ]
-
-          if not devices:
-              available_models = sorted(
-                  {
-                      device.get("name")
-                      for device in simulators.get("devices", {}).get(
-                          runtime["identifier"], []
-                      )
-                      if device.get("isAvailable") and device.get("name")
-                  }
-              )
-              raise SystemExit(
-                  f"No available '{model}' simulator found for iOS {version}. "
-                  f"Available devices for this runtime: "
-                  f"{', '.join(available_models) or 'none'}"
-              )
-
-          print(devices[0]["udid"])
-          print(devices[0].get("state", ""))
-          PY
-          )
-          UDID="${SIMULATOR_INFO[0]}"
-          STATE="${SIMULATOR_INFO[1]}"
-          echo "Selected simulator: $IOS_MODEL (iOS $IOS_VERSION) [$UDID] state=${STATE:-unknown}"
-          if [ "${STATE:-}" != 'Shutdown' ] && [ -n "${STATE:-}" ]; then
-            xcrun simctl shutdown "$UDID"
-          fi
-          xcrun simctl erase "$UDID"
-          xcrun simctl boot "$UDID"
-          xcrun simctl bootstatus "$UDID" -b
-          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+        uses: futureware-tech/simulator-action@v5
+        with:
+          os_version: ${{ matrix.os-version }}
+          model: ${{ matrix.model }}
 
       - name: Run integration tests on iOS
         run: |
           cd example
           flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
-
-      - name: Shutdown iOS simulator
-        if: always() && steps.boot_simulator.outputs.udid != ''
-        run: xcrun simctl shutdown "${{ steps.boot_simulator.outputs.udid }}" || true
