@@ -84,7 +84,7 @@ jobs:
                       and runtime.get("version")
                   }
               )
-              sys.exit(
+              raise SystemExit(
                   "No available iOS runtime found for version "
                   f"{version}. Available iOS runtimes: "
                   f"{', '.join(available_versions) or 'none'}"
@@ -106,7 +106,7 @@ jobs:
                       if device.get("isAvailable") and device.get("name")
                   }
               )
-              sys.exit(
+              raise SystemExit(
                   f"No available '{model}' simulator found for iOS {version}. "
                   f"Available devices for this runtime: "
                   f"{', '.join(available_models) or 'none'}"
