@@ -1,3 +1,7 @@
+## 0.6.4+4
+
+* Update readme (article link).
+
 ## 0.6.4+3
 
 * Update pub.dev topic.
