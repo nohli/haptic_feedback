@@ -1,3 +1,7 @@
+## 0.6.5
+
+* Fix iOS Swift Package Manager build: link `FlutterFramework` in `Package.swift` (resolves undefined symbols `FlutterMethodChannel`, `FlutterMethodNotImplemented` when using Flutter SPM).
+
 ## 0.6.4+4
 
 * Update readme (article link).

@@ -12,11 +12,15 @@ let package = Package(
         // Match Flutter's generated SwiftPM expectation (`haptic-feedback`).
         .library(name: "haptic-feedback", type: .dynamic, targets: ["haptic_feedback"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "FlutterFramework", path: "../FlutterFramework")
+    ],
     targets: [
         .target(
             name: "haptic_feedback",
-            dependencies: []
+            dependencies: [
+                .product(name: "FlutterFramework", package: "FlutterFramework")
+            ]
         )
     ]
 )
