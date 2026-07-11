@@ -49,8 +49,7 @@ void main() {
     expect(recordingPlatform.lastUseAndroidHapticConstants, false);
   });
 
-  test(
-      'vibrate forwards useAndroidHapticConstants to the platform implementation',
+  test('vibrate forwards useAndroidHapticConstants to the platform implementation',
       () async {
     final recordingPlatform = RecordingHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = recordingPlatform;
@@ -62,5 +61,26 @@ void main() {
 
     expect(recordingPlatform.lastType, HapticsType.success);
     expect(recordingPlatform.lastUseAndroidHapticConstants, false);
+  });
+
+  test('prepare forwards type to the platform implementation', () async {
+    final recordingPlatform = RecordingHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = recordingPlatform;
+
+    await Haptics.prepare(HapticsType.light);
+
+    expect(recordingPlatform.lastPreparedType, HapticsType.light);
+  });
+
+  test('prepare performs nothing on unsupported platforms', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+    final recordingPlatform = RecordingHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = recordingPlatform;
+
+    await Haptics.prepare(HapticsType.heavy);
+
+    expect(recordingPlatform.lastPreparedType, isNull);
   });
 }

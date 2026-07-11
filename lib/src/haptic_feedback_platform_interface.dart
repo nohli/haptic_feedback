@@ -44,4 +44,12 @@ abstract class HapticFeedbackPlatform extends PlatformInterface {
       'Use the implementation method of MethodChannelHapticFeedback.',
     );
   }
+
+  /// Prepares the haptic engine for the given [type] on iOS, reducing latency
+  /// for the next haptic event. This is a no-op on Android.
+  Future<void> prepare(HapticsType type) {
+    throw UnsupportedError(
+      'Use the implementation method of MethodChannelHapticFeedback.',
+    );
+  }
 }
