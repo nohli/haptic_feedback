@@ -4,6 +4,10 @@ A haptic feedback plugin for both iOS and Android.
 
 While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
+`haptic_feedback` requires Flutter 3.44 or newer and Android API 24 or newer when targeting Android.
+It does not apply or provide a Kotlin Gradle Plugin. AGP 8 hosts can still build
+when the host app supplies one; AGP 9 hosts can use built-in Kotlin support.
+
 For a guide on when to use each haptic type, see [Missing haptic types, and which to use when](https://flutterpro.design/details/haptic-feedback) by Kamran.
 
 ## Getting Started
@@ -74,25 +78,20 @@ taps and other lightweight UI feedback.
 
 ## iOS: SwiftPM vs CocoaPods
 
-Flutter can consume this plugin via Swift Package Manager (SPM) or CocoaPods. SPM support in Flutter is still experimental:
+Flutter 3.44 enables Swift Package Manager (SPM) by default. This plugin
+supports both SPM and CocoaPods.
 
-1) To enable SPM (Flutter 3.24+): `flutter config --enable-swift-package-manager` or add to `pubspec.yaml`:
-   ```yaml
-   flutter:
-     config:
-       enable-swift-package-manager: true
-   ```
-   If you hit Xcode build issues after switching, do a one-time clean: `flutter clean` and remove Xcode DerivedData for this app (e.g., `rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*`), then rebuild.
+To explicitly enable SPM, run:
 
-2) To stick with CocoaPods (or if you hit SPM issues): disable SPM with `flutter config --no-enable-swift-package-manager` or by adding to `pubspec.yaml`:
-   ```yaml
-   flutter:
-     config:
-       enable-swift-package-manager: false
-   ```
+```shell
+flutter config --enable-swift-package-manager
+```
 
-The plugin still supports CocoaPods; SPM is available for native iOS apps and newer Flutter toolchains.
+To use CocoaPods, run:
 
+```shell
+flutter config --no-enable-swift-package-manager
+```
 
 ## Platform Implementation
 

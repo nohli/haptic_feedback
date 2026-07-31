@@ -17,9 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Haptic feedback playground'),
-        ),
+        appBar: AppBar(title: const Text('Haptic feedback playground')),
         body: const _HapticsList(),
       ),
     );
@@ -73,7 +71,7 @@ class _HapticsListState extends State<_HapticsList> {
                 value: _useAndroidHapticConstants,
                 onChanged: (value) =>
                     setState(() => _useAndroidHapticConstants = value),
-              )
+              ),
             ],
           ),
         ],

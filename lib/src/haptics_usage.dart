@@ -1,8 +1,10 @@
-/// Controls which Android vibration usage category is applied to a haptic pattern.
+/// Controls which Android vibration usage category is applied to a haptic
+/// pattern.
 ///
 /// Android 13 (API level 33) introduced [VibrationAttributes], allowing apps to
 /// tell the system why a vibration is being triggered. The platform can then
-/// respect the user's preference for each category (media, alarms, touch, etc.).
+/// respect the user's preference for each category (media, alarms, touch,
+/// etc.).
 /// On older Android versions this information is ignored.
 ///
 /// If no usage is provided, the plugin falls back to Android's default

@@ -1,3 +1,11 @@
+## 0.7.0
+
+* **Breaking:** Require Flutter 3.44.
+* **Breaking:** Require Android API 24 or newer.
+* Remove the plugin-owned Kotlin Gradle Plugin so host apps can use Android
+  Gradle Plugin 9's built-in Kotlin support.
+* Update the Android example to AGP 9.1.1 and Gradle 9.3.1.
+
 ## 0.6.5
 
 * Fix iOS Swift Package Manager build: link `FlutterFramework` in `Package.swift` (resolves undefined symbols `FlutterMethodChannel`, `FlutterMethodNotImplemented` when using Flutter SPM).
