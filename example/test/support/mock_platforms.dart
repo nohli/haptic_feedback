@@ -17,4 +17,7 @@ class MockHapticFeedbackPlatform
     HapticsUsage? usage,
     bool useAndroidHapticConstants = false,
   }) async {}
+
+  @override
+  Future<void> prepare(HapticsType type) async {}
 }

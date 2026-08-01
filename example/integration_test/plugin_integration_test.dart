@@ -21,8 +21,11 @@ void main() {
     expect(canVibrate, isA<bool>());
   });
 
-  testWidgets('vibrate completes for every type', (WidgetTester tester) async {
+  testWidgets('prepare and vibrate complete for every type', (
+    WidgetTester tester,
+  ) async {
     for (final type in HapticsType.values) {
+      await expectLater(Haptics.prepare(type), completes);
       await expectLater(Haptics.vibrate(type), completes);
     }
   });
