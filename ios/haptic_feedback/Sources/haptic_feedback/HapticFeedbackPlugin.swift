@@ -97,7 +97,14 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
     case "selection":
       selectionGenerator.prepare()
     default:
-      break
+      result(
+        FlutterError(
+          code: "invalid_arguments",
+          message: "Invalid or missing haptic type",
+          details: type
+        )
+      )
+      return
     }
     result(nil)
   }
