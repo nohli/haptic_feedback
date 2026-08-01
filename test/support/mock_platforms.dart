@@ -19,6 +19,9 @@ class MockHapticFeedbackPlatform
     HapticsUsage? usage,
     bool useAndroidHapticConstants = false,
   }) async {}
+
+  @override
+  Future<void> prepare(HapticsType type) async {}
 }
 
 class RecordingHapticFeedbackPlatform
@@ -27,6 +30,7 @@ class RecordingHapticFeedbackPlatform
   HapticsType? lastType;
   HapticsUsage? lastUsage;
   bool? lastUseAndroidHapticConstants;
+  HapticsType? lastPreparedType;
 
   @override
   Future<bool> canVibrate() async {
@@ -42,5 +46,10 @@ class RecordingHapticFeedbackPlatform
     lastType = type;
     lastUsage = usage;
     lastUseAndroidHapticConstants = useAndroidHapticConstants;
+  }
+
+  @override
+  Future<void> prepare(HapticsType type) async {
+    lastPreparedType = type;
   }
 }

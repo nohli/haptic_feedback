@@ -44,4 +44,11 @@ abstract class HapticFeedbackPlatform extends PlatformInterface {
       'Use the implementation method of MethodChannelHapticFeedback.',
     );
   }
+
+  /// Prepares the haptic engine for the given [type].
+  Future<void> prepare(HapticsType type) {
+    throw UnsupportedError(
+      'Use the implementation method of MethodChannelHapticFeedback.',
+    );
+  }
 }

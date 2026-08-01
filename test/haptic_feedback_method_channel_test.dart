@@ -18,7 +18,7 @@ void main() {
       channel,
       (MethodCall methodCall) async {
         lastMethodCall = methodCall;
-        return true;
+        return methodCall.method == 'canVibrate' ? true : null;
       },
     );
   });
@@ -62,5 +62,14 @@ void main() {
 
     expect(lastMethodCall?.method, 'heavy');
     expect(lastMethodCall?.arguments, {'useAndroidHapticConstants': true});
+  });
+
+  test('prepare forwards every haptics type', () async {
+    for (final type in HapticsType.values) {
+      await platform.prepare(type);
+
+      expect(lastMethodCall?.method, 'prepare');
+      expect(lastMethodCall?.arguments, type.name);
+    }
   });
 }
