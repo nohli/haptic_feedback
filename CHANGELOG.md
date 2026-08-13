@@ -4,7 +4,7 @@
 * **Breaking:** Require Android API 24 or newer.
 * Remove the plugin-owned Kotlin Gradle Plugin so host apps can use Android
   Gradle Plugin 9's built-in Kotlin support.
-* Update the Android example to AGP 9.1.1 and Gradle 9.3.1.
+* Update the Android example to AGP 9.2.1 and Gradle 9.4.1.
 
 ## 0.6.5
 
