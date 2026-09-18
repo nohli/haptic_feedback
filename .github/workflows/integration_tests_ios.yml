@@ -60,6 +60,16 @@ jobs:
       - name: Run integration tests on iOS
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_spm"
-          test ! -e ios/Podfile
+          [ ! -e ios/Podfile ]
           flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
-          test ! -d ios/Pods
+          [ ! -d ios/Pods ]
+
+      - name: Run example native tests on iOS
+        run: |
+          cd example
+          flutter pub get
+          xcodebuild -quiet test \
+            -project ios/Runner.xcodeproj \
+            -scheme Runner \
+            -destination "platform=iOS Simulator,id=${{ steps.boot_simulator.outputs.udid }}" \
+            CODE_SIGNING_ALLOWED=NO

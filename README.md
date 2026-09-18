@@ -4,7 +4,7 @@ A haptic feedback plugin for both iOS and Android.
 
 While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
-`haptic_feedback` requires Flutter 3.44 or newer and Android API 24 or newer when targeting Android.
+`haptic_feedback` requires Flutter 3.47 or newer and Android API 24 or newer when targeting Android.
 It does not apply or provide a Kotlin Gradle Plugin. AGP 8 hosts can still build
 when the host app supplies one; AGP 9 hosts can use built-in Kotlin support.
 

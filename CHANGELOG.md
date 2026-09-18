@@ -1,6 +1,6 @@
 ## 0.7.0
 
-* **Breaking:** Require Flutter 3.44.
+* **Breaking:** Require Flutter 3.47.
 * **Breaking:** Require Android API 24 or newer.
 * Remove the plugin-owned Kotlin Gradle Plugin so host apps can use Android
   Gradle Plugin 9's built-in Kotlin support.
