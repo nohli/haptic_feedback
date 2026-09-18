@@ -29,7 +29,10 @@ class Haptics {
       return;
     }
 
-    return HapticFeedbackPlatform.instance.prepare(type);
+    final platform = HapticFeedbackPlatform.instance;
+    if (platform is HapticFeedbackPreparationPlatform) {
+      await (platform as HapticFeedbackPreparationPlatform).prepare(type);
+    }
   }
 
   /// Performs haptic feedback of [HapticsType] on the device.

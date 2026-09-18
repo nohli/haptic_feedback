@@ -19,14 +19,11 @@ class MockHapticFeedbackPlatform
     HapticsUsage? usage,
     bool useAndroidHapticConstants = false,
   }) async {}
-
-  @override
-  Future<void> prepare(HapticsType type) async {}
 }
 
 class RecordingHapticFeedbackPlatform
     with MockPlatformInterfaceMixin
-    implements HapticFeedbackPlatform {
+    implements HapticFeedbackPlatform, HapticFeedbackPreparationPlatform {
   HapticsType? lastType;
   HapticsUsage? lastUsage;
   bool? lastUseAndroidHapticConstants;
