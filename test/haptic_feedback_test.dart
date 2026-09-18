@@ -44,6 +44,13 @@ void main() {
     expect(recordingPlatform.lastPreparedType, HapticsType.light);
   });
 
+  test('prepare supports existing platform implementations', () async {
+    const existingPlatform = MockHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = existingPlatform;
+
+    await expectLater(Haptics.prepare(HapticsType.light), completes);
+  });
+
   test('prepare does nothing on unsupported platforms', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     addTearDown(() => debugDefaultTargetPlatformOverride = null);
