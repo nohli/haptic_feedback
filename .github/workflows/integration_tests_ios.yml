@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   integration_test_ios:
-    name: iOS ${{ matrix.os-version }} - ${{ matrix.model }}
+    name: iOS SwiftPM ${{ matrix.os-version }} - ${{ matrix.model }}
     runs-on: macos-latest
     timeout-minutes: 20
     strategy:
@@ -33,14 +33,22 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Disable analytics
-        run: flutter config --no-analytics
-
-      - name: Flutter pub get
+      - name: Configure Flutter
         run: |
-          flutter pub get
-          cd example
-          flutter pub get
+          flutter config --no-analytics
+          flutter config --enable-swift-package-manager
+
+      - name: Create SwiftPM test app
+        run: |
+          flutter create --platforms=ios --org io.achim \
+            "$RUNNER_TEMP/haptic_feedback_spm"
+          cd "$RUNNER_TEMP/haptic_feedback_spm"
+          flutter pub add \
+            "haptic_feedback@{path: $GITHUB_WORKSPACE}" \
+            "dev:integration_test@{sdk: flutter}"
+          mkdir -p integration_test
+          cp "$GITHUB_WORKSPACE/example/integration_test/plugin_integration_test.dart" \
+            integration_test/
 
       - name: Boot iOS simulator
         id: boot_simulator
@@ -48,8 +56,21 @@ jobs:
         with:
           os_version: ${{ matrix.os-version }}
           model: ${{ matrix.model }}
+          shutdown_after_job: false
 
       - name: Run integration tests on iOS
         run: |
-          cd example
+          cd "$RUNNER_TEMP/haptic_feedback_spm"
+          [ ! -e ios/Podfile ]
           flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
+          [ ! -d ios/Pods ]
+
+      - name: Run example native tests on iOS
+        run: |
+          cd example
+          flutter pub get
+          xcodebuild -quiet test \
+            -project ios/Runner.xcodeproj \
+            -scheme Runner \
+            -destination "platform=iOS Simulator,id=${{ steps.boot_simulator.outputs.udid }}" \
+            CODE_SIGNING_ALLOWED=NO

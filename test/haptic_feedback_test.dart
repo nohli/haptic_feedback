@@ -50,8 +50,8 @@ void main() {
   });
 
   test(
-      'vibrate forwards useAndroidHapticConstants to the platform implementation',
-      () async {
+      'vibrate forwards useAndroidHapticConstants to the platform '
+      'implementation', () async {
     final recordingPlatform = RecordingHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = recordingPlatform;
 
