@@ -1,5 +1,4 @@
-/// Pass the [HapticsType] to [Haptics.vibrate] to
-/// trigger a haptic feedback.
+/// Pass the [HapticsType] to [Haptics.prepare] or [Haptics.vibrate].
 enum HapticsType {
   /// https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS
 

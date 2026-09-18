@@ -45,3 +45,9 @@ abstract class HapticFeedbackPlatform extends PlatformInterface {
     );
   }
 }
+
+/// Optional capability for platforms that can prepare haptic feedback.
+abstract interface class HapticFeedbackPreparationPlatform {
+  /// Prepares the haptic engine for the given [type].
+  Future<void> prepare(HapticsType type);
+}
