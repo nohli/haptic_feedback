@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback_example/haptics_type_description.dart';
-import 'package:open_settings_plus/core/open_settings_plus.dart';
 
 void main() => runApp(const MyApp());
 
@@ -61,11 +60,6 @@ class _HapticsListState extends State<_HapticsList> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextButton(
-                onPressed: OpenSettingsPlusAndroid().sound,
-                child: Text('Open settings'),
-              ),
-              const SizedBox(width: 8),
               const Text('Use haptic constants'),
               Switch.adaptive(
                 value: _useAndroidHapticConstants,
