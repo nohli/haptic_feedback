@@ -69,6 +69,7 @@ jobs:
 
       - name: Run SwiftPM integration tests on iOS
         if: matrix.package-manager == 'SwiftPM'
+        timeout-minutes: 20
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ ! -e ios/Podfile ]
@@ -77,6 +78,7 @@ jobs:
 
       - name: Run CocoaPods integration tests on iOS
         if: matrix.package-manager == 'CocoaPods'
+        timeout-minutes: 20
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ -e ios/Podfile ]
@@ -86,6 +88,7 @@ jobs:
 
       - name: Run example native tests on iOS
         if: matrix.package-manager == 'SwiftPM'
+        timeout-minutes: 10
         run: |
           cd example
           flutter pub get
