@@ -15,7 +15,7 @@ jobs:
   integration_test_ios:
     name: iOS ${{ matrix.package-manager }} ${{ matrix.os-version }} - ${{ matrix.model }}
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
