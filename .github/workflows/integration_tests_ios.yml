@@ -13,13 +13,14 @@ concurrency:
 
 jobs:
   integration_test_ios:
-    name: iOS SwiftPM ${{ matrix.os-version }} - ${{ matrix.model }}
+    name: iOS ${{ matrix.package-manager }} ${{ matrix.os-version }} - ${{ matrix.model }}
     runs-on: macos-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         # https://github.com/futureware-tech/simulator-action/wiki/Devices-macos-latest
+        package-manager: ['SwiftPM', 'CocoaPods']
         os-version: ['26.2']
         model: ['iPhone 17']
 
@@ -33,16 +34,23 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Configure Flutter
+      - name: Configure Flutter for SwiftPM
+        if: matrix.package-manager == 'SwiftPM'
         run: |
           flutter config --no-analytics
           flutter config --enable-swift-package-manager
 
-      - name: Create SwiftPM test app
+      - name: Configure Flutter for CocoaPods
+        if: matrix.package-manager == 'CocoaPods'
+        run: |
+          flutter config --no-analytics
+          flutter config --no-enable-swift-package-manager
+
+      - name: Create integration test app
         run: |
           flutter create --platforms=ios --org io.achim \
-            "$RUNNER_TEMP/haptic_feedback_spm"
-          cd "$RUNNER_TEMP/haptic_feedback_spm"
+            "$RUNNER_TEMP/haptic_feedback_integration"
+          cd "$RUNNER_TEMP/haptic_feedback_integration"
           flutter pub add \
             "haptic_feedback@{path: $GITHUB_WORKSPACE}" \
             "dev:integration_test@{sdk: flutter}"
@@ -58,14 +66,25 @@ jobs:
           model: ${{ matrix.model }}
           shutdown_after_job: false
 
-      - name: Run integration tests on iOS
+      - name: Run SwiftPM integration tests on iOS
+        if: matrix.package-manager == 'SwiftPM'
         run: |
-          cd "$RUNNER_TEMP/haptic_feedback_spm"
+          cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ ! -e ios/Podfile ]
           flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
           [ ! -d ios/Pods ]
 
+      - name: Run CocoaPods integration tests on iOS
+        if: matrix.package-manager == 'CocoaPods'
+        run: |
+          cd "$RUNNER_TEMP/haptic_feedback_integration"
+          [ -e ios/Podfile ]
+          flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
+          [ -e ios/Podfile.lock ]
+          [ -d ios/Pods ]
+
       - name: Run example native tests on iOS
+        if: matrix.package-manager == 'SwiftPM'
         run: |
           cd example
           flutter pub get
