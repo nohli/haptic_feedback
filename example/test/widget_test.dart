@@ -11,33 +11,30 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback_example/main.dart';
 
 void main() {
-  testWidgets(
-    'Haptics types are displayed in example',
-    (WidgetTester tester) async {
-      final originalSize = tester.view.physicalSize;
-      final originalPixelRatio = tester.view.devicePixelRatio;
+  testWidgets('Haptics types are displayed in example', (
+    WidgetTester tester,
+  ) async {
+    final originalSize = tester.view.physicalSize;
+    final originalPixelRatio = tester.view.devicePixelRatio;
 
-      // Set the size of the testing window.
-      tester.view.physicalSize = const Size(1080, 1920);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(() {
-        tester.view.physicalSize = originalSize;
-        tester.view.devicePixelRatio = originalPixelRatio;
-      });
+    // Set the size of the testing window.
+    tester.view.physicalSize = const Size(1080, 1920);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(() {
+      tester.view.physicalSize = originalSize;
+      tester.view.devicePixelRatio = originalPixelRatio;
+    });
 
-      // Build our app and trigger a frame.
-      await tester.pumpWidget(const MyApp());
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
 
-      // Verify that it shows the last haptics type.
-      expect(
-        find.byWidgetPredicate(
-          (Widget widget) {
-            return widget is Text &&
-                widget.data!.startsWith(HapticsType.values.last.name);
-          },
-        ),
-        findsOneWidget,
-      );
-    },
-  );
+    // Verify that it shows the last haptics type.
+    expect(
+      find.byWidgetPredicate((Widget widget) {
+        return widget is Text &&
+            widget.data!.startsWith(HapticsType.values.last.name);
+      }),
+      findsOneWidget,
+    );
+  });
 }

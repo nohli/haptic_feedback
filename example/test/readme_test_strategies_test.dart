@@ -46,42 +46,43 @@ void main() {
     );
   });
 
-  test('mocking the method channel keeps MethodChannelHapticFeedback usable',
-      () async {
-    final binding = TestDefaultBinaryMessengerBinding.instance;
-    const channel = MethodChannelHapticFeedback.methodChannel;
-    MethodCall? lastCall;
-    Map<dynamic, dynamic>? lastArguments;
+  test(
+    'mocking the method channel keeps MethodChannelHapticFeedback usable',
+    () async {
+      final binding = TestDefaultBinaryMessengerBinding.instance;
+      const channel = MethodChannelHapticFeedback.methodChannel;
+      MethodCall? lastCall;
+      Map<dynamic, dynamic>? lastArguments;
 
-    binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      channel,
-      (MethodCall call) async {
+      binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+        MethodCall call,
+      ) async {
         lastCall = call;
         lastArguments = call.arguments as Map<dynamic, dynamic>?;
         if (call.method == 'canVibrate') return true;
         return null;
-      },
-    );
-    addTearDown(
-      () => binding.defaultBinaryMessenger.setMockMethodCallHandler(
-        channel,
-        null,
-      ),
-    );
+      });
+      addTearDown(
+        () => binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          channel,
+          null,
+        ),
+      );
 
-    final platform = MethodChannelHapticFeedback();
+      final platform = MethodChannelHapticFeedback();
 
-    expect(await platform.canVibrate(), isTrue);
-    await platform.vibrate(
-      HapticsType.success,
-      usage: HapticsUsage.media,
-      useAndroidHapticConstants: true,
-    );
+      expect(await platform.canVibrate(), isTrue);
+      await platform.vibrate(
+        HapticsType.success,
+        usage: HapticsUsage.media,
+        useAndroidHapticConstants: true,
+      );
 
-    expect(lastCall?.method, 'success');
-    expect(
-      lastArguments,
-      {'usage': 'media', 'useAndroidHapticConstants': true},
-    );
-  });
+      expect(lastCall?.method, 'success');
+      expect(lastArguments, {
+        'usage': 'media',
+        'useAndroidHapticConstants': true,
+      });
+    },
+  );
 }

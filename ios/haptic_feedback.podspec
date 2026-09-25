@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'haptic_feedback'
-  s.version          = '0.5.1'
+  s.version          = '0.7.0'
   s.summary          = 'A Flutter plugin for haptic feedback.'
   s.description      = <<-DESC
 Haptic Feedback.
