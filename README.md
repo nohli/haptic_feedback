@@ -78,7 +78,7 @@ taps and other lightweight UI feedback.
 
 ## iOS: SwiftPM vs CocoaPods
 
-Flutter 3.44 enables Swift Package Manager (SPM) by default. This plugin
+Flutter 3.47 enables Swift Package Manager (SPM) by default. This plugin
 supports both SPM and CocoaPods.
 
 To explicitly enable SPM, run:
