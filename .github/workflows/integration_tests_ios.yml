@@ -64,6 +64,7 @@ jobs:
         with:
           os_version: ${{ matrix.os-version }}
           model: ${{ matrix.model }}
+          wait_for_boot: true
           shutdown_after_job: false
 
       - name: Run SwiftPM integration tests on iOS
