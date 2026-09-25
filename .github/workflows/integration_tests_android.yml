@@ -39,10 +39,6 @@ on:
       - 'example/ios/**'
       - 'example/test/**'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   integration_test:
     name: Android API ${{ matrix.api-level }} - ${{ matrix.profile }}
