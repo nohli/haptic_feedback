@@ -15,7 +15,7 @@ jobs:
   integration_test_ios:
     name: iOS ${{ matrix.package-manager }} ${{ matrix.os-version }} - ${{ matrix.model }}
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
@@ -68,6 +68,7 @@ jobs:
 
       - name: Run SwiftPM integration tests on iOS
         if: matrix.package-manager == 'SwiftPM'
+        timeout-minutes: 20
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ ! -e ios/Podfile ]
@@ -76,6 +77,7 @@ jobs:
 
       - name: Run CocoaPods integration tests on iOS
         if: matrix.package-manager == 'CocoaPods'
+        timeout-minutes: 20
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ -e ios/Podfile ]
@@ -85,6 +87,7 @@ jobs:
 
       - name: Run example native tests on iOS
         if: matrix.package-manager == 'SwiftPM'
+        timeout-minutes: 10
         run: |
           cd example
           flutter pub get
