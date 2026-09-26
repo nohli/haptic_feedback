@@ -85,6 +85,8 @@ jobs:
           mkdir -p integration_test
           cp "$GITHUB_WORKSPACE/example/integration_test/plugin_integration_test.dart" \
             integration_test/
+          cp "$GITHUB_WORKSPACE/.github/test_support/RunnerTests.swift" \
+            ios/RunnerTests/RunnerTests.swift
 
       - name: Boot iOS simulator
         id: boot_simulator
@@ -95,24 +97,56 @@ jobs:
           wait_for_boot: true
           shutdown_after_job: false
 
+      - name: Configure integration test app
+        run: |
+          cd "$RUNNER_TEMP/haptic_feedback_integration"
+          flutter build ios --config-only --simulator --debug --no-pub \
+            integration_test/plugin_integration_test.dart
+
       - name: Run SwiftPM integration tests on iOS
         if: matrix.package-manager == 'SwiftPM'
-        timeout-minutes: 20
+        timeout-minutes: 15
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ ! -e ios/Podfile ]
-          flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
+          xcodebuild test \
+            -project ios/Runner.xcodeproj \
+            -scheme Runner \
+            -destination "platform=iOS Simulator,id=${{ steps.boot_simulator.outputs.udid }}" \
+            -parallel-testing-enabled NO \
+            -test-timeouts-enabled YES \
+            -default-test-execution-time-allowance 300 \
+            -maximum-test-execution-time-allowance 300 \
+            -resultBundlePath "$RUNNER_TEMP/haptic-feedback-SwiftPM.xcresult" \
+            CODE_SIGNING_ALLOWED=NO
           [ ! -d ios/Pods ]
 
       - name: Run CocoaPods integration tests on iOS
         if: matrix.package-manager == 'CocoaPods'
-        timeout-minutes: 20
+        timeout-minutes: 15
         run: |
           cd "$RUNNER_TEMP/haptic_feedback_integration"
           [ -e ios/Podfile ]
-          flutter test integration_test -d "${{ steps.boot_simulator.outputs.udid }}"
+          xcodebuild test \
+            -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -destination "platform=iOS Simulator,id=${{ steps.boot_simulator.outputs.udid }}" \
+            -parallel-testing-enabled NO \
+            -test-timeouts-enabled YES \
+            -default-test-execution-time-allowance 300 \
+            -maximum-test-execution-time-allowance 300 \
+            -resultBundlePath "$RUNNER_TEMP/haptic-feedback-CocoaPods.xcresult" \
+            CODE_SIGNING_ALLOWED=NO
           [ -e ios/Podfile.lock ]
           [ -d ios/Pods ]
+
+      - name: Upload XCTest results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: haptic-feedback-${{ matrix.package-manager }}-xcresult-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/haptic-feedback-${{ matrix.package-manager }}.xcresult
+          if-no-files-found: error
 
       - name: Run example native tests on iOS
         if: matrix.package-manager == 'SwiftPM'
