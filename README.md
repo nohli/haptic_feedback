@@ -23,6 +23,8 @@ flutter pub add haptic_feedback
 ```dart
 final canVibrate = await Haptics.canVibrate();
 
+// Call shortly before an expected haptic to reduce initial latency on iOS.
+await Haptics.prepare(HapticsType.success);
 await Haptics.vibrate(HapticsType.success);
 await Haptics.vibrate(HapticsType.warning);
 await Haptics.vibrate(HapticsType.error);
@@ -36,6 +38,10 @@ await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
 ```
+
+`Haptics.prepare()` warms the matching iOS feedback generator. Call it shortly
+before the expected event, then trigger the same `HapticsType` with
+`Haptics.vibrate()`. It is a no-op on Android and unsupported platforms.
 
 If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
 
