@@ -1,3 +1,10 @@
+## 0.8.0
+
+* Add `Haptics.prepare()` to warm the matching iOS feedback generator before
+  triggering haptic feedback. The method is a no-op on Android.
+* Reuse iOS feedback generator instances so preparation applies to the next
+  matching haptic event.
+
 ## 0.7.0
 
 * **Breaking:** Require Flutter 3.47.

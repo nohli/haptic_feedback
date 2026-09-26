@@ -20,6 +20,21 @@ class Haptics {
     return HapticFeedbackPlatform.instance.canVibrate();
   }
 
+  /// Prepares the feedback generator for [type] to reduce latency on iOS.
+  ///
+  /// Call this shortly before an expected haptic, then pass the same [type] to
+  /// [vibrate]. This method does nothing on Android and unsupported platforms.
+  static Future<void> prepare(HapticsType type) async {
+    if (!isPlatformSupported) {
+      return;
+    }
+
+    final platform = HapticFeedbackPlatform.instance;
+    if (platform is HapticFeedbackPreparationPlatform) {
+      await (platform as HapticFeedbackPreparationPlatform).prepare(type);
+    }
+  }
+
   /// Performs haptic feedback of [HapticsType] on the device.
   /// Performs nothing if the platform is not supported.
   ///

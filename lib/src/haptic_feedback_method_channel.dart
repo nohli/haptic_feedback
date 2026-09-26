@@ -6,7 +6,8 @@ import 'haptics_type.dart';
 import 'haptics_usage.dart';
 
 /// An implementation of [HapticFeedbackPlatform] that uses method channels.
-class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
+class MethodChannelHapticFeedback extends HapticFeedbackPlatform
+    implements HapticFeedbackPreparationPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   static const methodChannel = MethodChannel('haptic_feedback');
@@ -28,5 +29,10 @@ class MethodChannelHapticFeedback extends HapticFeedbackPlatform {
     };
 
     return await methodChannel.invokeMethod(type.name, arguments);
+  }
+
+  @override
+  Future<void> prepare(HapticsType type) async {
+    return methodChannel.invokeMethod<void>('prepare', type.name);
   }
 }
