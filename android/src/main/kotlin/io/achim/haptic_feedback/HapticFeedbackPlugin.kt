@@ -112,12 +112,15 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
   /**
    * Tries to perform haptic feedback using the system's native HapticFeedbackConstants.
-   * Returns true if successful, false if fallback is needed.
+   * Returns true if dispatched, false if no activity or mapped constant is available.
    */
   private fun tryNativeHapticFeedback(pattern: Pattern): Boolean {
     val view = activity?.window?.decorView ?: return false
     val constant = getHapticFeedbackConstant(pattern) ?: return false
-    return view.performHapticFeedback(constant, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING)
+    // A false result can indicate disabled feedback, not an unavailable API.
+    // Once dispatched, respect that result instead of bypassing user settings.
+    view.performHapticFeedback(constant)
+    return true
   }
 
   private fun vibratePattern(pattern: Pattern, usage: Usage?, useAndroidHapticConstants: Boolean, result: Result) {
