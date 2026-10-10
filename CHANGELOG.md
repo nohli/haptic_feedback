@@ -1,4 +1,4 @@
-## Unreleased
+## 0.8.1
 
 * Respect Android user settings when dispatching native haptic constants.
 * Preserve vibration usage on API 33+ devices without amplitude control.
