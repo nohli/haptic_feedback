@@ -60,6 +60,9 @@ You can handle these failures when needed (exception classes are from
 `package:flutter/services.dart`):
 
 ```dart
+import 'package:flutter/services.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
+
 try {
   await Haptics.vibrate(HapticsType.success);
 } on PlatformException catch (e) {
