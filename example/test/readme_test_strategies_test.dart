@@ -26,17 +26,18 @@ void main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('overriding target platform in tests is cleaned up', () async {
-    addTearDown(() {
-      expect(debugDefaultTargetPlatformOverride, isNull);
-    });
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+  testWidgets('widget-test platform overrides are restored in the body', (
+    tester,
+  ) async {
+    final originalTarget = debugDefaultTargetPlatformOverride;
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    expect(debugDefaultTargetPlatformOverride, TargetPlatform.iOS);
-
-    HapticFeedbackPlatform.instance = FakeHapticFeedbackPlatform();
-
-    expect(await Haptics.canVibrate(), isTrue);
+    try {
+      expect(debugDefaultTargetPlatformOverride, TargetPlatform.iOS);
+      HapticFeedbackPlatform.instance = FakeHapticFeedbackPlatform();
+      expect(await Haptics.canVibrate(), isTrue);
+    } finally {
+      debugDefaultTargetPlatformOverride = originalTarget;
+    }
   });
 
   test('target platform override is reset after previous test', () {
