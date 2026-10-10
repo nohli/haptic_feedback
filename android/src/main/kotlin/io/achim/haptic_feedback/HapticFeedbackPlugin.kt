@@ -136,9 +136,13 @@ class HapticFeedbackPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       // Strategy 2: Use haptic primitives on API 30+ for better haptic feedback
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && supportsPrimitives(pattern)) {
         vibrateWithPrimitives(pattern, usage)
-      } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && vibrator.hasAmplitudeControl()) {
-        // Strategy 3: Fall back to waveform with amplitude control
-        val effect = VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, shouldNotRepeat)
+      } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        // Strategy 3: Waveform fallback, retaining usage even without amplitude control.
+        val effect = if (vibrator.hasAmplitudeControl()) {
+          VibrationEffect.createWaveform(pattern.lengths, pattern.amplitudes, shouldNotRepeat)
+        } else {
+          VibrationEffect.createWaveform(longArrayOf(0) + pattern.lengths, shouldNotRepeat)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && usage != null) {
           vibrator.vibrate(effect, usage.toVibrationAttributes())
         } else {

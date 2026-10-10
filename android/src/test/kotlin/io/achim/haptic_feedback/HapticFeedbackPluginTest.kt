@@ -65,6 +65,32 @@ class HapticFeedbackPluginTest {
   }
 
   @Test
+  @Config(sdk = [33, 36])
+  fun usageIsRetainedWithoutAmplitudeControl() {
+    plugin.onMethodCall(MethodCall("success", mapOf("usage" to "media")), result)
+    val attributes = ArgumentCaptor.forClass(VibrationAttributes::class.java)
+    verify(vibrator).vibrate(any(VibrationEffect::class.java), attributes.capture())
+    assertEquals(VibrationAttributes.USAGE_MEDIA, attributes.value.usage)
+    verify(result).success(null)
+  }
+
+  @Test
+  fun timingFallbackPreservesPulses() {
+    plugin.onMethodCall(MethodCall("success", null), result)
+    if (Build.VERSION.SDK_INT >= 26) {
+      val effect = ArgumentCaptor.forClass(VibrationEffect::class.java)
+      verify(vibrator).vibrate(effect.capture())
+      assertEquals(VibrationEffect.createWaveform(longArrayOf(0, 55, 55, 53), -1), effect.value)
+    } else {
+      val timings = ArgumentCaptor.forClass(LongArray::class.java)
+      @Suppress("DEPRECATION")
+      verify(vibrator).vibrate(timings.capture(), eq(-1))
+      assertArrayEquals(longArrayOf(0, 55, 55, 53), timings.value)
+    }
+    verify(result).success(null)
+  }
+
+  @Test
   fun reportsHardwareCapability() {
     `when`(vibrator.hasVibrator()).thenReturn(true)
     plugin.onMethodCall(MethodCall("canVibrate", null), result)
