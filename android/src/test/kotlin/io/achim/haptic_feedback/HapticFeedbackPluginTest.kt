@@ -162,6 +162,12 @@ class HapticFeedbackPluginTest {
     plugin.onDetachedFromActivityForConfigChanges()
     plugin.onMethodCall(MethodCall("light", mapOf("useAndroidHapticConstants" to true)), result)
     verifyNoInteractions(view)
+    if (Build.VERSION.SDK_INT >= 26) {
+      verify(vibrator).vibrate(any(VibrationEffect::class.java))
+    } else {
+      @Suppress("DEPRECATION")
+      verify(vibrator).vibrate(any(LongArray::class.java), eq(-1))
+    }
     verify(result).success(null)
   }
 
