@@ -44,6 +44,36 @@ void main() {
     expect(debugDefaultTargetPlatformOverride, isNull);
   });
 
+  test('README handling catches vibration and registration failures', () async {
+    const channel = MethodChannelHapticFeedback.methodChannel;
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    final originalTarget = debugDefaultTargetPlatformOverride;
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    HapticFeedbackPlatform.instance = MethodChannelHapticFeedback();
+    try {
+      for (final failure in <Exception>[
+        PlatformException(code: 'VIBRATION_ERROR'),
+        MissingPluginException('Missing registration'),
+      ]) {
+        messenger.setMockMethodCallHandler(channel, (_) async => throw failure);
+        Exception? handled;
+        try {
+          await Haptics.vibrate(HapticsType.success);
+        } on PlatformException catch (error) {
+          handled = error;
+        } on MissingPluginException catch (error) {
+          handled = error;
+        }
+        expect(handled, isA<Exception>());
+        expect(handled.runtimeType, failure.runtimeType);
+      }
+    } finally {
+      messenger.setMockMethodCallHandler(channel, null);
+      debugDefaultTargetPlatformOverride = originalTarget;
+    }
+  }, skip: kIsWeb);
+
   test('mocking the platform interface avoids channel calls', () async {
     final mockPlatform = FakeHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = mockPlatform;

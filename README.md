@@ -64,6 +64,8 @@ try {
   await Haptics.vibrate(HapticsType.success);
 } on PlatformException catch (e) {
   // Handle or log as needed
+} on MissingPluginException catch (e) {
+  // Handle missing plugin registration
 }
 ```
 
