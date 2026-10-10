@@ -1,15 +1,15 @@
 /// Controls which Android vibration usage category is applied to a haptic
 /// pattern.
 ///
-/// Android 13 (API level 33) introduced [VibrationAttributes], allowing apps to
+/// Android 13 (API level 33) introduced `VibrationAttributes`, allowing apps to
 /// tell the system why a vibration is being triggered. The platform can then
 /// respect the user's preference for each category (media, alarms, touch,
 /// etc.).
 /// On older Android versions this information is ignored.
 ///
-/// If no usage is provided, the plugin falls back to Android's default
-/// (`USAGE_UNKNOWN`), which may be muted on some OEM builds when touch haptics
-/// are disabled.
+/// If no usage is provided, Android applies its default classification. Use
+/// [touch] for UI feedback or a category matching the purpose of the vibration.
+/// Native Android haptic constants ignore this value and use touch settings.
 enum HapticsUsage {
   /// Alarm vibrations.
   alarm,

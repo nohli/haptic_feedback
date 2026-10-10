@@ -39,6 +39,28 @@ void main() {
   }, semanticsEnabled: !isIos);
 
   testWidgets(
+    'Android options complete for every pattern and usage',
+    (WidgetTester tester) async {
+      for (final type in HapticsType.values) {
+        for (final usage in HapticsUsage.values) {
+          for (final useConstants in [false, true]) {
+            await expectLater(
+              Haptics.vibrate(
+                type,
+                usage: usage,
+                useAndroidHapticConstants: useConstants,
+              ),
+              completes,
+            );
+          }
+        }
+      }
+    },
+    skip: isIos,
+    semanticsEnabled: !isIos,
+  );
+
+  testWidgets(
     'prepare rejects invalid types on iOS',
     (WidgetTester tester) async {
       const methodChannel = MethodChannel('haptic_feedback');

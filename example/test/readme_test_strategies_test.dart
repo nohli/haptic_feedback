@@ -5,7 +5,17 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback/src/haptic_feedback_method_channel.dart';
 import 'package:haptic_feedback/src/haptic_feedback_platform_interface.dart';
 
-import 'support/mock_platforms.dart';
+class FakeHapticFeedbackPlatform extends HapticFeedbackPlatform {
+  @override
+  Future<bool> canVibrate() async => true;
+
+  @override
+  Future<void> vibrate(
+    HapticsType type, {
+    HapticsUsage? usage,
+    bool useAndroidHapticConstants = false,
+  }) async {}
+}
 
 void main() {
   final initialPlatform = HapticFeedbackPlatform.instance;
@@ -24,7 +34,7 @@ void main() {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     expect(debugDefaultTargetPlatformOverride, TargetPlatform.iOS);
 
-    HapticFeedbackPlatform.instance = const MockHapticFeedbackPlatform();
+    HapticFeedbackPlatform.instance = FakeHapticFeedbackPlatform();
 
     expect(await Haptics.canVibrate(), isTrue);
   });
@@ -34,7 +44,7 @@ void main() {
   });
 
   test('mocking the platform interface avoids channel calls', () async {
-    const mockPlatform = MockHapticFeedbackPlatform();
+    final mockPlatform = FakeHapticFeedbackPlatform();
     HapticFeedbackPlatform.instance = mockPlatform;
 
     expect(await Haptics.canVibrate(), isTrue);

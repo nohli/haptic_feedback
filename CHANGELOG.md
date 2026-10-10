@@ -1,3 +1,13 @@
+## Unreleased
+
+* Respect Android user settings when dispatching native haptic constants.
+* Preserve vibration usage on API 33+ devices without amplitude control.
+* Fix the API 30 soft pattern's primitive support check.
+* Align iOS deployment metadata with Flutter 3.47's iOS 15 minimum, remove
+  obsolete private API capability detection, and synchronize the podspec version.
+* Correct README configuration, fallback, usage, and testing instructions.
+* Add native Android regression coverage across API levels.
+
 ## 0.8.0
 
 * Add `Haptics.prepare()` to warm the matching iOS feedback generator before
