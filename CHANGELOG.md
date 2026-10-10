@@ -1,12 +1,16 @@
-## 0.8.1
+## 1.0.0
 
-* Respect Android user settings when dispatching native haptic constants.
+* Publish the first stable release of the haptic feedback API, including
+  `Haptics.prepare()` and Android vibration usage categories.
+* Require Flutter 3.47, Android API 24 or newer, and iOS 15 or newer. Align both
+  CocoaPods and SwiftPM deployment metadata with Flutter's iOS minimum.
+* Respect Android touch-feedback settings when dispatching native haptic
+  constants, without falling back to custom vibration when feedback is muted.
 * Preserve vibration usage on API 33+ devices without amplitude control.
-* Fix the API 30 soft pattern's primitive support check.
-* Align iOS deployment metadata with Flutter 3.47's iOS 15 minimum, remove
-  obsolete private API capability detection, and synchronize the podspec version.
-* Correct README configuration, fallback, usage, and testing instructions.
-* Add native Android regression coverage across API levels.
+* Use the API 30 soft pattern only when its required primitives are supported.
+* Replace private iOS capability detection with Core Haptics hardware checks.
+* Clarify preparation, usage, capability, fallback, error handling, and SwiftPM
+  configuration in the README, and expand native and Dart regression coverage.
 
 ## 0.8.0
 
