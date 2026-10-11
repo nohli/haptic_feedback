@@ -1,7 +1,6 @@
-## 1.0.0
+## 0.9.0
 
-* First stable release.
-* Require Flutter 3.47+, Android 24+ and iOS 15+.
+* **Breaking:** Require iOS 15 or newer.
 * Respect Android touch-feedback settings when using native feedback.
 * Preserve vibration usage on Android 33+ devices without amplitude control.
 * Use supported fallback patterns for Android soft haptics.
