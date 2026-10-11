@@ -39,8 +39,7 @@ void main() {
     );
 
     expect(lastMethodCall?.method, 'success');
-    expect(lastMethodCall?.arguments,
-        {'usage': 'media', 'useAndroidHapticConstants': false});
+    expect(lastMethodCall?.arguments, {'usage': 'media', 'useAndroidHapticConstants': false});
   });
 
   test('vibrate includes default useAndroidHapticConstants flag', () async {

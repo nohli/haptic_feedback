@@ -21,17 +21,13 @@ void main() {
     binding.platformDispatcher.semanticsEnabledTestValue = true;
   }
 
-  testWidgets('canVibrate reflects host capability', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('canVibrate reflects host capability', (WidgetTester tester) async {
     final canVibrate = await Haptics.canVibrate();
 
     expect(canVibrate, isA<bool>());
   }, semanticsEnabled: !isIos);
 
-  testWidgets('prepare and vibrate complete for every type', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('prepare and vibrate complete for every type', (WidgetTester tester) async {
     for (final type in HapticsType.values) {
       await expectLater(Haptics.prepare(type), completes);
       await expectLater(Haptics.vibrate(type), completes);
@@ -44,14 +40,7 @@ void main() {
       for (final type in HapticsType.values) {
         for (final usage in HapticsUsage.values) {
           for (final useConstants in [false, true]) {
-            await expectLater(
-              Haptics.vibrate(
-                type,
-                usage: usage,
-                useAndroidHapticConstants: useConstants,
-              ),
-              completes,
-            );
+            await expectLater(Haptics.vibrate(type, usage: usage, useAndroidHapticConstants: useConstants), completes);
           }
         }
       }
@@ -64,10 +53,7 @@ void main() {
     'prepare rejects invalid types on iOS',
     (WidgetTester tester) async {
       const methodChannel = MethodChannel('haptic_feedback');
-      const invalidArguments = <(Object?, Object?)>[
-        (null, null),
-        ('unknown', 'unknown'),
-      ];
+      const invalidArguments = <(Object?, Object?)>[(null, null), ('unknown', 'unknown')];
 
       for (final (arguments, expectedDetails) in invalidArguments) {
         await expectLater(
@@ -75,11 +61,7 @@ void main() {
           throwsA(
             isA<PlatformException>()
                 .having((error) => error.code, 'code', 'invalid_arguments')
-                .having(
-                  (error) => error.message,
-                  'message',
-                  'Invalid or missing haptic type',
-                )
+                .having((error) => error.message, 'message', 'Invalid or missing haptic type')
                 .having((error) => error.details, 'details', expectedDetails),
           ),
         );

@@ -10,11 +10,7 @@ class FakeHapticFeedbackPlatform extends HapticFeedbackPlatform {
   Future<bool> canVibrate() async => true;
 
   @override
-  Future<void> vibrate(
-    HapticsType type, {
-    HapticsUsage? usage,
-    bool useAndroidHapticConstants = false,
-  }) async {}
+  Future<void> vibrate(HapticsType type, {HapticsUsage? usage, bool useAndroidHapticConstants = false}) async {}
 }
 
 void main() {
@@ -26,9 +22,7 @@ void main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('widget-test platform overrides are restored in the body', (
-    tester,
-  ) async {
+  testWidgets('widget-test platform overrides are restored in the body', (tester) async {
     final originalTarget = debugDefaultTargetPlatformOverride;
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     try {
@@ -46,8 +40,7 @@ void main() {
 
   test('README handling catches vibration and registration failures', () async {
     const channel = MethodChannelHapticFeedback.methodChannel;
-    final messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
     final originalTarget = debugDefaultTargetPlatformOverride;
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     HapticFeedbackPlatform.instance = MethodChannelHapticFeedback();
@@ -80,50 +73,29 @@ void main() {
 
     expect(await Haptics.canVibrate(), isTrue);
 
-    await Haptics.vibrate(
-      HapticsType.success,
-      usage: HapticsUsage.notification,
-      useAndroidHapticConstants: true,
-    );
+    await Haptics.vibrate(HapticsType.success, usage: HapticsUsage.notification, useAndroidHapticConstants: true);
   });
 
-  test(
-    'mocking the method channel keeps MethodChannelHapticFeedback usable',
-    () async {
-      final binding = TestDefaultBinaryMessengerBinding.instance;
-      const channel = MethodChannelHapticFeedback.methodChannel;
-      MethodCall? lastCall;
-      Map<dynamic, dynamic>? lastArguments;
+  test('mocking the method channel keeps MethodChannelHapticFeedback usable', () async {
+    final binding = TestDefaultBinaryMessengerBinding.instance;
+    const channel = MethodChannelHapticFeedback.methodChannel;
+    MethodCall? lastCall;
+    Map<dynamic, dynamic>? lastArguments;
 
-      binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
-        MethodCall call,
-      ) async {
-        lastCall = call;
-        lastArguments = call.arguments as Map<dynamic, dynamic>?;
-        if (call.method == 'canVibrate') return true;
-        return null;
-      });
-      addTearDown(
-        () => binding.defaultBinaryMessenger.setMockMethodCallHandler(
-          channel,
-          null,
-        ),
-      );
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (MethodCall call) async {
+      lastCall = call;
+      lastArguments = call.arguments as Map<dynamic, dynamic>?;
+      if (call.method == 'canVibrate') return true;
+      return null;
+    });
+    addTearDown(() => binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, null));
 
-      final platform = MethodChannelHapticFeedback();
+    final platform = MethodChannelHapticFeedback();
 
-      expect(await platform.canVibrate(), isTrue);
-      await platform.vibrate(
-        HapticsType.success,
-        usage: HapticsUsage.media,
-        useAndroidHapticConstants: true,
-      );
+    expect(await platform.canVibrate(), isTrue);
+    await platform.vibrate(HapticsType.success, usage: HapticsUsage.media, useAndroidHapticConstants: true);
 
-      expect(lastCall?.method, 'success');
-      expect(lastArguments, {
-        'usage': 'media',
-        'useAndroidHapticConstants': true,
-      });
-    },
-  );
+    expect(lastCall?.method, 'success');
+    expect(lastArguments, {'usage': 'media', 'useAndroidHapticConstants': true});
+  });
 }

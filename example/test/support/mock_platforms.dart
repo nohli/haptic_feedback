@@ -3,18 +3,12 @@ import 'package:haptic_feedback/src/haptics_type.dart';
 import 'package:haptic_feedback/src/haptics_usage.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockHapticFeedbackPlatform
-    with MockPlatformInterfaceMixin
-    implements HapticFeedbackPlatform {
+class MockHapticFeedbackPlatform with MockPlatformInterfaceMixin implements HapticFeedbackPlatform {
   const MockHapticFeedbackPlatform();
 
   @override
   Future<bool> canVibrate() async => true;
 
   @override
-  Future<void> vibrate(
-    HapticsType type, {
-    HapticsUsage? usage,
-    bool useAndroidHapticConstants = false,
-  }) async {}
+  Future<void> vibrate(HapticsType type, {HapticsUsage? usage, bool useAndroidHapticConstants = false}) async {}
 }
