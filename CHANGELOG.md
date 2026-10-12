@@ -1,3 +1,12 @@
+## 0.9.0
+
+* **Breaking:** Require iOS 15 or newer.
+* Respect Android touch-feedback settings when using native feedback.
+* Preserve vibration usage on Android 33+ devices without amplitude control.
+* Use supported fallback patterns for Android soft haptics.
+* Replace private iOS capability checks with public APIs.
+* Clarify setup, preparation, fallbacks and error handling.
+
 ## 0.8.0
 
 * Add `Haptics.prepare()` to warm the matching iOS feedback generator before

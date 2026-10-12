@@ -5,8 +5,12 @@ A haptic feedback plugin for both iOS and Android.
 While it utilizes [standard iOS haptics](https://developer.apple.com/design/human-interface-guidelines/playing-haptics#iOS), it aims to emulate these same haptic patterns on Android for a consistent experience across platforms.
 
 `haptic_feedback` requires Flutter 3.47 or newer and Android API 24 or newer when targeting Android.
-Android builds require AGP 9 with built-in Kotlin support. The plugin does not
-apply or bundle the external Kotlin Gradle Plugin.
+iOS builds require iOS 15 or newer.
+Android builds require Java 17 or newer and AGP 9 with built-in Kotlin support. The plugin does not
+apply or bundle the external Kotlin Gradle Plugin. Existing apps must migrate
+their Gradle configuration and remove any `android.builtInKotlin=false` opt-out;
+updating Flutter alone does not migrate the app. See Flutter's
+[AGP 9 migration guide](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers).
 
 For a guide on when to use each haptic type, see [Missing haptic types, and which to use when](https://flutterpro.design/details/haptic-feedback) by Kamran.
 
@@ -14,13 +18,27 @@ For a guide on when to use each haptic type, see [Missing haptic types, and whic
 
 ### 1. Add the dependency
 
-```shell
-flutter pub add haptic_feedback
+**Flutter 3.47+**
+
+```yaml
+dependencies:
+  haptic_feedback: ^0.9.0
 ```
+
+**Flutter 3.10–<3.47**
+
+```yaml
+dependencies:
+  haptic_feedback: ^0.6.5
+```
+
+For 0.6.x setup and usage, see its [documentation](https://pub.dev/packages/haptic_feedback/versions/0.6.5).
 
 ### 2. Use the plugin
 
 ```dart
+import 'package:haptic_feedback/haptic_feedback.dart';
+
 final canVibrate = await Haptics.canVibrate();
 
 // Call shortly before an expected haptic to reduce initial latency on iOS.
@@ -43,13 +61,26 @@ await Haptics.vibrate(HapticsType.selection);
 before the expected event, then trigger the same `HapticsType` with
 `Haptics.vibrate()`. It is a no-op on Android and unsupported platforms.
 
-If you want to be defensive, you can wrap calls in a try/catch to handle a `PlatformException`. Native exceptions are caught and returned as `PlatformException` (code: `VIBRATION_ERROR`) so they won't crash your app, but you can log or react if needed:
+`canVibrate()` reports hardware capability. A `true` result does not guarantee
+that feedback will play: user settings, device state, and hardware support can
+suppress it. On web and desktop, it returns `false`, and `prepare()` and
+`vibrate()` do nothing.
+
+Android vibration exceptions are returned as `PlatformException` with code
+`VIBRATION_ERROR`. Missing plugin registration can throw `MissingPluginException`.
+You can handle these failures when needed (exception classes are from
+`package:flutter/services.dart`):
 
 ```dart
+import 'package:flutter/services.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
+
 try {
   await Haptics.vibrate(HapticsType.success);
 } on PlatformException catch (e) {
   // Handle or log as needed
+} on MissingPluginException catch (e) {
+  // Handle missing plugin registration
 }
 ```
 
@@ -79,25 +110,43 @@ settings control it (for example, notification vs touch feedback).
 
 Use a concrete value whenever the vibration clearly matches one of the
 defined categories (for example `HapticsUsage.notification` for reminders
-or status updates), and keep the default `HapticsUsage.unknown` for simple
-taps and other lightweight UI feedback.
+or status updates), and use `HapticsUsage.touch` for taps and other UI feedback.
+Omitting `usage` keeps Android's default classification, which is not guaranteed
+to behave the same as explicitly specifying `HapticsUsage.unknown` on every OS.
+
+When a native haptic constant is used, Android applies its touch-feedback
+settings and ignores `usage`. Custom patterns and fallbacks apply `usage` on
+API 33+, including devices without amplitude control.
 
 ## iOS: SwiftPM vs CocoaPods
 
-Flutter 3.47 enables Swift Package Manager (SPM) by default. This plugin
-supports both SPM and CocoaPods.
+Flutter has enabled Swift Package Manager (SwiftPM) by default since 3.44.
+This plugin supports both SwiftPM and CocoaPods. Both configuration commands
+below remain available in Flutter 3.47.
 
-To explicitly enable SPM, run:
+If you previously disabled SwiftPM, re-enable it globally with:
 
 ```shell
 flutter config --enable-swift-package-manager
 ```
 
-To use CocoaPods, run:
+To use CocoaPods globally for the current user, run:
 
 ```shell
 flutter config --no-enable-swift-package-manager
 ```
+
+For a project-specific CocoaPods opt-out, set this in the app's `pubspec.yaml`:
+
+```yaml
+flutter:
+  config:
+    enable-swift-package-manager: false
+```
+
+Disabling SwiftPM does not remove its existing Xcode integration. See
+[Flutter's SwiftPM guide](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers)
+for migration and removal steps.
 
 ## Platform Implementation
 
@@ -110,7 +159,9 @@ Uses Apple's native haptic feedback APIs:
 
 ### Android
 
-On Android, the plugin defaults to high-fidelity haptic primitives on API 30+ (great on devices with advanced/HD hardware); falls back to waveforms on API 26-29 and legacy timing-only vibration on older SDKs; and can opt into system `HapticFeedbackConstants` via `useAndroidHapticConstants` on supported SDKs. The plugin uses a multi-strategy approach for the best possible haptic experience:
+On Android, the plugin selects a strategy based on both the API level and
+hardware support. These patterns approximate iOS feedback; their timing and
+feel can vary across devices.
 
 #### Strategy 1: Native HapticFeedbackConstants (when enabled)
 
@@ -125,7 +176,10 @@ When `useAndroidHapticConstants: true`, the plugin uses Android's system-level h
 | heavy     | `CONTEXT_CLICK`                                | ≥ 23      |
 | selection | `CLOCK_TICK`                                   | ≥ 21      |
 
-Note: `warning`, `rigid`, and `soft` don't have direct Android mappings and fall back to primitives/waveforms/legacy.
+`warning`, `rigid`, and `soft` have no mapping in this plugin and use custom
+patterns. Custom patterns also apply when the mapped constant is unavailable
+or no activity is attached. Once a mapped constant is dispatched, the plugin
+respects Android's result and does not bypass disabled feedback with a fallback.
 
 #### Strategy 2: Haptic Primitives (API 30+)
 
@@ -145,9 +199,11 @@ When native constants aren't available or `useAndroidHapticConstants: false` (de
 
 \* `SPIN` requires API 31+; falls back to `TICK` on API 30.
 
-#### Strategy 3: Waveform Vibrations (API 26-29)
+#### Strategy 3: Waveform Vibrations (API 26+)
 
-For devices without primitive support, the plugin uses `VibrationEffect.createWaveform()` with amplitude control.
+For devices without the required primitives, the plugin uses
+`VibrationEffect.createWaveform()`. Devices with amplitude control use the tuned
+amplitudes; others use timing-only waveforms.
 
 #### Strategy 4: Legacy Vibration (API < 26)
 
@@ -157,7 +213,7 @@ For detailed timing specifications and implementation rationale, see [HAPTIC_PAT
 
 ## Testing
 
-When testing widgets that use haptic feedback, `defaultTargetPlatform` is `TargetPlatform.android` by default, but the default platform implementation still calls the method channel and will throw `MissingPluginException` unless you register a mock. If you swap in a mock platform that returns `true`, `Haptics.canVibrate()` will return `true` even on a non-mobile host unless you override the target platform.
+In native Flutter widget tests, `defaultTargetPlatform` is `TargetPlatform.android` by default, but the default platform implementation still calls the method channel and will throw `MissingPluginException` unless you register a mock. If you swap in a mock platform that returns `true`, `Haptics.canVibrate()` will return `true` even on a non-mobile host unless you override the target platform.
 
 To test widgets that use haptic feedback, you can:
 
@@ -165,13 +221,17 @@ To test widgets that use haptic feedback, you can:
 
 ```dart
 import 'package:flutter/foundation.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('test on iOS', (tester) async {
+    final originalTarget = debugDefaultTargetPlatformOverride;
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
-    // Your test code here
+    try {
+      // Your test code here
+    } finally {
+      debugDefaultTargetPlatformOverride = originalTarget;
+    }
   });
 }
 ```
@@ -179,22 +239,36 @@ void main() {
 2. **Mock the platform interface** in your tests:
 
 ```dart
+import 'package:flutter/foundation.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback/src/haptic_feedback_platform_interface.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockHapticFeedbackPlatform extends Mock
-    with MockPlatformInterfaceMixin
-    implements HapticFeedbackPlatform {}
+class FakeHapticFeedbackPlatform extends HapticFeedbackPlatform {
+  @override
+  Future<bool> canVibrate() async => true;
+
+  @override
+  Future<void> vibrate(
+    HapticsType type, {
+    HapticsUsage? usage,
+    bool useAndroidHapticConstants = false,
+  }) async {}
+}
 
 void main() {
-  testWidgets('my widget test', (tester) async {
-    final mockPlatform = MockHapticFeedbackPlatform();
-    HapticFeedbackPlatform.instance = mockPlatform;
-    
-    when(() => mockPlatform.canVibrate()).thenAnswer((_) async => true);
-    when(() => mockPlatform.vibrate(any())).thenAnswer((_) async {});
-    
-    // Your test code here
+  test('haptic calls use the fake platform', () async {
+    final originalPlatform = HapticFeedbackPlatform.instance;
+    final originalTarget = debugDefaultTargetPlatformOverride;
+    addTearDown(() {
+      HapticFeedbackPlatform.instance = originalPlatform;
+      debugDefaultTargetPlatformOverride = originalTarget;
+    });
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    HapticFeedbackPlatform.instance = FakeHapticFeedbackPlatform();
+
+    expect(await Haptics.canVibrate(), isTrue);
+    await Haptics.vibrate(HapticsType.success);
   });
 }
 ```
