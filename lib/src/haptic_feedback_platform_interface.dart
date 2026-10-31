@@ -1,5 +1,4 @@
-import 'package:plugin_platform_interface/plugin_platform_interface.dart'
-    show PlatformInterface;
+import 'package:plugin_platform_interface/plugin_platform_interface.dart' show PlatformInterface;
 
 import 'haptic_feedback_method_channel.dart';
 import 'haptics_type.dart';

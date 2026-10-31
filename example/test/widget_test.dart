@@ -11,9 +11,7 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:haptic_feedback_example/main.dart';
 
 void main() {
-  testWidgets('Haptics types are displayed in example', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('Haptics types are displayed in example', (WidgetTester tester) async {
     final originalSize = tester.view.physicalSize;
     final originalPixelRatio = tester.view.devicePixelRatio;
 
@@ -31,8 +29,7 @@ void main() {
     // Verify that it shows the last haptics type.
     expect(
       find.byWidgetPredicate((Widget widget) {
-        return widget is Text &&
-            widget.data!.startsWith(HapticsType.values.last.name);
+        return widget is Text && widget.data!.startsWith(HapticsType.values.last.name);
       }),
       findsOneWidget,
     );

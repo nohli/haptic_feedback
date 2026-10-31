@@ -7,20 +7,9 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   private let lightImpactGenerator = UIImpactFeedbackGenerator(style: .light)
   private let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
   private let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
-  private let rigidImpactGenerator: UIImpactFeedbackGenerator
-  private let softImpactGenerator: UIImpactFeedbackGenerator
+  private let rigidImpactGenerator = UIImpactFeedbackGenerator(style: .rigid)
+  private let softImpactGenerator = UIImpactFeedbackGenerator(style: .soft)
   private let selectionGenerator = UISelectionFeedbackGenerator()
-
-  override init() {
-    if #available(iOS 13.0, *) {
-      rigidImpactGenerator = UIImpactFeedbackGenerator(style: .rigid)
-      softImpactGenerator = UIImpactFeedbackGenerator(style: .soft)
-    } else {
-      rigidImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
-      softImpactGenerator = UIImpactFeedbackGenerator(style: .light)
-    }
-    super.init()
-  }
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "haptic_feedback", binaryMessenger: registrar.messenger())
@@ -67,17 +56,7 @@ public class HapticFeedbackPlugin: NSObject, FlutterPlugin {
   }
 
   private func canVibrate(result: @escaping FlutterResult) {
-    if #available(iOS 13.0, *) {
-      let supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
-      result(supportsHaptics)
-      return
-    }
-    if let feedbackSupportLevel = UIDevice.current.value(forKey: "_feedbackSupportLevel") as? Int,
-      feedbackSupportLevel == 2 {
-      result(true)
-      return
-    }
-    result(false)
+    result(CHHapticEngine.capabilitiesForHardware().supportsHaptics)
   }
 
   private func prepare(type: String?, result: @escaping FlutterResult) {
