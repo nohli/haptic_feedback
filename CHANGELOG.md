@@ -6,6 +6,7 @@
 * Use supported fallback patterns for Android soft haptics.
 * Replace private iOS capability checks with public APIs.
 * Clarify setup, preparation, fallbacks and error handling.
+* Remove Flutter 3.50 deprecations from the example.
 
 ## 0.8.0
 
