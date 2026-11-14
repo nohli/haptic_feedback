@@ -1,10 +1,10 @@
 ## 0.9.0
 
-* **Breaking:** Require iOS 15 or newer.
 * Respect Android touch-feedback settings when using native feedback.
 * Preserve vibration usage on Android 33+ devices without amplitude control.
 * Use supported fallback patterns for Android soft haptics.
 * Replace private iOS capability checks with public APIs.
+* Align iOS manifests with Flutter's existing iOS 15 minimum.
 * Clarify setup, preparation, fallbacks and error handling.
 * Remove Flutter 3.50 deprecations from the example.
 
