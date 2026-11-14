@@ -16,6 +16,7 @@ dependencies:
 
   haptic_feedback:
     path: ../
+  material_ui: ^1.11.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0
