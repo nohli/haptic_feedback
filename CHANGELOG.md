@@ -1,12 +1,11 @@
 ## 0.9.0
 
-* Respect Android touch-feedback settings when using native feedback.
-* Preserve vibration usage on Android 33+ devices without amplitude control.
-* Use supported fallback patterns for Android soft haptics.
-* Replace private iOS capability checks with public APIs.
-* Align iOS manifests with Flutter's existing iOS 15 minimum.
-* Clarify setup, preparation, fallbacks and error handling.
-* Remove Flutter 3.50 deprecations from the example.
+* Respect Android's touch-feedback setting when calling `performHapticFeedback`
+* Fix custom vibration timing on Android devices without amplitude control
+* Apply `HapticsUsage` on Android 13+ devices without amplitude control, so Android can apply the selected vibration category's settings
+* Use the supported `PRIMITIVE_TICK` effect for soft haptics on Android 11
+* Set the minimum iOS version to 15 in CocoaPods and Swift Package Manager, matching the existing Flutter requirement
+* Replace deprecated Material imports with `package:material_ui/material_ui.dart` in the example for Flutter 3.50
 
 ## 0.8.0
 
