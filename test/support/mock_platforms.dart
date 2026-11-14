@@ -3,9 +3,7 @@ import 'package:haptic_feedback/src/haptics_type.dart';
 import 'package:haptic_feedback/src/haptics_usage.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockHapticFeedbackPlatform
-    with MockPlatformInterfaceMixin
-    implements HapticFeedbackPlatform {
+class MockHapticFeedbackPlatform with MockPlatformInterfaceMixin implements HapticFeedbackPlatform {
   const MockHapticFeedbackPlatform();
 
   @override

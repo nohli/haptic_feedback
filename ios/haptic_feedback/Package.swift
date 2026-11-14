@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "haptic_feedback",
     platforms: [
-        .iOS("11.0")
+        .iOS("15.0")
     ],
     products: [
         // Match Flutter's generated SwiftPM expectation (`haptic-feedback`).

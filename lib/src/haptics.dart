@@ -9,9 +9,12 @@ class Haptics {
 
   /// Checks if the device is capable of performing haptic feedback.
   ///
-  /// - On iOS: Haptic feedback is available on iPhone 7 and later models.
+  /// - On iOS: Uses Core Haptics hardware capabilities.
   /// - On Android: Haptic feedback is generally available,
   /// but actual support can vary between devices and versions.
+  ///
+  /// This checks hardware, not user settings. A `true` result does not
+  /// guarantee that a particular pattern will play.
   static Future<bool> canVibrate() async {
     if (!isPlatformSupported) {
       return false;
@@ -46,6 +49,9 @@ class Haptics {
   /// use the platform `HapticFeedbackConstants` (e.g., `CONFIRM`, `REJECT`,
   /// `VIRTUAL_KEY`) when available. Set to `false` to use custom vibration
   /// primitives instead, which more closely mirror the iOS patterns.
+  /// Native constants respect Android's touch-feedback settings and ignore
+  /// [usage]. Custom patterns are used if no mapped constant or activity is
+  /// available; a dispatched constant never falls back because it was muted.
   static Future<void> vibrate(
     HapticsType type, {
     HapticsUsage? usage,

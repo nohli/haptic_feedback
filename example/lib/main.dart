@@ -36,8 +36,7 @@ class _HapticsListState extends State<_HapticsList> {
 
   @override
   Widget build(BuildContext context) {
-    final isAndroid =
-        !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+    final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
 
     return ListView(
       children: [
@@ -63,8 +62,7 @@ class _HapticsListState extends State<_HapticsList> {
               const Text('Use haptic constants'),
               Switch.adaptive(
                 value: _useAndroidHapticConstants,
-                onChanged: (value) =>
-                    setState(() => _useAndroidHapticConstants = value),
+                onChanged: (value) => setState(() => _useAndroidHapticConstants = value),
               ),
             ],
           ),
@@ -79,9 +77,7 @@ class _HapticsListState extends State<_HapticsList> {
 
               // Show snackbar
               if (!context.mounted) return;
-              final snackbarMessage = can
-                  ? '$type'
-                  : 'This device is not capable of haptic feedback.';
+              final snackbarMessage = can ? '$type' : 'This device is not capable of haptic feedback.';
               ScaffoldMessenger.of(context).removeCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -92,11 +88,7 @@ class _HapticsListState extends State<_HapticsList> {
 
               // Vibrate only if device is capable of haptic feedback
               if (!can) return;
-              await Haptics.vibrate(
-                type,
-                usage: _selectedUsage,
-                useAndroidHapticConstants: _useAndroidHapticConstants,
-              );
+              await Haptics.vibrate(type, usage: _selectedUsage, useAndroidHapticConstants: _useAndroidHapticConstants);
             },
           ),
       ],
