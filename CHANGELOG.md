@@ -1,3 +1,7 @@
+## 1.0.0
+
+* First stable release; no API or behavior changes
+
 ## 0.9.0
 
 * Respect Android's touch-feedback setting when calling `performHapticFeedback`
