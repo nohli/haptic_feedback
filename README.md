@@ -57,8 +57,8 @@ await Haptics.vibrate(HapticsType.selection);
 
 `canVibrate()` reports hardware capability. A `true` result does not guarantee
 that feedback will play: user settings, device state, and hardware support can
-suppress it. On web and desktop, it returns `false`, and `prepare()` and
-`vibrate()` do nothing.
+suppress it. On web and desktop, it returns `false` and `vibrate()` does
+nothing.
 
 Android vibration exceptions are returned as `PlatformException` with code
 `VIBRATION_ERROR`. Missing plugin registration can throw `MissingPluginException`.
