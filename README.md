@@ -22,7 +22,7 @@ For a guide on when to use each haptic type, see [Missing haptic types, and whic
 
 ```yaml
 dependencies:
-  haptic_feedback: ^0.9.0
+  haptic_feedback: ^0.9.0+1
 ```
 
 **Flutter 3.10–<3.47**
@@ -41,8 +41,6 @@ import 'package:haptic_feedback/haptic_feedback.dart';
 
 final canVibrate = await Haptics.canVibrate();
 
-// Call shortly before an expected haptic to reduce initial latency on iOS.
-await Haptics.prepare(HapticsType.success);
 await Haptics.vibrate(HapticsType.success);
 await Haptics.vibrate(HapticsType.warning);
 await Haptics.vibrate(HapticsType.error);
@@ -56,10 +54,6 @@ await Haptics.vibrate(HapticsType.soft);
 
 await Haptics.vibrate(HapticsType.selection);
 ```
-
-`Haptics.prepare()` warms the matching iOS feedback generator. Call it shortly
-before the expected event, then trigger the same `HapticsType` with
-`Haptics.vibrate()`. It is a no-op on Android and unsupported platforms.
 
 `canVibrate()` reports hardware capability. A `true` result does not guarantee
 that feedback will play: user settings, device state, and hardware support can
@@ -83,6 +77,25 @@ try {
   // Handle missing plugin registration
 }
 ```
+
+### 3. Lower latency on iOS (optional)
+
+`vibrate()` works without preparation. When a haptic must line up exactly with
+an animation or sound, call `prepare()` with the same type a moment before it
+is likely to fire, for example when a drag starts:
+
+```dart
+GestureDetector(
+  onPanStart: (_) => Haptics.prepare(HapticsType.success),
+  onPanEnd: (_) => Haptics.vibrate(HapticsType.success),
+);
+```
+
+Calling `prepare()` right before `vibrate()` doesn't reduce latency; call it
+ahead of time. The generator stays ready for only a few seconds or until the
+next haptic, so calling it once at app start doesn't help either.
+`success`, `warning` and `error` share one generator. On Android, web and
+desktop, `prepare()` does nothing.
 
 ## Android-specific options
 
