@@ -1,3 +1,7 @@
+## 0.9.0+2
+
+* Remove a duplicate `prepare()` note from the README.
+
 ## 0.9.0+1
 
 * Clarify in the README and API docs when to call `Haptics.prepare()`.
