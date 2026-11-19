@@ -2,6 +2,10 @@
 
 * First stable release; no API or behavior changes
 
+## 0.9.0+1
+
+* Clarify in the README and API docs when to call `Haptics.prepare()`.
+
 ## 0.9.0
 
 * Respect Android's touch-feedback setting when calling `performHapticFeedback`

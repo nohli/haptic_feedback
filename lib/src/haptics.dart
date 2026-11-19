@@ -25,8 +25,12 @@ class Haptics {
 
   /// Prepares the feedback generator for [type] to reduce latency on iOS.
   ///
-  /// Call this shortly before an expected haptic, then pass the same [type] to
-  /// [vibrate]. This method does nothing on Android and unsupported platforms.
+  /// Optional: [vibrate] works without it. Call this a moment before a haptic
+  /// of the same [type] is likely, for example when a drag starts, and again
+  /// after each haptic if more may follow. Calling it right before [vibrate]
+  /// doesn't reduce latency. The generator stays ready for only a few seconds
+  /// or until the next haptic, so calling it at app start doesn't help either.
+  /// This method does nothing on Android and unsupported platforms.
   static Future<void> prepare(HapticsType type) async {
     if (!isPlatformSupported) {
       return;
