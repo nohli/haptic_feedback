@@ -1,3 +1,7 @@
+## 1.0.0
+
+* First stable release; no API or behavior changes
+
 ## 0.9.0+2
 
 * Remove a duplicate `prepare()` note from the README.

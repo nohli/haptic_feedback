@@ -22,7 +22,7 @@ For a guide on when to use each haptic type, see [Missing haptic types, and whic
 
 ```yaml
 dependencies:
-  haptic_feedback: ^0.9.0+2
+  haptic_feedback: ^1.0.0
 ```
 
 **Flutter 3.10–<3.47**
